@@ -19,6 +19,17 @@ Tip:     'Export in Neverwinter Nights format ASCII model'
 #
 #################################################################
 
+
+# This is a severely ugly hack to get the path access working
+# in a sane way. Goddamn Blender won't honor the Ordinary Python
+# Library Path.
+from sys import path
+from os import access, X_OK
+if access("/usr/local/lib/neverblender/lib", X_OK) == 1:
+	path.append("/usr/local/lib/neverblender/lib")
+
+# Now, let's get back to our regular every-day library requesting.
+import Blender
 from Blender import Scene, Object
 
 import Props
@@ -191,6 +202,7 @@ if len(scnobjchilds[model]) <= 0:
 mfile = ModelFile()
 mfile.setModelName(model)
 mfile.setClassification(Props.getclassification())
+mfile.setFileDependancy(Blender.Get('filename'))
 
 # Supermodel?
 supermodel = Props.getsupermodel()

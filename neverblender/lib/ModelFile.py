@@ -30,6 +30,7 @@ class ModelFile:
                  fileformat="mdl", supermodel=None, objects=[]):
         self._modelname = name
         self._supermodelname = supermodel
+        self._filedependancy = "NULL"
         self._classification = classification
         self._fileformat = fileformat
         self._objects = objects
@@ -51,6 +52,10 @@ class ModelFile:
         self._fileformat = format
     def getFileFormat(self):
         return self._fileformat
+    def setFileDependancy(self,filename):
+        self._filedependancy = filename
+    def getFileDependancy(self):
+        return self._filedependancy
 
     def addObject(self,object):
         self._objects.append(object)
@@ -76,7 +81,7 @@ class ModelFile:
         of.write("# Model written by NeverBlender MDL Export Script\n")
         of.write("# File name: %s\n" % outfile)
         of.write("# Built on: %s\n" % asctime())
-        of.write("filedependancy NULL\n")
+        of.write("filedependancy %s\n" % self.getFileDependancy())
         of.write("newmodel %s\n"  % self.getModelName())
         # FIXME: Any way to get the current .blend file name? Would rule.
 
