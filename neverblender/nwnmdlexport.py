@@ -1,7 +1,7 @@
 #!BPY
 """ Registration info for Blender menus
 Name:    'Bioware NWN ASCII MDL'
-Blender: 232
+Blender: 233
 Group:   'Export'
 Tip:     'Export in Neverwinter Nights format ASCII model'
 """
@@ -218,10 +218,6 @@ if len(scnobjchilds[model]) <= 0:
 	putlog(NBLog.CRITICAL, 
 	       "the base object %s has no sibling objects." % model)
 	exit
-
-# Get the list of actions
-actionlist = SceneHelpers.actionlist()
-
 
 # Let's open the file.
 mfile = ModelFile()
