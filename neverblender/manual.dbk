@@ -875,6 +875,15 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><classname>FILES</classname>.<property>log</property>=<replaceable>file</replaceable></term>
+	    <listitem><para>
+		If specified, the NeverBlender console log will also
+		be written to the specified file.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><replaceable>objectname</replaceable>.<property>texture</property>=<replaceable>texturename</replaceable></term>
 	    <listitem><para>
 		The texture the object uses, without the
