@@ -136,7 +136,7 @@ def processobject(model,parent,mfile):
 	global scnobjchilds
 
 	# Process this object
-	putlog(NBLog.INFO, "Processing object %s" % model)
+	#putlog(NBLog.DEBUG, "Processing object %s" % model)
 
 	thismod = Object.Get(model)
 	mtype = thismod.getType()
