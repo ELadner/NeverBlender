@@ -368,6 +368,32 @@ U neverblender/ChangeLog
 	  Archeological reasons, you know.
 	</para>
 
+	<sect3>
+	  <title>A <emphasis>way</emphasis> too easy installation method</title>
+
+	  <para>This installation method is easiest because it doesn't
+	    need any weird environment variables or messing with
+	    system directories. This method works in Debian
+	    GNU/Linux. It may work on other Linux distributions. Some
+	    other dists may have similar method available. You may
+	    refer to the <filename>site.py</filename> file (in Debian,
+	    <filename>/etc/python2.3/site.py</filename>) and see if
+	    something similar works for your platform.
+	  </para>
+
+	  <para>First, you need to put all Neverblender files to, say,
+	    <filename>/usr/local/lib/neverblender</filename>.</para>
+
+	  <para>After this, you'll just need to do this command as root:</para>
+
+<screen>
+<prompt>$</prompt> <userinput>echo "/usr/local/lib/neverblender/lib" &gt; /usr/local/lib/python2.3/site-packages/NeverBlender.pth</userinput>
+</screen>
+
+	  <para>...and the libraries should be installed!</para>
+
+	</sect3>
+
 
 	<sect3>
 	  <title>An easy way to run NeverBlender</title>
