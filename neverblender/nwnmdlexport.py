@@ -145,7 +145,7 @@ pwkname = Props.getpwk()
 if pwkname:
 	print "*** Creating placeable walk data (PWK file)"
 
-	pwkobj = Object.get(pwkname)
+	pwkobj = Object.Get(pwkname)
 	if pwkobj.getType() != 'Mesh':
 		print " ** PWK must be a Mesh!"
 	else:
@@ -158,7 +158,7 @@ if pwkname:
 		pwkmesh = processobject(pwkname, 0)
 
 		pwkfile._objects = []
-		pwkfile.addObject(pwktrimesh)
+		pwkfile.addObject(pwkmesh)
 
 		# Write out the PWK.
 		pwkfile.writeToFile()

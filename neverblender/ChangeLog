@@ -1,4 +1,8 @@
 
+2003-09-23 01:23  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, lib/Trimesh.py:
+	2.28 changes. It compiles, so we ship it.
 
 2003-09-23 00:42  Urpo Lankinen  <wwwwolf@iki.fi>
 

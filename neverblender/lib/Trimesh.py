@@ -192,10 +192,6 @@ class Trimesh:
 			print "WARNING: Too many verts in face! Not added."
 			print "  You need to divide this face manually."
 
-	# FIXME: This is BROKEN because some clever Python guy decided
-	# to fuck around with the definition of "tuple". Obviously, in 2.2,
-	# the string formatting was so elegant that they *had* to break it
-	# in 2.3 so that Perl people could get some chuckles.
 	def __str__(self):
 		o = ("node trimesh %s\n" % self._name) + \
 			("  parent %s\n" % self._parent) + \
@@ -236,8 +232,8 @@ class Trimesh:
 	def _texverts_as_string(self):
 		if self._texture:
 			o = ("  tverts %d\n" % len(self._texverts))
-			o+= tuple(map(lambda tv: "    %f %f 0\n" % tuple(tv),
-				self._texverts))
+			o+= str(tuple(map(lambda tv: "    %f %f 0\n" % tuple(tv),
+				self._texverts)))
 		else:
 			o = "  tverts 1\n    0 0 0\n"
 		return o
