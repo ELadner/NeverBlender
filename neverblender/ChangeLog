@@ -13,4 +13,12 @@ Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
 	Also tested the importer first time. Yeah, it's dog slow...
 	
 	
+Sun Aug 17 20:04:31 2003  Urpo Lankinen <wwwwolf@iki.fi>
+
+	* nwnmdlimport.py:
+	Added a rudimentary GUI file selector. Not tested it because
+	FileReader doesn't seem to be there in Windows Blender
+	2.28a. Or something.
+
+
 	

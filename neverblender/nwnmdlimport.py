@@ -4,6 +4,7 @@
 # Neverwinter Nights ASCII .mdl import script for Blender.
 #
 # Written by Yann Vernier.
+# GUI code by Urpo Lankinen.
 #
 # part of the NeverBlender project
 # (c) The NeverBlender Contributors 2003
@@ -22,10 +23,76 @@
 # the chest, for instance, goes from open to closed to open...
 
 from Blender import Scene, Object, NMesh, Image, Text, Ipo, Window
+from Blender import Draw, BGL
+# Hurm. This appears to be broken in 2.28a/Windows. Damn. - W4
 from types import FileType
 from NwnMath import rad2decadeg, nwn2euler
 
 filename='plc_a08.mdl.ascii'
+fileinput=0
+impstatus=0
+
+def import_gui_event(evt,val):
+  if evt == Draw.ESCKEY:  # Quit if user presses ESC
+    Draw.Exit()
+    return
+
+def import_gui_buttonevent(evt):
+  global filename, fileinput
+  if evt == 1: # Import
+    print "Importing %s..." % filename
+    file=open(filename)
+    filedict={'newmodel': loadmodel}
+    linereader(file, filedict)
+    Draw.Redraw(1)
+    return
+  elif evt == 2: # Exit
+    Draw.Exit()
+    return
+  elif evt == 3: # Edited text.
+    filename = eval(str(fileinput))
+    Draw.Redraw(1)
+    return
+  else:
+    # I have no clue *when* to call this thing (aside of launch).
+    # I know it needs to be restarted, sorta like signal() in sysvile/posix.
+    # Let's just be anal, even if it shall, yes shall, blow up. - W4
+    start_import_gui()
+
+def import_gui():
+  global filename, fileinput, impstatus
+
+  # Clear drawing area.
+  BGL.glClearColor(0.9,0.9,0.9,1)
+  BGL.glClear(BGL.GL_COLOR_BUFFER_BIT)
+
+  # Status.
+  BGL.glRasterPos2i(10,8)
+  if impstatus == 0:
+    BGL.glColor3f(0.0,0.0,0.0)
+    Draw.Text('Importer ready.','tiny')
+  elif impstatus == 1:
+    BGL.glColor3f(0.0,0.75,0.0)
+    Draw.Text('Importing...','tiny')
+  elif impstatus == 2:
+    BGL.glColor3f(0.75,0.0,0.0)
+    Draw.Text('File not found!','tiny')
+
+  # Filename input box.
+  BGL.glRasterPos2i(10,20)
+  w = Draw.Text('File to import:')
+  fileinput = Draw.String('',3, w+15,15, 200,20, filename, 512,
+                          'Filename to import.')
+
+  Draw.Button('Import', 1, w+15+210,15, 40,20)
+  Draw.Button('Quit', 2, w+15+210+50,15, 40,20)
+
+  # Progress...?
+  
+def start_import_gui():
+  Draw.Register(import_gui, import_gui_event, import_gui_buttonevent)
+
+
 
 class ExitLineReader(Exception):
   def __init__(self, value):
@@ -255,7 +322,5 @@ def loadmodel(file, words, data):
   #data['scene'].endFrame(data['animnextframe']-1)
   data['scene'].update()
 
-file=open(filename)
-filedict={'newmodel': loadmodel}
-linereader(file, filedict)
+start_import_gui()
 
