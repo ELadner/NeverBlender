@@ -323,6 +323,18 @@
   <chapter>
     <title>Modelling in NeverBlender</title>
 
+    <para>MDL format itself is somewhat limited compared to
+      the full feature set of Blender - which shouldn't be a
+      surprise. You should use NeverBlender like all other low-poly
+      things: Patience, care, and not getting too angry when the
+      stupid game engine messes everything up while the exporter maker
+      and game engine vendor point at each other. Patience is the
+      most valuable thing a modder can have. The second most important
+      thing is to say no to all deadlines, sticking to the "when it's done"
+      schedule. And third... I don't know, I haven't been using this thing
+      for that long yet.
+    </para>
+
     <sect1>
       <title>Bugs and limitations</title>
 
@@ -360,21 +372,24 @@
       <sect2>
 	<title>Scale and Rotation</title>
 
-	<para>[FIXME: Outdated but relevant, explain]</para>
+	<para>The scalings and rotations in Object Mode may or
+          may not work. Therefore, it's recommended that you 
+          use Edit Mode to apply scalings and rotations to your object.
+          Not only is it more versatile but also safer - you do, however,
+          lose the benefit of having separate transformation, if this
+          little figure of geekspeak is allowed.</para>
 
-	<para>At the moment, all rotations <emphasis>must</emphasis> be done
-	  in EditMode. The documentation for the trimesh "orientation"
-	  parameter was murky to say the least...</para>
+	<para>First of all, only uniform scaling (x = y = z) is
+	  supported in Object Mode. While Blender supports it non-uniform
+          scaling, NWN does not. This is a limitation of
+	  the .MDL format. If the Blender object's scaling is
+          <emphasis>not</emphasis> uniform,
+	  an average of the x,y,z scalings will be used. This feature
+          is still present mostly to counter possible rounding
+          errors, and shouldn't be relied on as a modeling tool.</para>
 
-	<para>Only uniform scaling is supported in normal mode - this
-	  is an apparent limitation of the .MDL format. You may resize
-	  objects normally in EditMode. If the scaling is
-	  <emphasis>not</emphasis> uniform, an average of the x,y,z scalings
-	  will be used. (This is mostly to counter possible rounding
-	  errors.)</para>
-
-	<para>Items may be moved around normally in both EditMode and
-	  normal mode.</para>
+	<para>Items may be moved around normally in both Edit Mode and
+	  Object Mode.</para>
 
 	<para>Reason why all this is so: Blender has two separate
 	  datablocks for each mesh: Object and Mesh. Mesh stores
@@ -391,6 +406,45 @@
 	  objects only support uniform scaling factors. This may be an
 	  issue that is hard to overcome.</para>
 
+        <para>To find more about this topic, you can refer to what
+          Blender manual says about this, or refer to
+          <citetitle>Custom Content Guide</citetitle> (in v3.0, this
+          topic is discussed on page 20).</para>
+
+        <para>The <citetitle>Custom Content Guide</citetitle> mentions
+          some heavy voodoo technobabble on how to counter the evil
+          world space transformation problems with ResetXForm and
+          Reset Transform commands. Most of it went over my head.
+          That's 3DMax for you! The thing is far easier explained in
+          this modeling program of ours:
+          In Blender 2.30 and later, the relevant
+          commands can be found from
+          <menuchoice>
+             <guimenu>Object</guimenu><guisubmenu>Transform</guisubmenu>
+          </menuchoice> menu. The most helpful commands here are 
+          <menuchoice>
+             <shortcut>
+                <keycombo><keycap>Alt</keycap><keysym>S</keysym></keycombo>
+             </shortcut>
+             <guimenu>Object</guimenu>
+             <guisubmenu>Transform</guisubmenu>
+             <guimenuitem>Clear Size</guimenuitem>
+          </menuchoice>
+          and
+          <menuchoice>
+             <shortcut>
+                <keycombo><keycap>Alt</keycap><keysym>R</keysym></keycombo>
+             </shortcut>
+             <guimenu>Object</guimenu>
+             <guisubmenu>Transform</guisubmenu>
+             <guimenuitem>Clear Rotation</guimenuitem>
+          </menuchoice>, either of which should be enough to make the object
+          look more or less what it should be. You can also try other
+          transformation clearing commands if it looks like those might
+          help. After that, try to stick
+          to Edit Mode transformations until I fix the code that deals
+          with stuff in Object Mode, if ever.
+        </para>
       </sect2>
 
       <sect2>
@@ -455,7 +509,7 @@
 
 	<para>It should be also noted that the smoothing and
 	  flat-shading of objects should work normally! You can set
-	  faces smooth or flat using the EditButtons in the EditMode,
+	  faces smooth or flat using the EditButtons in the Edit Mode,
 	  as usual.</para>
 
 	<para>Once you have made your <type>Mesh</type>es, you need to
