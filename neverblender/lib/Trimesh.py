@@ -18,10 +18,9 @@ class Trimesh:
 	#_parent = "NULL"
 	
 	# Cannot be set at the moment!
-	#_wirecolor = [0.6, 0.6, 0.6]
+	# (Could be, but what are the corresponding material props??)
 	#_ambient = [1.0, 1.0, 1.0]
 	#_diffuse = [1.0, 1.0, 1.0]
-	#_specular = [0.05, 0.05, 0.05]
 	#_shininess = 0.25
 
 	# Can be set.
@@ -29,6 +28,8 @@ class Trimesh:
 	#_orientation = [0.0, 0.0, 0.0]
 	#_scale = 1.0
 	#_texture = ""
+	#_wirecolor = [0.6, 0.6, 0.6]
+	#_specular = [0.05, 0.05, 0.05]
 	#_tilefade = 0
 	# Private data.
 	#_verts = []
@@ -54,11 +55,12 @@ class Trimesh:
 			# This one does averaging..
 			self.setScale(object.size)
 	
-		# Cannot be set at the moment!
+		# These can be set in Material...
 		self._wirecolor = [0.6, 0.6, 0.6]
+		self._specular = [0.05, 0.05, 0.05]
+		# ...but these cannot.
 		self._ambient = [1.0, 1.0, 1.0]
 		self._diffuse = [1.0, 1.0, 1.0]
-		self._specular = [0.05, 0.05, 0.05]
 		self._shininess = 0.25
 
 		# Can be set.
@@ -85,6 +87,13 @@ class Trimesh:
 		else:
 			print "  * Object %s isn't rotated." % self._name
 		self._orientation = orilist
+
+	def setWireColor(self, color):
+		assert len(color) == 3
+		self._wirecolor = color
+	def setSpecularColor(self, color):
+		assert len(color) == 3
+		self._specular = color
 
 	def setScale(self, scalelist):
 		assert len(scalelist) == 3
@@ -179,6 +188,7 @@ class Trimesh:
 			self._addQuadFace(f)
 		else:
 			print "WARNING: Too many verts in face! Not added."
+			print "  You need to divide this face manually."
 
 	def __str__(self):
 		o = ("node trimesh %s\n" % self._name) + \
