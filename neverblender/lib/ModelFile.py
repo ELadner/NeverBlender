@@ -12,6 +12,9 @@
 #
 #################################################################
 
+import Props
+import os
+
 class ModelFile:
     #_modelname = "unnamedmodel"
     #_supermodelname = 0
@@ -48,7 +51,9 @@ class ModelFile:
         self._objects.append(object)
     
     def writeToFile(self):
-        outfile = self.getModelName() + '.' + self.getFileFormat()
+        dir = Props.getoutputdirectory()
+        file = self.getModelName() + '.' + self.getFileFormat()
+        outfile = os.pathconf(dir,file)
         of = file(outfile, "w")
         print "*** Writing '%s' to file %s." % (self.getModelName(),
                                                 outfile)

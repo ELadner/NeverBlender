@@ -1,4 +1,19 @@
-2003-10-14  Weyfour WWWWolf  <wwwwolf@iki.fi>
+2003-11-11 20:35  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py
+	Fixed an idiotic typo with indentation. Now it will generate the
+	child object tree just as advertised.
+	
+	* lib/Props.py, lib/ModelFile.py
+	Added FILES.outputdirectory property, which defaults to
+	current output directory. Code is there to support it, and if
+	I wrote it correctly once, it appears to work. However,
+	my Python library in Windows seems to be highly f%&$#d up so
+	I can't test this. And it won't run without Python properly
+	installed, as it needs the "os" module which isn't bundled with
+	Blender for one excuse or another.
+
+2003-10-14  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* lib/ModelFile.py (ModelFile.writeToFile): 
 	Moved filedependancy before the model definition start (as it

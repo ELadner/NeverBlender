@@ -12,6 +12,7 @@
 #
 #################################################################
 
+import os
 from Blender import Text, Object
 
 ## Parsing nwnprops and utility funcs for getting the values.
@@ -66,6 +67,19 @@ def getbaseobjectname():
 	if v:
 		return v
 	else:
+		# If there's no property, the base object is the active one.
+		# Better get that right, then, my dear user.
+		sel = Object.getSelected()
+		return sel[0].name
+
+# Gets the output directory.
+def getoutputdirectory():
+	v = getValue('FILES','outputdirectory')
+	if v:
+		return v
+	else:
+		# None selected? Let's get it from the system.
+		return os.getcwd()
 		# If there's no property, the base object is the active one.
 		# Better get that right, then, my dear user.
 		sel = Object.getSelected()
