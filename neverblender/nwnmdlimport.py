@@ -32,6 +32,12 @@ filename='plc_a08.mdl.ascii'
 fileinput=0
 impstatus=0
 
+def import_gui_filenamechosen(fn):
+  global filename
+  filename = fn
+  Draw.Redraw(1)
+  return
+
 def import_gui_event(evt,val):
   if evt == Draw.ESCKEY:  # Quit if user presses ESC
     Draw.Exit()
@@ -49,9 +55,11 @@ def import_gui_buttonevent(evt):
   elif evt == 2: # Exit
     Draw.Exit()
     return
-  elif evt == 3: # Edited text.
-    filename = eval(str(fileinput))
+  elif evt == 3: # Edited text.  # Err, clicked on the file selector button.
+    Window.FileSelector(import_gui_filenamechosen, "Choose model to import")
     Draw.Redraw(1)
+    #filename = eval(str(fileinput))
+    #Draw.Redraw(1)
     return
   else:
     # I have no clue *when* to call this thing (aside of launch).
@@ -81,13 +89,13 @@ def import_gui():
   # Filename input box.
   BGL.glRasterPos2i(10,20)
   w = Draw.Text('File to import:')
-  fileinput = Draw.String('',3, w+15,15, 200,20, filename, 512,
-                          'Filename to import.')
+
+  Draw.Button(filename, 3, w+15, 15, 200,20)
+  #fileinput = Draw.String('',3, w+15,15, 200,20, filename, 512,
+  #                        'Filename to import.')
 
   Draw.Button('Import', 1, w+15+210,15, 40,20)
   Draw.Button('Quit', 2, w+15+210+50,15, 40,20)
-
-  # Progress...?
   
 def start_import_gui():
   Draw.Register(import_gui, import_gui_event, import_gui_buttonevent)

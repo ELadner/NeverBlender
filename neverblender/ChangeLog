@@ -1,3 +1,7 @@
+2003-09-15 22:27  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlimport.py: 
+	Changed the GUI. Now uses Window.FileSelector.
 
 Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
 	
