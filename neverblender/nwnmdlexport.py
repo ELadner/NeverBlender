@@ -14,16 +14,81 @@
 
 from Blender import Scene, Object
 
-# Use this if you put the library files elsewhere... or just in case.
-#import sys
-#sys.path.append('d:\\NeverwinterNights\\neverblender\\lib')
-# ...for some reason it doesn't work. Grr.
-
 import Props
 import SceneHelpers
 from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
+
+
+#################################################################
+
+def processobject(sobj, details):
+	"Process the Object named sobj and return a Trimesh. If
+	details is true, also generates texture and such, otherwise
+	just location, scale and orientation."
+
+	# Get the Object block of the current object.
+	obj = Object.get(sobj)
+	print " ** Processing %s (%s)" % (sobj, obj.getType())
+	if obj.getType() != 'Mesh':
+		print " ** Can only deal with meshes!"
+		continue
+
+	# get the Mesh block of the Object. Deformed one, actually.
+	# We used to just find a Mesh with same name That was broken.
+	#mesh = Mesh.get(sobj)
+	mesh = obj.getDeformData()
+	if not mesh:
+		print "  * Can't get the corresponding mesh. This is strange!"
+		continue
+
+	# Create a new Trimesh to be output.
+	trimesh = Trimesh()
+	trimesh.setParent(model)
+	trimesh.setName(sobj)
+
+	# Get the object's information.
+
+	# Location.
+	objloc = obj.getLocation()
+	trimesh.setPosition(objloc)
+
+	# Rotation
+	r = obj.getEuler()
+	trimesh.setOrientation(r)
+
+	# Scaling.
+	s = obj.size           # Is there a getter for this? Goddamnit.
+	trimesh.setScale(s)
+
+	if details:
+		# Materials.
+		objmats = mesh.getMaterials()
+		if len(objmats)>=1:
+			print "  * Object has material(s)."
+			# We only take the first material, for now.
+			# (We'll do something more elegant later on...)
+			m = objmats[0]
+			trimesh.setWireColor(m.rgbCol)
+			trimesh.setSpecularColor(m.specCol)
+		
+		# Texture
+		texture = Props.getobjecttex(sobj)
+		trimesh.setTexture(texture)
+		
+		# Tilefade
+		tilefade = Props.getobjecttilefade(sobj)
+		trimesh.setTileFade(tilefade)
+
+	# Get vertex list
+	trimesh.setVerts(mesh.verts)
+	# Get each Face (and Texvert).
+	for f in mesh.faces:
+		trimesh.addFace(f)
+	# Then return it.
+	print "  * Done: %d vertices, %d faces, %d texverts" % trimesh.stat()
+	return trimesh
 
 #################################################################
 
@@ -71,68 +136,8 @@ mfile.addObject(base)
 
 # Process each child of the baseobj...
 for sobj in scnobjchilds[model]:
-
-	# Get the Object block of the current object.
-	obj = Object.get(sobj)
-	print " ** Processing %s (%s)" % (sobj, obj.getType())
-	if obj.getType() != 'Mesh':
-		print " ** Can only deal with meshes!"
-		continue
-
-	# get the Mesh block of the Object. Deformed one, actually.
-	# We used to just find a Mesh with same name That was broken.
-	#mesh = Mesh.get(sobj)
-	mesh = obj.getDeformData()
-	if not mesh:
-		print "  * Can't get the corresponding mesh. This is strange!"
-		continue
-
-	# Create a new Trimesh to be output.
-	trimesh = Trimesh()
-	trimesh.setParent(model)
-	trimesh.setName(sobj)
-
-	# Get the object's information.
-
-	# Location.
-	objloc = obj.getLocation()
-	trimesh.setPosition(objloc)
-
-	# Rotation
-	r = obj.getEuler()
-	trimesh.setOrientation(r)
-
-	# Scaling.
-	s = obj.size           # Is there a getter for this? Goddamnit.
-	trimesh.setScale(s)
-
-	# Materials.
-	objmats = mesh.getMaterials()
-	if len(objmats)>=1:
-		print "  * Object has material(s)."
-		# We only take the first material, for now.
-		# (We'll do something more elegant later on...)
-		m = objmats[0]
-		trimesh.setWireColor(m.rgbCol)
-		trimesh.setSpecularColor(m.specCol)
-		
-
-	# Texture
-	texture = Props.getobjecttex(sobj)
-	trimesh.setTexture(texture)
-		
-	# Tilefade
-	tilefade = Props.getobjecttilefade(sobj)
-	trimesh.setTileFade(tilefade)
-
-	# Get vertex list
-	trimesh.setVerts(mesh.verts)
-	# Get each Face (and Texvert).
-	for f in mesh.faces:
-		trimesh.addFace(f)
-	# Then print that out.
+	trimesh = processobject(sobj, 1)
 	mfile.addObject(trimesh)
-	print "  * Done: %d vertices, %d faces, %d texverts" % trimesh.stat()
 
 # Write the object to file.
 mfile.writeToFile()
@@ -141,8 +146,8 @@ mfile.writeToFile()
 pwkname = Props.getpwk()
 if pwkname:
 	print "*** Creating placeable walk data (PWK file)"
+
 	pwkobj = Object.get(pwkname)
-	print " ** Processing %s (%s)" % (pwkname, pwkobj.getType())
 	if pwkobj.getType() != 'Mesh':
 		print " ** PWK must be a Mesh!"
 	else:
@@ -152,34 +157,7 @@ if pwkname:
 		pwkfile.setModelName(model)
 		pwkfile.setFileFormat('pwk')
 
-		pwkmesh = pwkobj.getDeformData()
-		if not pwkmesh:
-			print "  * PWK mesh not found?!?"
-			exit
-
-		# Create a new Pwkmesh to be output.
-		pwktrimesh = Trimesh()
-		pwktrimesh.setName(pwkname)
-
-		# Get the object's information.
-
-		# Location.
-		pwkloc = pwkobj.getLocation()
-		pwktrimesh.setPosition(pwkloc)
-
-		# Rotation
-		r = obj.getEuler()
-		pwktrimesh.setOrientation(r)
-
-		# Scaling.
-		s = obj.size           # Is there a getter for this? Goddamnit.
-		pwktrimesh.setScale(s)
-		
-		# Get vertex list
-		pwktrimesh.setVerts(pwkmesh.verts)
-		# Get each Face (and Texvert).
-		for f in pwkmesh.faces:
-			pwktrimesh.addFace(f)
+		pwkmesh = processobject(pwkname, 0)
 
 		pwkfile._objects = []
 		pwkfile.addObject(pwktrimesh)

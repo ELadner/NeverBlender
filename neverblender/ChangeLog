@@ -1,8 +1,13 @@
+
 2003-09-15 22:27  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlimport.py: 
 	Changed the GUI. Now uses Window.FileSelector.
 
+	* nwnmdlexport.py: 
+	Moved the "Stuff from Objects to Trimesh" to a separate
+	function. COMPLETELY UNTESTED, MAY BE BROKEN.
+	
 Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
 	
 	* nwnmdlexport.py, lib/Trimesh.py:
