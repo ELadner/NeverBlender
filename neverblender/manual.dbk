@@ -1076,55 +1076,77 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
 
   <!-- ================================================================ -->
   <chapter>
-    <title>Present and Future Directions</title>
+    <title>Present and Future Directions: The To-Do List</title>
 
     <sect1>
-      <title>What is going on with the thing?</title>
+      <title>Things that absolutely have to work in 1.0</title>
 
-      <para>The code is being split into modules and the modules are
-	being extended. I hope the code will actually look tolerable
-	one day. It will not be as cool as I wish it would look like,
-	though...</para>
+      <para>Here is a list of things that should definitely work in
+	the 1.0 release.</para>
 
-      <para>Object rotations clearly need work.</para>
-
-      <para>Particle effects? Surely I'll make particle
-	effects.</para>
-
-      <para>Animation needs to be seen even preliminarily...</para>
-
-      <para>More NWN properties should be supported.</para>
-
-      <para>Code cleanup?</para>
-
-      <para>Better logging facility and streamlining of the console
-        output format (what do those stars mean, anyway?)</para>
+      <itemizedlist>
+	<listitem>
+	  <para>There absolutely needs to be some kind of support for
+	    animations. The action-based animation system is the way to
+	    do this thing. The animation support is relatively simple
+	    to code, but damn it, I don't have enough time. I keep
+	    wasting my time.</para>
+	</listitem>
+	<listitem>
+	  <para>Possibly support for NWN emitters that is
+	    manipulated through Blender's particle effect
+	    system. (Having this feature would be unquestionably leet,
+	    because - well - is there proper support for this in
+	    gmax? Just hearsay. I have no real information.)</para>
+	</listitem>
+      </itemizedlist>
 
     </sect1>
 
-
-
     <sect1>
-      <title>Finding the Program and Contacting Author</title>
+      <title>Things that are neat to have in future</title>
 
-      <para>My home page is at
-<ulink
-       url="http://www.iki.fi/wwwwolf/">http://www.iki.fi/wwwwolf/</ulink>.
-	You may also visit my
-	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/">NWN
-	  page</ulink>, and you are cordially invited to
-	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/gametools/neverblender/">NeverBlender's home page.</ulink>
-      </para>
+      <itemizedlist>
+	<listitem>
+	  <para>Now that there's a script menu in Blender, and
+	    other neat GUI tricks, it would be highly neat to have an
+	    app that would act as a GUI to all these NWN-specific
+	    settings. Hmm, is it possible to implement a Buttons panel
+	    (like the Blender WhateverButtons panels) in Python? That
+	    would be leet.</para>
+	</listitem>
 
-      <para>I may be reached via E-mail at
-      <ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>.
-      </para>
+	<listitem>
+	  <para>Rotation and scaling is sometimes weird, even with
+	    the uniform object scaling implemented. Likewise,
+	    rotations sometimes look pretty strange. These bugs need
+	    to be checked by someone with proper insight.</para>
+	</listitem>
 
-      <para>The importer was written by
-	<personname><firstname>Yann</firstname>
-	    <surname>Vernier</surname></personname>
-	(<ulink url="mailto:yann@algonet.se">yann@algonet.se</ulink>).
-      </para>
+	<listitem>
+	  <para>There should be better support for all those esoteric
+	    NWN object and trimesh properties (like the dreaded
+	    danglymesh property that makes... you know, Aribeth what
+	    she is, and all that).</para>
+	</listitem>
+
+	<listitem>
+	  <para>Revision of the console logging. Perhaps there should
+	    be a static class that would handle message output - 
+	    store log in file in various formats, etc etc. The default
+	    log format should also be thought of: What do all of those
+	    asterisks mean in the output, anyway?</para>
+	</listitem>
+
+	<listitem>
+	  <para>Cleaning up and modularization of the code is going
+	    very well. Now if only it would go even further...
+	    Bleah. Everyone wants clean and modular code. Let's not
+	    talk more about this, OK? Maybe it will clean and
+	    modularize itself.</para>
+	</listitem>
+
+      </itemizedlist>
 
     </sect1>
 
@@ -1226,6 +1248,32 @@ url="http://ourworld.compuserve.com/homepages/scorpius/blender_suites.htm">
 
     <para>(No, I don't hate these people. Just that they didn't
       particularly help, that's all. =)</para>
+
+    
+    <sect1>
+      <title>Finding the Program and Contacting Author</title>
+
+      <para>My home page is at
+<ulink
+	  url="http://www.iki.fi/wwwwolf/">http://www.iki.fi/wwwwolf/</ulink>.
+	You may also visit my
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/">NWN
+	  page</ulink>, and you are cordially invited to
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/gametools/neverblender/">NeverBlender's home page.</ulink>
+      </para>
+
+      <para>I may be reached via E-mail at
+	<ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>.
+      </para>
+
+      <para>The importer was written by
+	<personname><firstname>Yann</firstname>
+	  <surname>Vernier</surname></personname>
+	(<ulink url="mailto:yann@algonet.se">yann@algonet.se</ulink>).
+      </para>
+
+    </sect1>
+
 
   </colophon>
 
