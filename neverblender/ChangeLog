@@ -1,3 +1,9 @@
+2005-02-15 14:00  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* setup-test.py
+	Created. Hopefully more useful in future for getting tech
+	support less painful.
+
 2005-02-14 20:09  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	Just adding this change log entry to see if the CVS finally
