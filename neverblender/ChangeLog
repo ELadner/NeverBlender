@@ -1,4 +1,28 @@
 
+2003-12-02 21:30  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py
+	PWK exporting bug *really* fixed. Changed recursion to use
+	non-global mfile and passed the ModelFile as a parameter.
+
+	Clears up the mfile object list before processobject()ing
+	everything. This will fix the bug where stuff got written
+	multiple times on separate runs. (I hate Python's objects,
+	I really do...)
+
+	* lib/ModelFile.py
+	Added tons of file paranoia: will try to nuke the file
+	if it exists beforehand, tries to flush and close the file
+	very very properly. Will try to detect if there's
+	0 objects to be written, and it also detects screwed-up 
+	object string conversion (like trying to convert wrong
+	object to string.
+
+	* manual.dbk
+	Added some frothing about how to fix messed-up scaling and
+	rotation. Summary: Thou Shalt Not Touch The Object Mode.
+	
+	
 2003-11-28 22:41  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py

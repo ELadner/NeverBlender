@@ -13,8 +13,10 @@
 #################################################################
 
 import Props
+import os
 import os.path
-from os.path import normpath, join
+from os import fsync, remove
+from os.path import normpath, join, exists
 from time import asctime
 
 class ModelFile:
@@ -24,7 +26,8 @@ class ModelFile:
     #_fileformat = 'mdl'
     #_objects = []
 
-    def __init__(self, name="unnamedmodel", classification="Item", fileformat="mdl", supermodel=None, objects=[]):
+    def __init__(self, name="unnamedmodel", classification="Item",
+                 fileformat="mdl", supermodel=None, objects=[]):
         self._modelname = name
         self._supermodelname = supermodel
         self._classification = classification
@@ -56,6 +59,15 @@ class ModelFile:
         odir = Props.getoutputdirectory()
         ofile = self.getModelName() + '.' + self.getFileFormat()
         outfile = normpath(join(odir,ofile))
+
+        if exists(outfile):
+            # Delete existing file
+            try:
+                remove(outfile)
+            except:
+                print "*** Couldn't remove existing file %s." % outfile
+                print "*** Can only hope we'll clobber it properly now..."
+
         of = file(outfile, "w")
         print "*** Writing '%s' to file %s." % (self.getModelName(),
                                                 outfile)
@@ -78,11 +90,33 @@ class ModelFile:
 
         # Begin geometry.
         of.write("beginmodelgeom %s\n" % self.getModelName())
-        for obj in self._objects:
-            of.write(str(obj))
+
+        print "*** Total %d objects" % len(self._objects)
+        if len(self._objects) == 0:
+            print "*** ...hrm, did I just say 0 objects?"
+            of.write("# No objects?\n");
+        else:
+            for obj in self._objects:
+                objtxt = str(obj)
+                if objtxt != "None":
+                    of.write(objtxt)
+                else:
+                    print "*** Internal error: Couldn't serialize an object???"
+                    of.write("# Excuse me, some interpretive problem...")
 
         of.write("endmodelgeom %s\n" % self.getModelName())
 
         # End of model file.
         of.write("donemodel %s\n" % self.getModelName())
+        # "...and STAY down!!!" - Warrior, Myth III
+        of.flush()
+        fsync(of.fileno())
         of.close()
+        of = 0
+        # nuke(of)
+        # destroy(of)
+        # torture_until_dies(of)
+        # shoot(of)
+        # annihilate(of)
+        # obliterate(of)
+

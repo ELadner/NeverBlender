@@ -106,8 +106,8 @@ def processtrimesh(sobj, parent, details):
 	return trimesh
 
 # For processing object tree recursively.
-def processobject(model,parent):
-	global mfile, scnobjchilds
+def processobject(model,parent,mfile):
+	global scnobjchilds
 
 	# Process this object
 	print " **> Processing %s" % model
@@ -130,7 +130,7 @@ def processobject(model,parent):
 			print " ** %s armature children: %s" % (model,
 						       join(childs, ", "))
 			for mchild in childs:
-				processobject(mchild,parent)
+				processobject(mchild,parent,mfile)
 			return
 		except KeyError:
 			return
@@ -141,14 +141,14 @@ def processobject(model,parent):
 		children = scnobjchilds[model]
 	except KeyError:
 		return
-	processdownfrom(model)
+	processdownfrom(model,mfile)
 
-def processdownfrom(model):
+def processdownfrom(model,mfile):
 	childs = scnobjchilds[model]
 	print " ** %s children: %s" % (model, join(childs, ", "))
 
 	for mchild in childs:
-		processobject(mchild,model)
+		processobject(mchild,model,mfile)
 
 #################################################################
 
@@ -192,7 +192,8 @@ if supermodel != None:
 	mfile.setSuperModelName(supermodel)
 	
 # Process each child of the baseobj...
-processobject(model,"NULL")
+mfile._objects = []
+processobject(model,"NULL",mfile)
 
 # Write the object to file.
 mfile.writeToFile()
@@ -212,7 +213,7 @@ if pwkname:
 		pwkfile.setModelName(model)
 		pwkfile.setFileFormat('pwk')
 		
-		pwkmesh = processobject(pwkname, "NULL")
+		pwkmesh = processtrimesh(pwkname, "NULL", 0)
 
 		pwkfile._objects = []
 		pwkfile.addObject(pwkmesh)
