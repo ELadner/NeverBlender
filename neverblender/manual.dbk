@@ -79,7 +79,7 @@
 
   <!-- ================================================================ -->
   <chapter>
-    <title>Background and Getting It To Run</title>
+    <title>Background</title>
 
     <sect1>
       <title>What is NeverBlender?</title>
@@ -276,6 +276,62 @@
 
     </sect1>
 
+  </chapter>
+  <chapter>
+    <title>Getting It To Run</title>
+
+    <sect1>
+      <title>Obtaining NeverBlender</title>
+
+      <para>There are two distinct branches of NeverBlender code. The
+	released versions are guaranteed to do something at the time
+	of the release, but are often lagging behind in
+	development. Then, there's the development code, found in the
+	Blender Projects Site CVS.</para>
+
+      <para>The easiest way to get NeverBlender is to go to
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/gametools/neverblender/">NeverBlender's home page</ulink>,
+	or the 
+	<ulink url="http://projects.blender.org/projects/neverblender/">NeverBlender Project Page</ulink>.
+	As of writing, latest release is Prerelease 2, which is not
+	exactly a recent version. It is available through NeverBlender
+	website. All further releases will be available in
+	NeverBlender Project Page.
+      </para>
+
+      <sect2>
+	<title>Obtaining the code from CVS</title>
+
+	<para>
+	  To get the most recent CVS version, you need a CVS client
+	  program. Windows version can be got from
+	  <ulink url="http://www.cvshome.org/dev/codewindow.html">CVS
+	    home page</ulink>, Linux versions are
+	  usually pre-packaged with the distribution.
+	</para>
+
+	<para>The following illustrates how to get the code from CVS:</para>
+
+<screen>
+<prompt>$</prompt> <userinput>cvs -d:pserver:anonymous@cvs.blender.org:/cvsroot/neverblender login</userinput>
+Logging in to :pserver:anonymous@cvs.blender.org:2401/cvsroot/neverblender
+CVS password: <userinput><replaceable>(Just press enter)</replaceable></userinput>
+<prompt>$</prompt> <userinput>cvs -z3 -d:pserver:anonymous@cvs.blender.org:/cvsroot/neverblender co neverblender</userinput>
+cvs server: Updating neverblender
+U neverblender/AUTHORS
+U neverblender/COPYING
+U neverblender/ChangeLog
+...
+</screen>
+
+	<para>After this, the code should be in the
+	  <filename>neverblender</filename> directory.</para>
+
+      </sect2>
+
+    </sect1>
+
+
     <sect1>
       <title>Requirements and Installation</title>
 
@@ -288,7 +344,7 @@
       <para>Basically, NeverBlender requires Blender 2.28 or later
 	(or any release with the New and Improved Python API). It
 	may work on earlier Python APIs, but I wouldn't guarantee
-	that. At the moment, I'm developing on Blender 2.30.</para>
+	that. At the moment, I'm developing on Blender 2.32.</para>
 
       <para>I develop NeverBlender on Windows version of Blender.
 	You do, however, need Python 2.2.3 as well (Windows Python
@@ -300,21 +356,133 @@
 	will work in Windows version of Blender, though. You don't
 	need any weird UNIX-dependant things.</para>
 
-      <para>The installation is quite simple: You need to copy the
-	<filename>lib</filename> directory, or its contents, wherever
-	Blender sees it. The directory is named
-	<filename>lib</filename> because Blender in Windows will also
-	look in <filename>.\lib\</filename> (that is, under directory
-	<filename>lib</filename> under the current working directory).
-	Archeological reasons, you know.
-      </para>
+      <sect2>
+	<title>Library files</title>
 
-      <para>The files <filename>nwnmdlexport.py</filename> and
-	<filename>nwnmdlimport.py</filename> can be just about
-	anywhere you choose. However, you should put them, or at least
-	a symbolic link to them, to
-	<filename>~/.blender/scripts/</filename> directory (or wherever
-	you keep your scripts - check your Blender settings).</para>
+	<para>The installation is quite simple: You need to copy the
+	  <filename>lib</filename> directory, or its contents, wherever
+	  Blender sees it. The directory is named
+	  <filename>lib</filename> because Blender in Windows will also
+	  look in <filename>.\lib\</filename> (that is, under directory
+	  <filename>lib</filename> under the current working directory).
+	  Archeological reasons, you know.
+	</para>
+
+
+	<sect3>
+	  <title>An easy way to run NeverBlender</title>
+
+	  <para>
+	    Easy way is to run Blender so that the NeverBlender scripts
+	    are in the current directory and library files are under it
+	    in <filename>lib</filename>.
+	    In all cases, Blender's Python interpreter will,
+	    by default, look for <filename>lib</filename> directory in
+	    current working directory.
+	  </para>
+
+	  <para>
+	    In Windows version, Blender's
+	    work folder (in the shortcut) can be set to NeverBlender
+	    directory (you can create a new shortcut that has different
+	    working directory if you wish); In Linux, blender can be
+	    run on command line in NeverBlender directory.
+	  </para>
+
+	  <para>
+	    This is probably the most easiest way to run Blender, but
+	    it has certain disadvantages - most notably you need to
+	    hunt around for your usual work folders.
+	  </para>
+
+	</sect3>
+
+	<sect3>
+	  <title>A small guide to <envar>PYTHONPATH</envar></title>
+
+	  <para>
+	    A more flexible and far more comfortable way is to add the
+	    <filename>lib</filename> to your
+	    <envar>PYTHONPATH</envar>. This is definitely recommended,
+	    especially if you run Blender's Windows version with
+	    Python 2.2 separately installed, or the Linux version in
+	    all cases.
+	  </para>
+
+	  <para>
+	    As for finding where Blender/Python looks libraries from, you can
+	    either open a new Text in Blender, or open up a stand-alone Python
+	    interpreter (python in Linux, IDLE in Windows) and type
+
+<informalexample>
+<programlisting>
+import sys
+print sys.path
+</programlisting>
+</informalexample>
+
+	    to see the directories normally on your Python library
+	    path. (Interpreters should give immediate response, Blender needs
+	    <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>
+	    to run the Text. Results appear on the output window
+	    in Windows, or standard output in Linux.)
+	  </para>
+
+	  <para>
+	    To tell Python specifically where to look the files from,
+	    you can check out the environment variable
+	    <envar>PYTHONPATH</envar>. You can
+	    either copy the contents of NeverBlender
+	    <filename>lib</filename> to any of the
+	    library directories of Python (not recommended), or add the
+	    NeverBlender directory to <envar>PYTHONPATH</envar>.
+	  </para>
+
+	  <para>
+	    In Windows98SE, I have this kind of declaration in
+	    <filename>c:\autoexec.bat</filename>:
+
+<informalexample>
+<programlisting>
+SET PYTHONPATH=c:\Python;c:\Python\DLLs;c:\Python\lib;d:\NeverBlender\lib
+</programlisting>
+</informalexample>
+
+	    where NeverBlender is in <filename>d:\NeverBlender</filename>.
+	    (I don't know how to set the variable in Win2K or WinXP, probably
+	    something similar but entirely different...)
+	  </para>
+
+	  <para>
+	    In Linux, when using bash shell, following works in
+	    <filename>~/.bash_profile</filename>:
+
+<informalexample>
+<programlisting>
+export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
+</programlisting>
+</informalexample>
+
+	    where NeverBlender is in <filename>/opt/neverblender</filename>.
+	  </para>
+
+	</sect3>
+
+      </sect2>
+
+      <sect2>
+	<title>The program files</title>
+
+
+	<para>The files <filename>nwnmdlexport.py</filename> and
+	  <filename>nwnmdlimport.py</filename> can be just about
+	  anywhere you choose. However, you should put them, or at least
+	  a symbolic link to them, to
+	  <filename>~/.blender/scripts/</filename> directory (or wherever
+	  you keep your scripts - check your Blender settings). This
+	  will make the scripts appear in the Blender menus.</para>
+
+      </sect2>
 
     </sect1>
     
@@ -431,29 +599,29 @@
 	<para>First of all, only uniform scaling (x = y = z) is
 	  supported in Object Mode. While Blender supports it non-uniform
           scaling, NWN does not. This is a limitation of
-	  the .MDL format. If the Blender object's scaling is
+	  the .MDL format. If the Blender <type>Object</type>'s scaling is
           <emphasis>not</emphasis> uniform,
 	  an average of the x,y,z scalings will be used. This feature
           is still present mostly to counter possible rounding
           errors, and shouldn't be relied on as a modeling tool.</para>
 
-	<para>Items may be moved around normally in both Edit Mode and
+	<para>Objects may be moved around normally in both Edit Mode and
 	  Object Mode.</para>
 
 	<para>Reason why all this is so: Blender has two separate
-	  datablocks for each mesh: Object and Mesh. Mesh stores
-	  locations of each vertex. Object stores position, rotation
-	  and scaling.
+	  datablocks for each mesh: <type>Object</type> and
+	  <type>Mesh</type>. <type>Mesh</type> stores locations of each
+	  vertex. <type>Object</type> stores position, rotation and
+	  scaling. Basically, the <type>Mesh</type> corresponds to the
+	  Trimesh's <emphasis>data</emphasis>, and <type>Object</type>
+	  corresponds to the Trimesh's <emphasis>properties</emphasis>,
+	  or sometimes the properties of the MDL itself.
 	</para>
 
-	<para>Object's location is directly interpreted as the Trimesh
-	  "position" parameter. Object's rotation could be used as the
-	  "orientation" parameter, but as mentioned, it is not very
-	  well documented.</para>
-
-	<para>Blender Objects support scaling in x,y,z directions. MDL
-	  objects only support uniform scaling factors. This may be an
-	  issue that is hard to overcome.</para>
+	<para><type>Object</type>'s location is directly interpreted
+	  as the Trimesh "position" property. <type>Object</type>'s
+	  rotation could be used as the "orientation" property, but as
+	  mentioned, it is not very well documented.</para>
 
         <para>To find more about this topic, you can refer to what
           Blender manual says about this, or refer to
@@ -462,10 +630,10 @@
 
         <para>The <citetitle>Custom Content Guide</citetitle> mentions
           some heavy voodoo technobabble on how to counter the evil
-          world space transformation problems with ResetXForm and
-          Reset Transform commands. Most of it went over my head.
-          That's 3DMax for you! The thing is far easier explained in
-          this modeling program of ours:
+          world space transformation problems with
+	  ResetXForm and Reset Transform commands. Most of it went
+	  over my head. That's 3DMax for you! The thing is far easier
+	  explained in this modeling program of ours:
           In Blender 2.30 and later, the relevant
           commands can be found from
           <menuchoice>
@@ -523,7 +691,10 @@
           side of the face can be seen.
 	</para>
 
-        <para>[FIXME: To add: Some tips on how to cope with odd normals]
+        <para>A good way to manage your normals is to keep Draw
+	  Normals set in the Mesh Tools 1 panel in EditButtons. If the
+	  normals point the wrong way, you can use Flip Normals in the
+	  Mesh Tools to flip the selected face's normals.
         </para>
       </sect2>
 
@@ -563,17 +734,21 @@
       all properties of "object" <classname>SCENE</classname>.
       </para>
 
-      <para>Here are all properties that are recognized at the
-        moment. You are strongly recommended to at least provide the
-        base object name. Alternates are separated with | symbols.</para>
-
-      <para>(Do note that animation properties are not actually
-        supported by the exporter, simply because there is no
-        code yet. This is just here in anticipation of the implementation,
-        for specification purposes only.)</para>
-
       <sect2>
         <title>Possible NWN properties</title>
+
+	<para>Here are all properties that are recognized at the
+	  moment. You are strongly recommended to at least provide the
+	  base object name. Alternates are separated with | symbols.</para>
+
+	<warning>
+	  <para>Do note that animation properties are not actually
+	    supported by the exporter, simply because there is no
+	    code yet. This is just here in anticipation of the implementation,
+	    for specification purposes only. <emphasis>Since there is no
+	      implementation, the animation properties are subject to
+	      change.</emphasis> They already have a couple of times...</para>
+	</warning>
 
 	<variablelist>
 	  <title>Possible NWN properties</title>
@@ -775,40 +950,76 @@
     <sect1>
       <title>Actual usage</title>
 
-      <para>[Note: Needs to be updated to reflect the 2.32 usage. For
-	casual in-CVS code browsers: For now, if you've got the script
-	in the right folder, just do File - Export - Biowhatever.]</para>
-
       <para>After you have made the object hierarchy and specified
         the properties, it's time to rock and roll!</para>
 
-      <para>It's best if you save at this point. You want to work on
-        the object, save your changes, then load the script and
-        export all the way you please, and quit without saving -
-        I've found this method of work best, as the script will not
-        be included in the work file then.</para>
+      <sect2>
+	<title>Running the script from the menu</title>
 
-      <para>To export, you may want to make sure the
-        <filename>lib</filename> files are in right place, then flip
-        to the text editor and open the
-        <filename>nwnmdlexport.py</filename> file.</para>
+	<para>This only applies to Blender 2.32 and later, if the
+	  script is installed correctly.</para>
 
-      <para>To run the script, type 
-        <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>.
-      </para>
+	<para>If the installation was successful, the exporter should
+	  be around in the
+	  <menuchoice>
+             <guimenu>File</guimenu><guisubmenu>Export</guisubmenu>
+          </menuchoice> menu. Just select
+	  <menuchoice>
+             <guimenu>File</guimenu><guisubmenu>Export</guisubmenu>
+             <guimenuitem>Bioware NWN ASCII MDL</guimenuitem>
+          </menuchoice>
+	  to export.
+	</para>
 
-      <para>As the smoke dissipates, there should be messages
-        regarding the success on the console (in Windows version,
-        they appear in Blender's log window). The object will be
-        saved in the <filename>baseobjectname.mdl</filename>
-        file. If you used a PWK object, it will be written to
-        <filename>baseobjectname.pwk</filename>.
-      </para>
+	<para>Further fine-tuning of the menu options may occurr in
+	  the future. Even with the tweaks, rest assured it doesn't
+	  take a rocket scientist's skills to run this thing in the future
+	  either. =)</para>
 
-      <para>If it blows up, just remember, this is beta. Please
-        refer to Blender's documentation, check if your Python path
-        is right, and do the chicken voodoo dance if things just
-        won't work. This is beta.</para>
+      </sect2>
+
+      <sect2>
+	<title>Running the script as a Text</title>
+
+	<para>For Blender versions before 2.32, and optionally for the
+	  new versions, it's possible to run the script as a
+	  Text. This is slightly more inconvenient than running it
+	  from the menu.</para>
+
+	<para>First, it's best if you save at this point and work on a
+	  scratch copy. You want to work on
+	  the object, save your changes, then load the script and
+	  export all the way you please, and quit without saving -
+	  I've found this method of work best, as the script will not
+	  be included in the work file then.</para>
+
+	<para>To export, you may want to make sure the
+	  <filename>lib</filename> files are in right place, then flip
+	  to the text editor and open the
+	  <filename>nwnmdlexport.py</filename> file.</para>
+
+	<para>To run the script, type 
+	  <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>.
+	</para>
+
+	<para>As the smoke dissipates, there should be messages
+	  regarding the success on the console (in Windows version,
+	  they appear in Blender's log window). The object will be
+	  saved in the <filename>baseobjectname.mdl</filename>
+	  file. If you used a PWK object, it will be written to
+	  <filename>baseobjectname.pwk</filename>.
+	</para>
+
+      </sect2>
+
+      <sect2>
+	<title>And remember...</title>
+
+	<para>If it blows up, just remember, this is beta. Please
+	  refer to Blender's documentation, check if your Python path
+	  is right, and do the chicken voodoo dance if things just
+	  won't work. This is beta.</para>
+      </sect2>
 
     </sect1>
     
@@ -855,7 +1066,7 @@
 	You may also visit my
 	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/">NWN
 	  page</ulink>, and you are cordially invited to
-	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/neverblender.html">NeverBlender's homepage.</ulink>
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/gametools/neverblender/">NeverBlender's home page.</ulink>
       </para>
 
       <para>I may be reached via E-mail at
@@ -976,6 +1187,8 @@ url="http://ourworld.compuserve.com/homepages/scorpius/blender_suites.htm">
 </book>
 
 <!--
+  Made with the glorious XEmacs.
+
   Local variables:
   mode:xml
   End:
