@@ -1,4 +1,9 @@
 
+2003-11-28 22:41  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py
+	PWK exporting bug fixed.
+
 2003-11-28 22:04  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* lib/Trimesh.py (Trimesh._texverts_as_string)

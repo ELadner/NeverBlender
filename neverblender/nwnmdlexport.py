@@ -212,7 +212,7 @@ if pwkname:
 		pwkfile.setModelName(model)
 		pwkfile.setFileFormat('pwk')
 		
-		pwkmesh = processobject(pwkname, 'NULL', 0)
+		pwkmesh = processobject(pwkname, "NULL")
 
 		pwkfile._objects = []
 		pwkfile.addObject(pwkmesh)
