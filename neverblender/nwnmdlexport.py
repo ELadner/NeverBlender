@@ -34,6 +34,8 @@ from Blender import Scene, Object
 
 import Props
 import SceneHelpers
+import NBLog
+from NBLog import putlog
 from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
@@ -46,9 +48,10 @@ from string import join
 def processdummy(model,parent):
 	d = Object.Get(model)
 	dt = d.getType()
-	print " ** Processing %s (%s)" % (model, dt)
+	putlog(NBLog.INFO, "Processing %s (%s)" % (model, dt))
 	if dt != 'Empty':
-		print " ** Internal error: Can't process this type here!"
+		putlog(NBLog.CRITICAL,
+		       "Internal error: Can't process this type here!")
 		return
 	dummy = Dummy()
 	if parent != "NULL":
@@ -65,15 +68,18 @@ def processtrimesh(sobj, parent, details):
 
 	# Get the Object block of the current object.
 	obj = Object.Get(sobj)
-	print " ** Processing %s (%s)" % (sobj, obj.getType())
+	putlog(NBLog.INFO,
+	       "Processing %s (%s)" % (sobj, obj.getType()))
 	if obj.getType() != 'Mesh':
-		print " ** Internal error: can only deal with meshes!"
+		putlog(NBLog.CRITICAL,
+		       "Internal error: can only deal with meshes!")
 		return
 
 	# get the Mesh block of the Object.
 	mesh = obj.getData()
 	if not mesh:
-		print "  * Can't get the corresponding mesh. This is strange!"
+		putlog(NBLog.CRITICAL,
+		       "Can't get the corresponding mesh. This is strange!")
 		return
 
 	# Create a new Trimesh to be output.
@@ -99,7 +105,8 @@ def processtrimesh(sobj, parent, details):
 		# Materials.
 		objmats = obj.getMaterials()
 		if len(objmats)>=1:
-			print "  * Object has material(s)."
+			putlog(NBLog.SPAM,
+			       "Object has material(s).")
 			# We only take the first material, for now.
 			# (We'll do something more elegant later on...)
 			m = objmats[0]
@@ -120,7 +127,8 @@ def processtrimesh(sobj, parent, details):
 	for f in mesh.faces:
 		trimesh.addFace(f)
 	# Then return it.
-	print "  * Done: %d vertices, %d faces, %d texverts" % trimesh.stat()
+	putlog(NBLog.INFO,
+	       "Done: %d vertices, %d faces, %d texverts" % trimesh.stat())
 	return trimesh
 
 # For processing object tree recursively.
@@ -128,7 +136,7 @@ def processobject(model,parent,mfile):
 	global scnobjchilds
 
 	# Process this object
-	print " **> Processing %s" % model
+	putlog(NBLog.INFO, "Processing object %s" % model)
 
 	thismod = Object.Get(model)
 	mtype = thismod.getType()
@@ -145,15 +153,17 @@ def processobject(model,parent,mfile):
 		# parent instead of the armature.
 		try:
 			childs = scnobjchilds[model]
-			print " ** %s armature children: %s" % (model,
-						       join(childs, ", "))
+			putlog(NBLog.DEBUG,
+			       "%s armature children: %s" % (model,
+						       join(childs, ", ")))
 			for mchild in childs:
 				processobject(mchild,parent,mfile)
 			return
 		except KeyError:
 			return
 	else:
-		print " ** Can't handle object of type %s" % mtype
+		putlog(NBLog.CRITICAL,
+		       "Can't handle object of type %s" % mtype)
 	# Process the children
 	try:
 		children = scnobjchilds[model]
@@ -163,15 +173,16 @@ def processobject(model,parent,mfile):
 
 def processdownfrom(model,mfile):
 	childs = scnobjchilds[model]
-	print " ** %s children: %s" % (model, join(childs, ", "))
+	putlog(NBLog.INFO,
+	       "%s children: %s" % (model, join(childs, ", ")))
 
 	for mchild in childs:
 		processobject(mchild,model,mfile)
 
 #################################################################
 
-print "*** NeverBlender Blender->MDL export script"
-print "*** by Urpo Lankinen, 2003"
+putlog(NBLog.SPAM, "NeverBlender Blender->MDL export script")
+putlog(NBLog.SPAM, "*** by Urpo Lankinen, 2003")
 
 # Get properties from the 'nwnprops' text.
 Props.parse()
@@ -181,21 +192,25 @@ geometry = Props.getgeometry()
 if(not geometry):
 	scn = Scene.getCurrent()
 else:
-	print "*** Getting geometry from %s" % geometry
+	putlog(NBLog.INFO, "Getting geometry from %s" % geometry)
 	scn = Scene.Get(geometry)
 	if(not scn):
-		print " ** Error: Can't find the geometry scene."
+		putlog(NBLog.CRITICAL,
+		       "Error: Can't find the scene with the geometry.")
+		exit
 scnobjchilds = SceneHelpers.scenechildren(scn)
 
 # Get the base object name.
 model = Props.getbaseobjectname()
-print "*** Base object: %s" % model
+putlog(NBLog.INFO, "Base object: %s" % model)
 # Some sanity checking...
 if not scnobjchilds.has_key(model):
-	print " ** Error: %s doesn't exist." % model
+	putlog(NBLog.CRITICAL, 
+	       "%s doesn't exist." % model)
 	exit
 if len(scnobjchilds[model]) <= 0:
-	print " ** Error: %s has no sibling objects." % model
+	putlog(NBLog.CRITICAL, 
+	       "the base object %s has no sibling objects." % model)
 	exit
 
 # Let's open the file.
@@ -207,7 +222,8 @@ mfile.setFileDependancy(Blender.Get('filename'))
 # Supermodel?
 supermodel = Props.getsupermodel()
 if supermodel != None:
-	print "*** Super model: %s" % supermodel
+	putlog(NBLog.INFO, 
+	       "Super model: %s" % supermodel)
 	mfile.setSuperModelName(supermodel)
 	
 # Process each child of the baseobj...
@@ -220,23 +236,25 @@ mfile.writeToFile()
 # Create PWKs.
 pwkname = Props.getpwk()
 if pwkname:
-	print "*** Creating placeable walk data (PWK file)"
+	putlog(NBLog.INFO, 
+	       "Creating placeable walk data (PWK file)")
 
 	pwkobj = Object.Get(pwkname)
 	if pwkobj.getType() != 'Mesh':
-		print " ** PWK must be a Mesh!"
-	else:
-		pwkfile = ModelFile()
-		
-		# Set the name and type
-		pwkfile.setModelName(model)
-		pwkfile.setFileFormat('pwk')
-		
-		pwkmesh = processtrimesh(pwkname, "NULL", 0)
+		putlog(NBLog.CRITICAL, "PWK must be a Mesh!")
+		exit
 
-		pwkfile._objects = []
-		pwkfile.addObject(pwkmesh)
+	pwkfile = ModelFile()
+		
+	# Set the name and type
+	pwkfile.setModelName(model)
+	pwkfile.setFileFormat('pwk')
+		
+	pwkmesh = processtrimesh(pwkname, "NULL", 0)
 
-		# Write out the PWK.
-		pwkfile.writeToFile()
+	pwkfile._objects = []
+	pwkfile.addObject(pwkmesh)
+
+	# Write out the PWK.
+	pwkfile.writeToFile()
 
