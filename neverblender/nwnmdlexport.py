@@ -24,24 +24,22 @@ from Trimesh import Trimesh
 #################################################################
 
 def processobject(sobj, details):
-	"Process the Object named sobj and return a Trimesh. If
+	"""Process the Object named sobj and return a Trimesh. If
 	details is true, also generates texture and such, otherwise
-	just location, scale and orientation."
+	just location, scale and orientation."""
 
 	# Get the Object block of the current object.
-	obj = Object.get(sobj)
+	obj = Object.Get(sobj)
 	print " ** Processing %s (%s)" % (sobj, obj.getType())
 	if obj.getType() != 'Mesh':
 		print " ** Can only deal with meshes!"
-		continue
+		return
 
-	# get the Mesh block of the Object. Deformed one, actually.
-	# We used to just find a Mesh with same name That was broken.
-	#mesh = Mesh.get(sobj)
-	mesh = obj.getDeformData()
+	# get the Mesh block of the Object.
+	mesh = obj.getData()
 	if not mesh:
 		print "  * Can't get the corresponding mesh. This is strange!"
-		continue
+		return
 
 	# Create a new Trimesh to be output.
 	trimesh = Trimesh()
@@ -64,7 +62,7 @@ def processobject(sobj, details):
 
 	if details:
 		# Materials.
-		objmats = mesh.getMaterials()
+		objmats = obj.getMaterials()
 		if len(objmats)>=1:
 			print "  * Object has material(s)."
 			# We only take the first material, for now.
@@ -128,7 +126,7 @@ if supermodel != 0:
 # The base object.
 base = Dummy()
 base.setName(model)
-baseobj = Object.get(model)
+baseobj = Object.Get(model)
 baseobjloc = baseobj.getLocation()
 base.setPosition(baseobjloc)
 

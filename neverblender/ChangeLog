@@ -1,4 +1,21 @@
 
+
+2003-09-23 00:42  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py:
+	Fixed the idiotic typos added in the last commit. I knew it
+	wouldn't run right away.
+	
+	* nwnmdlexport.py, lib/Trimesh.py: 
+	Okay, so I tried to *run* the exporter first time in 2.28. Yay.
+	Apparently 2.28 [and switch to Python 2.3] broke exporter as well.
+	I'm a little bit peeved. A lot of things fixed, along them
+	the few things Blender specifically warned me of (Object.Get()).
+
+	* ChangeLog:
+	Reordered entries - newest entries always first.
+	Also, uses the modern datestamp format.
+
 2003-09-15 22:27  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlimport.py: 
@@ -8,7 +25,14 @@
 	Moved the "Stuff from Objects to Trimesh" to a separate
 	function. COMPLETELY UNTESTED, MAY BE BROKEN.
 	
-Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
+2003-08-17 20:04  Urpo Lankinen <wwwwolf@iki.fi>
+
+	* nwnmdlimport.py:
+	Added a rudimentary GUI file selector. Not tested it because
+	FileReader doesn't seem to be there in Windows Blender
+	2.28a. Or something.
+
+2003-07-07 18:11  Urpo Lankinen <wwwwolf@iki.fi>
 	
 	* nwnmdlexport.py, lib/Trimesh.py:
 	Added the support for wirecolor and specular, which are read from
@@ -20,14 +44,4 @@ Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
 	'euler' and NWN 'orientation', and moved them into lib/NwnMath.py
 	file.
 	Also tested the importer first time. Yeah, it's dog slow...
-	
-	
-Sun Aug 17 20:04:31 2003  Urpo Lankinen <wwwwolf@iki.fi>
-
-	* nwnmdlimport.py:
-	Added a rudimentary GUI file selector. Not tested it because
-	FileReader doesn't seem to be there in Windows Blender
-	2.28a. Or something.
-
-
-	
+		

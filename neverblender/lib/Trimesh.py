@@ -136,7 +136,7 @@ class Trimesh:
 		returns index to the added item (or item already on list)."""
 		try:
 			return self._texverts.index(uv)
-		except KeyError:
+		except ValueError:
 			self._texverts.append(uv)
 			return len(self._texverts)-1
 
@@ -192,6 +192,10 @@ class Trimesh:
 			print "WARNING: Too many verts in face! Not added."
 			print "  You need to divide this face manually."
 
+	# FIXME: This is BROKEN because some clever Python guy decided
+	# to fuck around with the definition of "tuple". Obviously, in 2.2,
+	# the string formatting was so elegant that they *had* to break it
+	# in 2.3 so that Perl people could get some chuckles.
 	def __str__(self):
 		o = ("node trimesh %s\n" % self._name) + \
 			("  parent %s\n" % self._parent) + \
