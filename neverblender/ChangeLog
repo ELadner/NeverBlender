@@ -1,3 +1,12 @@
+2004-03-11 21:07  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, lib/ModelFile.py
+	Added "filedependancy" support.
+
+	* lib/Emitter.py
+	A brand new library file. Guess what it's supposed to cover
+	in the future. =)
+
 2004-02-08 22:32  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py, nwnmdlimport.py
