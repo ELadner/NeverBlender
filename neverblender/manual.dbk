@@ -37,28 +37,34 @@
 
     <legalnotice>
 
-      <para>NeverBlender package is distributed under an
-	extremely free license.</para>
+      <para>NeverBlender package is distributed under an extremely
+	free license.</para>
 
-      <para>Basically, the package is © 2003 Urpo Lankinen.
-	It is copyrighted - not public domain.</para>
+      <para>Basically, the package is © 2003 The NeverBlender
+	Contributors. It is copyrighted - not public domain.</para>
 
-      <para>You are allowed to distribute, modify and use the source code /
-	scripts in any way you want. However, the copyright notices must
-	remain as they are.  You may add notes describing which parts you have
-	changed to copies you distribute, but you may not remove the note on
-	the freedom of distribution etc, and not change my copyright
-	note.</para>
+      <para>You are allowed to distribute, modify and use the source
+	code / scripts in any way you want. However, the copyright
+	notices must remain as they are. You may add notes describing
+	which parts you have changed to copies you distribute, but this
+	copyright notice (and the COPYING and AUTHORS files) must
+	accompany the distribution, and all copyright notices on the
+	files must remain as they are.
+      </para>
 
-      <para>There is no warranty whatsoever, expressed or implied. You are using
-	this software at your own risk!</para>
+      <para>
+	There is no warranty whatsoever, expressed or implied. You are using
+	this software at your own risk!
+      </para>
 
-      <para>Some changes to the code and the importer are © 2003 Yann
-	Vernier. Distributed under the same terms.</para>
+      <para>This documentation is supplied under the same terms,
+	except that electronic or printed versions of the
+	documentation need not to be accompanied by the COPYING and
+	AUTHORS files, in case the file is distributed separate from
+	the whole distribution. This whole copyright notice must be
+	present, however.
+      </para>
 
-
-      <para>The documentation is distributed with the thing under same
-	terms.</para>
 
       <para>
 	<trademark>Neverwinter Nights</trademark>

@@ -10,9 +10,10 @@ NeverBlender is a package for Blender to deal with Neverwinter Nights
 .mdl files. At the moment, only Blender to .mdl exportion script is
 provided.
 
-(c) Urpo Lankinen 2003
+(c) The NeverBlender Contributors 2003
 Distribute, modify and use however you please as long as you
-retain this copyright notice. No warranty expressed or implied.
+retain this copyright notice and comply to the terms set forth in the
+file COPYING. No warranty expressed or implied.
 
 REAL DOCUMENTATION
 ==================
