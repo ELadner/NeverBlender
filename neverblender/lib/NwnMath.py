@@ -14,6 +14,13 @@
 #
 ##############################################################
 
+
+# Note, 2004-05-14: Blender 2.33 has Blender.Mathutils module
+# which contains very nice euler-to-quaternion conversion stuff.
+# This module is only included because the importer probably
+# still needs it.
+
+
 from math import sin, atan2, asin, cos, acos, pi
 
 def rad2decadeg(x):
