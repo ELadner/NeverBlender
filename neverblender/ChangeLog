@@ -1,3 +1,14 @@
+2004-05-14 22:13  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, lib/Trimesh.py
+	Quick fixes to make it work on 2.33. Uses Euler 
+	in Trimesh's _orientation property and Quartenion in
+	serializing, instead of using lists and NwnMath functions.
+
+	* lib/SceneHelpers.py, lib/FindFromList.py
+	Nuked FindFromList.py and moved the functions (mostly unused!)
+	to SceneHelpers.
+
 2004-03-30 00:00  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* lib/NBLog.py
