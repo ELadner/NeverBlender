@@ -62,3 +62,19 @@ def actionlist():
 	iporoots = uniq(map(lambda x: split(x, '.')[0], iponames))
 	iporoots = grep(lambda x: x != 'ObIpo', iporoots)
 	return iporoots
+
+
+# Returns index of "what" on the list "list".
+def atwhatpoint(list,what):
+	try:
+		return list.index(what)
+	except ValueError:
+		return -1
+
+# Finds triangle's vertices "v1","v2","v3" from vertex (tuple) list "list".
+# Returns list.
+def findtriangleverts(list,v1,v2,v3):
+	return [ atwhatpoint(list,v1),
+		atwhatpoint(list,v2),
+		atwhatpoint(list,v3) ]
+
