@@ -7,8 +7,15 @@
 
 
 NeverBlender is a package for Blender to deal with Neverwinter Nights
-.mdl files. At the moment, only Blender to .mdl exportion script is
-provided.
+.mdl files.
+
+The main tools are provided in
+ - nwnmdlexport.py, which is a script for exporting Blender models
+   to MDLs, and
+ - nwnmdlimport.py, which imports NWN models to Blender.
+
+COPYRIGHT AND DISTRIBUTION TERMS
+================================
 
 (c) The NeverBlender Contributors 2003
 Distribute, modify and use however you please as long as you
