@@ -13,7 +13,8 @@
 #################################################################
 
 import Props
-import os
+import os.path
+from os.path import normpath, join
 
 class ModelFile:
     #_modelname = "unnamedmodel"
@@ -51,9 +52,9 @@ class ModelFile:
         self._objects.append(object)
     
     def writeToFile(self):
-        dir = Props.getoutputdirectory()
-        file = self.getModelName() + '.' + self.getFileFormat()
-        outfile = os.pathconf(dir,file)
+        odir = Props.getoutputdirectory()
+        ofile = self.getModelName() + '.' + self.getFileFormat()
+        outfile = normpath(join(odir,ofile))
         of = file(outfile, "w")
         print "*** Writing '%s' to file %s." % (self.getModelName(),
                                                 outfile)
