@@ -335,18 +335,78 @@
       for that long yet.
     </para>
 
-    <sect1>
-      <title>Bugs and limitations</title>
+    <para>There used to be time when this manual had separate sections for
+      actual usage instructions and "bugs and limitations". Not so anymore,
+      either because things are improving, or because there never will be
+      a fix due to limitations of the system.
+    </para>
 
-      <para>A word or two about current bugs in the MDL exporting
-	should be in order. The exporter is far from perfect at the
-	moment but works... with some tricks.</para>
+    <sect1>
+      <title>Basics of Modelling in Neverblender</title>
+
+      <para>Modelling in NeverBlender could not be easier, but there
+        are some things that must be considered. Basically,
+        to create whatever you are creating, you create one or more
+        <type>Mesh</type>es.</para>
+
+      <para>It should be noted tha only <type>Mesh</type>es are
+        supported, and the <type>Mesh</type>es should consist of triangle and
+        quad faces. Anything bigger than that must be broken down
+        manually.  It doesn't really matter what the meshes are named,
+        as long as their names do not have spaces (I think?) - also
+        note that only the names of the Objects are used, not the
+        names of the <type>Mesh</type>es
+        (in other words, in EditButtons, the
+        relevant part is OB:Something, not ME:Something).</para>
+
+      <para>It should be also noted that the smoothing and
+        flat-shading of objects should work normally! You can set
+        faces smooth or flat using the EditButtons in the Edit Mode,
+        as usual.</para>
+
+      <para>Once you have made your <type>Mesh</type>es, you need to
+        create an <type>Empty</type>. You should then give this
+        <type>Empty</type> the name you want to
+        give to this object in NWN - be it "merewidget" or
+        "wplss_t_011". As mentioned, the <citetitle>Custom Content
+          Guide</citetitle> is a wonderful work when considering the
+        name of an object.</para>
+
+      <para>Next, you need to make this <type>Empty</type> of yours
+        the parent of every <type>Mesh</type> you want to include in
+        the object. Simply select 
+        your <type>Mesh</type> with
+        <mousebutton>right</mousebutton> mouse button,
+        Then select the <type>Empty</type> with
+        <keycombo>
+          <keycap>Shift</keycap><mousebutton>right</mousebutton>
+        </keycombo>, and hit
+        <keycombo><keycap>Ctrl</keycap><keysym>P</keysym></keycombo>.
+        Repeat for each item.
+      </para>
+
+      <para>Now, you should have an <type>Empty</type> that has
+        <type>Mesh</type> objects as its children.</para>
+
+      <sect2>
+        <title>The Object Tree</title>
+
+        <para>The object three can, unlike in the earlier versions of
+          NeverBlender, actually have depth. Objects can be parented to
+          each other.</para>
+
+        <para><type>Armature</type>s aren't exported along with
+          <type>Mesh</type> Objects. However, if you parent your
+          <type>Mesh</type>es to an <type>Armature</type>, the
+          <type>Mesh</type>es are parented
+          to <type>Armature</type>'s parent.</para>
+      </sect2>
 
       <sect2>
 	<title>Objects must be uniquely named</title>
 
 	<para>The script does not, in any way, check that the items
-	  are in any way conflictless and the scene graph builder
+	  are in any way conflictless and the tree builder
 	  <emphasis>will</emphasis> get the parent/child relationships all
 	  wrong if you give conflicting names. I do not know how NWN
 	  reacts if the items in NWN have conflicting names...</para>
@@ -357,20 +417,7 @@
       </sect2>
 
       <sect2>
-	<title>Object tree is flat</title>
-
-	<para>[Outdated, explain]</para>
-
-	<para>At the moment the object tree is flat - that is, there
-	  has to be one Empty that has links to every object in the
-	  MDL, and if the items have any subobjects, they will be
-	  simply ignored. This may likely change in future.</para>
-
-	<para>Supermodels, however, are supported.</para>
-      </sect2>
-
-      <sect2>
-	<title>Scale and Rotation</title>
+	<title>Usual problems with scale and rotation</title>
 
 	<para>The scalings and rotations in Object Mode may or
           may not work. Therefore, it's recommended that you 
@@ -447,137 +494,84 @@
         </para>
       </sect2>
 
-      <sect2>
-	<title>No animations!</title>
-
-	<para>Sorry! This is a big problem that I haven't yet figured
-	  out how to do. Actually, the whole idea of needing to
-	  implement something like that made me <emphasis>not</emphasis> to
-	  look in the general direction of the .mdl
-	  documentation. Uh... daunting task.</para>
-      </sect2>
 
       <sect2>
-	<title>No triangulation of complex surfaces</title>
+	<title>Fixing complex meshes</title>
 
-	<para>Sorry, kid, it handles triangle and  and quad faces just fine,
-	  but to get more than that, select the face and hit
+	<para>Exporter can handle triangle and quad faces.
+	  To process faces with more than 4 vertices, you need to
+          break it down. One technique is to select the face's vertexes
+          in Edit Mode and hit
 	  <keycombo><keycap>Shift</keycap><keysym>F</keysym></keycombo> to
-	  pre-triangulate it.
+	  triangle-fill the face.
 	</para>
       </sect2>
 
+
       <sect2>
-	<title>Other small problems</title>
+	<title>'ware of the sides! The nasty Normals!</title>
 
-	<itemizedlist>
-	  <listitem>
-	    <para>Very few of the properties MDLs support are actually
-	      supported. This is due to my Laziness.</para>
-	  </listitem>
+	<para>It should be noted that NeverBlender exports only single face
+          side, and will not do double-sided faces. This is probably
+          a feature, as doing double-sided faces properly would imply
+          producing two faces instead of one - NWN only does single-sided
+          faces. If you export a mesh,
+          and note only a couple of the faces
+          can be seen, try looking from the other side - only the front
+          side of the face can be seen.
+	</para>
 
-	  <listitem>
-	    <para>The code may not exactly be the best of the breed...</para>
-	  </listitem>
-
-	</itemizedlist>
-
+        <para>[FIXME: To add: Some tips on how to cope with odd normals]
+        </para>
       </sect2>
 
     </sect1>
 
     <sect1>
-      <title>Modelling in NeverBlender</title>
+      <title>The NWN-specific properties</title>
+
+      <para>To specify NWN-specific properties of the mesh, and to
+        control the general behavior of NeverBlender as well,
+        you need to create a new
+        <type>Text</type> called <filename>nwnprops</filename>.
+      </para>
+
+      <para>This <type>Text</type> will hold all NWN-related
+        properties of the objects. The format is rather simple. All
+        empty lines and lines beginning with <literal>#</literal>
+        are ignored. The format for all properties is this:
+      </para>
+
+      <informalexample>
+        <para>
+          <replaceable>objectname</replaceable>.<property>property</property>=<replaceable>value</replaceable>
+        </para>
+      </informalexample>
+
+      <para>This consists of an object name, dot, name of an
+        property of the object, equals sign, and the value.</para>
+
+      <para>Object properties naturally correspond to
+      <type>Mesh</type>es with same object name.  There are
+      properties that affect animations, and names of these "objects"
+      are in form
+      <classname>ANIM:</classname><replaceable>name</replaceable>.
+      There are also some objects that affect the generated model
+      file as a whole, instead of any individual object. These are
+      all properties of "object" <classname>SCENE</classname>.
+      </para>
+
+      <para>Here are all properties that are recognized at the
+        moment. You are strongly recommended to at least provide the
+        base object name. Alternates are separated with | symbols.</para>
+
+      <para>(Do note that animation properties are not actually
+        supported by the exporter, simply because there is no
+        code yet. This is just here in anticipation of the implementation,
+        for specification purposes only.)</para>
 
       <sect2>
-	<title>Modelling the Meshes and Creating the Empty</title>
-
-	<para>Modelling in NeverBlender could not be easier. Basically,
-	  to create whatever you are creating, you create one or more
-	  <type>Mesh</type>es.</para>
-
-	<para>It should be noted tha only <type>Mesh</type>es are
-	  supported. And, as mentioned earlier, the
-	  <type>Mesh</type>es should consist of triangle and
-	  quad faces. Anything bigger than that must be broken down
-	  manually.  It doesn't really matter what the meshes are named,
-	  as long as their names do not have spaces (I think?) - also
-	  note that only the names of the Objects are used, not the
-	  names of the <type>Mesh</type>es
-	  (in other words, in EditButtons, the
-	  relevant part is OB:Something, not ME:Something).</para>
-
-	<para>It should be also noted that the smoothing and
-	  flat-shading of objects should work normally! You can set
-	  faces smooth or flat using the EditButtons in the Edit Mode,
-	  as usual.</para>
-
-	<para>Once you have made your <type>Mesh</type>es, you need to
-	  create an <type>Empty</type>. You should then give this
-	  <type>Empty</type> the name you want to
-	  give to this object in NWN - be it "merewidget" or
-	  "wplss_t_011". As mentioned, the <citetitle>Custom Content
-	    Guide</citetitle> is a wonderful work when considering the
-	  name of an object.</para>
-
-	<para>Next, you need to make this <type>Empty</type> of yours
-	  the parent of every <type>Mesh</type> you want to include in
-	  the object. Simply select 
-	  your <type>Mesh</type> with
-	  <mousebutton>right</mousebutton> mouse button,
-	  Then select the <type>Empty</type> with
-	  <keycombo>
-	    <keycap>Shift</keycap><mousebutton>right</mousebutton>
-	  </keycombo>, and hit
-	  <keycombo><keycap>Ctrl</keycap><keysym>P</keysym></keycombo>.
-	  Repeat for each item.
-	</para>
-
-	<para>Now, you should have an <type>Empty</type> that has
-	  <type>Mesh</type> objects as its children.</para>
-
-      </sect2>
-
-      <sect2>
-	<title>Creating <filename>nwnprops</filename></title>
-
-	<para>At this point, you need to create a new
-	  <type>Text</type> called <filename>nwnprops</filename>.
-	</para>
-
-	<para>This <type>Text</type> will hold all NWN-related
-	  properties of the objects. The format is rather simple. All
-	  empty lines and lines beginning with <literal>#</literal>
-	  are ignored. The format for all properties is this:
-	</para>
-
-	<informalexample>
-	  <para>
-	    <replaceable>objectname</replaceable>.<property>property</property>=<replaceable>value</replaceable>
-	  </para>
-	</informalexample>
-
-	<para>This consists of an object name, dot, name of an
-	  property of the object, equals sign, and the value.</para>
-
-	<para>Object properties naturally correspond to
-	<type>Mesh</type>es with same object name.  There are
-	properties that affect animations, and names of these "objects"
-	are in form
-	<classname>ANIM:</classname><replaceable>name</replaceable>.
-	There are also some objects that affect the generated model
-	file as a whole, instead of any individual object. These are
-	all properties of "object" <classname>SCENE</classname>.
-	</para>
-
-	<para>Here are all properties that are recognized at the
-	  moment. You are strongly recommended to at least provide the
-	  base object name. Alternates are separated with | symbols.</para>
-
-        <para>(Do note that animation properties are not actually
-          supported by the exporter, simply because there is no
-          code yet. This is just here in anticipation of the implementation,
-          for specification purposes only.)</para>
+        <title>Possible NWN properties</title>
 
 	<variablelist>
 	  <title>Possible NWN properties</title>
@@ -732,59 +726,83 @@
 
       </sect2>
 
-      <sect2>
-	<title>The PWK file for the placeables</title>
+    </sect1>
 
-	<para>If you are creating a placeable object, it's often nice
-	  to create another mesh object that's at the ground level and
-	  specifies whether or not you can walk over that object. You
-	  can create this object easily (a plane, for example), then
-	  use the <property>pwkobjectname</property> property to point
-	  to this object. You should <emphasis>not</emphasis> parent
-	  this object to the <type>Empty</type> because you do not
-	  want this object to be actually visible!</para>
+    <sect1>
+      <title>Supermodels</title>
 
-	<para>I have no idea how this works at the file level. It
-	  appears to just work the way I described it. If all else
-	  fails, see if the normals point to right direction.</para>
+      <para>Supermodels are supported.</para>
 
-      </sect2>
+      <para>[FIXME: I'll explain later what that actually means.]</para>
 
-      <sect2>
-	<title>Actual usage</title>
+    </sect1>
 
-	<para>After you have made the object hierarchy and specified
-	  the properties, it's time to rock and roll!</para>
 
-	<para>It's best if you save at this point. You want to work on
-	  the object, save your changes, then load the script and
-	  export all the way you please, and quit without saving -
-	  I've found this method of work best, as the script will not
-	  be included in the work file then.</para>
+    <sect1>
+      <title>Placeable walkmesh (PWK)</title>
 
-	<para>To export, you may want to make sure the
-	  <filename>lib</filename> files are in right place, then flip
-	  to the text editor and open the
-	  <filename>nwnmdlexport.py</filename> file.</para>
+      <para>If you are creating a placeable object, it's often nice
+        to create another mesh object that's at the ground level and
+        specifies whether or not you can walk over that object. You
+        can create this object easily (a plane, for example), then
+        use the <property>pwkobjectname</property> property to point
+        to this object. You should <emphasis>not</emphasis> parent
+        this object to the <type>Empty</type> - doing so would also make
+        it part of the MDL, which in turn would make the object visible
+        in the model itself! PWK mesh itself, naturally, is not visible
+        in the game.</para>
 
-	<para>To run the script, type 
-	  <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>.
-	</para>
+      <para>I have no idea how this works at the file level. It
+        appears to just work the way I described it. If all else
+        fails, see if the normals point to right direction.</para>
 
-	<para>As the smoke dissipates, there should be messages
-	  regarding the success on the console (in Windows version,
-	  they appear in Blender's log window). The object will be
-	  saved in the <filename>baseobjectname.mdl</filename>
-	  file. If you used a PWK object, it will be written to
-	  <filename>baseobjectname.pwk</filename>.
-	</para>
+    </sect1>
 
-	<para>If it blows up, just remember, this is beta. Please
-	  refer to Blender's documentation, check if your Python path
-	  is right, and do the chicken voodoo dance if things just
-	  won't work. This is beta.</para>
 
-      </sect2>
+    <sect1>
+      <title>Animation</title>
+
+      <para>Animations are not yet supported at all, but they will
+        be done through <type>Action</type>s with object-linked
+        <type>Armature</type>s. More details will come as code
+        will be written.</para>
+
+    </sect1>
+
+
+    <sect1>
+      <title>Actual usage</title>
+
+      <para>After you have made the object hierarchy and specified
+        the properties, it's time to rock and roll!</para>
+
+      <para>It's best if you save at this point. You want to work on
+        the object, save your changes, then load the script and
+        export all the way you please, and quit without saving -
+        I've found this method of work best, as the script will not
+        be included in the work file then.</para>
+
+      <para>To export, you may want to make sure the
+        <filename>lib</filename> files are in right place, then flip
+        to the text editor and open the
+        <filename>nwnmdlexport.py</filename> file.</para>
+
+      <para>To run the script, type 
+        <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>.
+      </para>
+
+      <para>As the smoke dissipates, there should be messages
+        regarding the success on the console (in Windows version,
+        they appear in Blender's log window). The object will be
+        saved in the <filename>baseobjectname.mdl</filename>
+        file. If you used a PWK object, it will be written to
+        <filename>baseobjectname.pwk</filename>.
+      </para>
+
+      <para>If it blows up, just remember, this is beta. Please
+        refer to Blender's documentation, check if your Python path
+        is right, and do the chicken voodoo dance if things just
+        won't work. This is beta.</para>
 
     </sect1>
     
@@ -806,18 +824,21 @@
 
       <para>Object rotations clearly need work.</para>
 
-      <para>Direct support for analyzing Blender
-	<type>Material</type>s to formulate MDL values should be
-	doable. (Better.)</para>
-
       <para>Particle effects? Surely I'll make particle
 	effects.</para>
 
       <para>Animation needs to be seen even preliminarily...</para>
 
-      <para>More properties, and better.</para>
+      <para>More NWN properties should be supported.</para>
+
+      <para>Code cleanup?</para>
+
+      <para>Better logging facility and streamlining of the console
+        output format (what do those stars mean, anyway?)</para>
 
     </sect1>
+
+
 
     <sect1>
       <title>Finding the Program and Contacting Author</title>
