@@ -1,4 +1,16 @@
 
+2003-11-28 22:04  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* lib/Trimesh.py (Trimesh._texverts_as_string)
+	Looks like Yann's lambda voodoo with texverts was a bit buggy.
+	I was getting literal tuplespam in the files.
+
+	* lib/Trimesh.py (Trimesh.addFace)
+	More meaningful error messages. I suppose.
+
+	* lib/ModelFile.py (writeToFile)
+	Closes the file, too.
+	
 2003-11-11 23:50  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py, lib/ModelFile.py
