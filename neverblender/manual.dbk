@@ -502,10 +502,13 @@
 	  property of the object, equals sign, and the value.</para>
 
 	<para>Object properties naturally correspond to
-	  <type>Mesh</type>es with same object name. There are also
-	  some objects that affect the generated model file as a
-	  whole, instead of any individual object. These are all
-	  properties of "metaobject" <classname>SCENE</classname>.
+	<type>Mesh</type>es with same object name.  There are
+	properties that affect animations, and names of these "objects"
+	are in form
+	<classname>ANIM:</classname><replaceable>name</replaceable>.
+	There are also some objects that affect the generated model
+	file as a whole, instead of any individual object. These are
+	all properties of "object" <classname>SCENE</classname>.
 	</para>
 
 	<para>Here are all properties that are recognized at the
@@ -538,6 +541,24 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>geometry</property>=<replaceable>animation</replaceable></term>
+	    <listitem><para>
+	        What <type>Scene</type> (animation) the object
+	        geometry is taken from.  This defaults to the
+	        currently active <type>Scene</type>.  Animation pretty
+	        much assumes you have same objects in every
+	        <type>Scene</type>, so you'd probably want to create
+	        one <type>Scene</type> first with no animations, and
+	        then create the animation <type>Scene</type>s with
+	        "Link Objects" or something like that. You can specify
+	        such "parent" <type>Scene</type> here, and add it to
+	        <property>ignoreanimations</property> list as
+	        described below.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><classname>SCENE</classname>.<property>classification</property>=<replaceable>Character|Tile|Effects|Item</replaceable></term>
 	    <listitem><para>
 		The "classification" of the item. If not specified, it
@@ -563,24 +584,6 @@
 	    <listitem><para>
 		The object that shall be used to create the PWK. We
 		will tell more about this later.
-	      </para>
-	    </listitem>
-	  </varlistentry>
-
-	  <varlistentry>
-	    <term><classname>SCENE</classname>.<property>geometry</property>=<replaceable>animation</replaceable></term>
-	    <listitem><para>
-	        What <type>Scene</type> (animation) the object
-	        geometry is taken from.  This defaults to the
-	        currently active <type>Scene</type>.  Animation pretty
-	        much assumes you have same objects in every
-	        <type>Scene</type>, so you'd probably want to create
-	        one <type>Scene</type> first with no animations, and
-	        then create the animation <type>Scene</type>s with
-	        "Link Objects" or something like that. You can specify
-	        such "parent" <type>Scene</type> here, and add it to
-	        <property>ignoreanimations</property> list as
-	        described below.
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -621,7 +624,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>keyingmode</property>=<replaceable>Constant|IpoKeys</replaceable></term>
+	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>keyingmode</property>=<replaceable>Constant|IpoKeys</replaceable></term>
 	    <listitem><para>
 	        Specifies the algorithm with which the keyframes are generated
                 for the .mdl.
@@ -643,12 +646,11 @@
                 because the "slopes" of IPOs are not saved, which may
                 be a little bit less interesting...
                 </para>
-	      </para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>constantkeyinterval</property>=<replaceable>5</replaceable></term>
+	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>constantkeyinterval</property>=<replaceable>5</replaceable></term>
 	    <listitem><para>
                In "Constant" keying mode, defines the interval between
                keyframes in frames. Default is 5 frames.
@@ -657,7 +659,7 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>framerate</property>=<replaceable>25</replaceable></term>
+	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>framerate</property>=<replaceable>25</replaceable></term>
 	    <listitem><para>
                Per-animation framerate setting. Default 25
                frames/second. (It <emphasis>would</emphasis> default
