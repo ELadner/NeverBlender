@@ -9,6 +9,17 @@
 	Nuked FindFromList.py and moved the functions (mostly unused!)
 	to SceneHelpers.
 
+2004-04-18 19:35  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* lib/NBLog.py, lib/Props.py, nwnmdlexport.py
+	Added support for logging stuff to a logfile.
+	(The unscrollable Windows terminal windows and like tend to
+	suck.)
+
+	* lib/SceneHelpers.py
+	Added actionlist() function to get the list of actions.
+	We're getting somewhere with this animation thing.
+
 2004-03-30 00:00  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* lib/NBLog.py
