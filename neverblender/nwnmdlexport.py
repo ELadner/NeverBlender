@@ -106,6 +106,17 @@ for sobj in scnobjchilds[model]:
 	s = obj.size           # Is there a getter for this? Goddamnit.
 	trimesh.setScale(s)
 
+	# Materials.
+	objmats = mesh.getMaterials()
+	if len(objmats)>=1:
+		print "  * Object has material(s)."
+		# We only take the first material, for now.
+		# (We'll do something more elegant later on...)
+		m = objmats[0]
+		trimesh.setWireColor(m.rgbCol)
+		trimesh.setSpecularColor(m.specCol)
+		
+
 	# Texture
 	texture = Props.getobjecttex(sobj)
 	trimesh.setTexture(texture)
