@@ -512,6 +512,11 @@
 	  moment. You are strongly recommended to at least provide the
 	  base object name. Alternates are separated with | symbols.</para>
 
+        <para>(Do note that animation properties are not actually
+          supported by the exporter, simply because there is no
+          code yet. This is just here in anticipation of the implementation,
+          for specification purposes only.)</para>
+
 	<variablelist>
 	  <title>Possible NWN properties</title>
 
@@ -562,6 +567,32 @@
 	    </listitem>
 	  </varlistentry>
 
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>geometry</property>=<replaceable>animation</replaceable></term>
+	    <listitem><para>
+	        What <type>Scene</type> (animation) the object
+	        geometry is taken from.  This defaults to the
+	        currently active <type>Scene</type>.  Animation pretty
+	        much assumes you have same objects in every
+	        <type>Scene</type>, so you'd probably want to create
+	        one <type>Scene</type> first with no animations, and
+	        then create the animation <type>Scene</type>s with
+	        "Link Objects" or something like that. You can specify
+	        such "parent" <type>Scene</type> here, and add it to
+	        <property>ignoreanimations</property> list as
+	        described below.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>ignoreanimations</property>=<replaceable>animation,...</replaceable></term>
+	    <listitem><para>
+	        Comma-separated list of <type>Scene</type>s that will not
+	        be rendered into MDL animations.
+	      </para>
+	    </listitem>
+	  </varlistentry>
 
 	  <varlistentry>
 	    <term><replaceable>objectname</replaceable>.<property>texture</property>=<replaceable>texturename</replaceable></term>
@@ -585,6 +616,53 @@
 		object). None is the default. Fade is probably what
 		you want for tall objects. I do not know what the
 		other things do.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>keyingmode</property>=<replaceable>Constant|IpoKeys</replaceable></term>
+	    <listitem><para>
+	        Specifies the algorithm with which the keyframes are generated
+                for the .mdl.
+                </para>
+                <itemizedlist>
+                <listitem><para>
+                    "Constant" mode will generate keyframes based on
+                    ipos on constant intervals.
+                </para></listitem>
+                <listitem><para>
+                    "IpoKeys" will generate keyframes only on places
+                    where they exist on ipocurves. <emphasis>This mode is
+                    unimplemented!</emphasis>
+                </para></listitem>
+                </itemizedlist>
+                <para>
+                The default mode is "constant". While "ipokeys" may be
+                more conservative, it will usually be less accurate,
+                because the "slopes" of IPOs are not saved, which may
+                be a little bit less interesting...
+                </para>
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>constantkeyinterval</property>=<replaceable>5</replaceable></term>
+	    <listitem><para>
+               In "Constant" keying mode, defines the interval between
+               keyframes in frames. Default is 5 frames.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><class>ANIM:</class><replaceable>animname</replaceable>.<property>framerate</property>=<replaceable>25</replaceable></term>
+	    <listitem><para>
+               Per-animation framerate setting. Default 25
+               frames/second. (It <emphasis>would</emphasis> default
+               to whatever's set in RenderButtons, but it beats me on
+               how to read that value from Python...)
 	      </para>
 	    </listitem>
 	  </varlistentry>
