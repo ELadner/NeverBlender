@@ -117,7 +117,7 @@ else:
 	scn = Scene.Get(geometry)
 	if(not scn):
 		print " ** Error: Can't find the geometry scene."
-	scnobjchilds = SceneHelpers.scenechildren(scn)
+scnobjchilds = SceneHelpers.scenechildren(scn)
 
 # Get the base object name.
 model = Props.getbaseobjectname()
