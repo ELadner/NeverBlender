@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE book SYSTEM "/usr/share/sgml/docbook/dtd/xml/4.2/docbookx.dtd">
+<!-- DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" -->
+
+<book lang="en">
+
+  <!-- ================================================================ -->
+  <bookinfo>
+
+    <title>NeverBlender Manual</title>
+
+    <abstract>
+      <para>This document describes the usage and philosophy of
+	NeverBlender package, a package intended to make Blender
+	modeller and the
+	<trademark>Neverwinter Nights</trademark> computer game
+	cooperate.</para>
+    </abstract>
+
+    <author>
+      <surname>Lankinen</surname><firstname>Urpo</firstname>
+      <authorblurb>
+	<para>E-mail:
+	  <ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>
+	</para>
+	<para>WWW:
+	  <ulink url="http://www.iki.fi/">http://www.iki.fi/wwwwolf/</ulink>
+	</para>
+      </authorblurb>
+    </author>
+
+    <pubdate>$Date$</pubdate>
+    <releaseinfo>$Revision$</releaseinfo>
+
+    <copyright><year>2003</year><holder>Urpo Lankinen</holder></copyright>
+
+    <legalnotice>
+
+      <para>NeverBlender package is distributed under an
+	extremely free license.</para>
+
+      <para>Basically, the package is © 2003 Urpo Lankinen.
+	It is copyrighted - not public domain.</para>
+
+      <para>You are allowed to distribute, modify and use the source code /
+	scripts in any way you want. However, the copyright notices must
+	remain as they are.  You may add notes describing which parts you have
+	changed to copies you distribute, but you may not remove the note on
+	the freedom of distribution etc, and not change my copyright
+	note.</para>
+
+      <para>There is no warranty whatsoever, expressed or implied. You are using
+	this software at your own risk!</para>
+
+      <para>Some changes to the code and the importer are © 2003 Yann
+	Vernier. Distributed under the same terms.</para>
+
+
+      <para>The documentation is distributed with the thing under same
+	terms.</para>
+
+      <para>
+	<trademark>Neverwinter Nights</trademark>
+	© 2002 Bioware and Infogrames (Atari). All rights reserved.
+	<trademark>Neverwinter Nights</trademark>, 
+	<trademark class="registered">Dungeons &amp; Dragons</trademark> and
+	<trademark class="registered">Forgotten Realms</trademark>
+	are trademarks of Wizards of the Coast.
+      </para>
+    </legalnotice>
+
+  </bookinfo>
+
+  <!-- ================================================================ -->
+  <chapter>
+    <title>Background and Getting It To Run</title>
+
+    <sect1>
+      <title>What is NeverBlender?</title>
+
+      <para>NeverBlender is a project to build some sort of bridge
+	between Blender Foundation's
+	<ulink url="http://www.blender.org/">Blender</ulink>
+	3D modelling application and Bioware's computer game
+	<ulink url="http://nwn.bioware.com/"><trademark>Neverwinter
+	    Nights</trademark></ulink>.</para>
+
+      <para>At the moment, NeverBlender is able to export models from
+	Blender in Bioware .mdl format. There is also an importer
+	script.</para>
+    </sect1>
+
+    <sect1>
+      <title>What NeverBlender can do?</title>
+
+      <para>At the moment, NeverBlender is able to export meshes from
+	Blender to Bioware ASCII MDL format.</para>
+
+      <itemizedlist>
+	<listitem><para>
+	    One script file with a small library of reusable
+	    stuff. Quite simply, Open Script and Run It, that's it.
+	  </para>
+	</listitem>
+	<listitem><para>
+	    NWN-specific data can be conveniently stored alongside
+	    your <filename>.blend</filename> since the data is stored
+	    in a normal <type>Text</type>.
+	  </para>
+	</listitem>
+	<listitem><para>
+	    Many (but not that many =/ ) NWN-specific properties, such
+	    as tile fade, are supported.
+	  </para>
+	</listitem>
+	<listitem><para>
+	    Capable of exporing <type>Mesh</type>es, parented to a
+	    single <type>Empty</type>.
+	  </para>
+	</listitem>
+	<listitem><para>
+	    Supports texturing of the objects. You can normally
+	    texture the objects using Blender's own UV map editor!
+	  </para>
+	</listitem>
+	<listitem><para>
+	    Supports flat-shading and smooth shading of individual
+	    mesh faces.
+	  </para>
+	</listitem>
+
+      </itemizedlist>
+
+    </sect1>
+
+    <sect1>
+      <title>The Usual Warning</title>
+
+      <para>It is quirky. You shouldn't use this script to do anything
+	serious unless you're at least a little bit familiar with
+	Blender, the NWN .mdl ASCII format, and preferrably also Python
+	and especially Blender Python API.</para>
+
+      <para>But don't worry, I'm moderately skilled with Blender,
+	don't know too much about the format, and Python is all Greek to
+	me, yet I'm the author and <emphasis>got it
+	  working!</emphasis> =)
+      </para>
+
+
+    </sect1>
+
+    <sect1>
+      <title>Why NeverBlender?</title>
+
+      <para>Neverwinter Nights is a game that I waited with a great
+	anticipation as soon as I heard what kind of things were
+	possible in it. It seemed like that if even fraction of the
+	hype was true, that would be the game I had waited
+	forever. Most of the computer RPGs I had played were either
+	infinite in length but quite weak plotwise or on hackability
+	(Nethack, for example), or with good and enjoyable plot but
+	limited in length and content and with even less hackability
+	(Baldur's Gate, for example). Now, NWN promised more than
+	this: A plot-driven CRPG with advanced network play (with
+	dungeon master support, even), and above all, a toolset that
+	allows us to do stuff and render all "expansion sets"
+	obsolte. (Weird, isn't it, that I'm really waiting for Shadows
+	of Undrentide? =)</para>
+
+      <para>Now, as NWN was released, it was obvious to me that the
+	toolset wasn't the tool to get the wildest dreams true. Sure
+	it was the tool to create adventures, but the amount of
+	building blocks was limited. And it really felt like building
+	blocks. So few different blocks! I did appreciate the concept,
+	but it felt like there still were limits.<footnote>
+	  <para>My first intent was to "port" a PnP adventure from an
+	    old issue of a Finnish RPG magazine <citetitle>Sininen
+	      Lohikäärme</citetitle>, however, the supplied set of
+	    content was far too narrow. For example, in order to port
+	    99% of adventures published in Finnish RPG mags, I would
+	    have needed the items that appeared in all of the
+	    adventuresf or some reason, such as "an erotic painting on
+	    wall" and "a beautiful young woman who is chained on
+	    altar"... though I don't know why they were included in
+	    the adventures in first place.
+	  </para>
+	</footnote>
+      </para>
+
+      <para>Now, later I found <personname>
+	<firstname>Eligio</firstname><surname>Sacateca</surname>
+	</personname>'s excellent <citetitle>Custom Content
+	  Guide</citetitle>, and realized that I can make more of the
+	building blocks on myself! This book was really an eye-opener
+	and definitely gave me more interest in creating more content.
+      </para>
+
+      <para>Now, there is just one problem. NWN's official custom
+	content tools rely on 3DS MAX, which is, from the point of view
+	of a starving student, an Awfully Expensive Program. The other
+	option, less official, is gmax. There are other modelling tools
+	too.</para>
+
+      <para>Yet, none of these options are like the One True
+	Modeller. I personally found Blender to be the most smoothly used
+	program I've ever used - creating meshes with it is very very
+	easy. Indeed, I'm one of those 3D modellers who learned that
+	and then decided not to use anything else because Blender
+	actually rules. Too bad I'm not a full-time 3D freak,
+	otherwise I'd use Blender even more than I do now...
+      </para>
+
+      <para>I first thought writing a script for Blender would be
+	difficult. Yet, after I got ahead, I learned a few things:
+	Firstly, the rumors of difficulty of getting anything done in
+	Blender's Pythin api are greatly exaggerated (the
+	documentation stinks, that's all), and Python is not as nice
+	as the Python fanatics would like us Perl people to think. Not
+	as ugly syntax, but fundamentally it's the same ugly stuff.</para>
+
+      <para>I'm surprised that NeverBlender has become basically
+	working and sort of releaseable in such a short time, and I'm
+	even more surprised that it actually works more conveniently
+	than the competition. I recently tried modelling something
+	again in gmax and found it rather annoying to copy things from
+	the listener window - even more so when gmax was misbehaving
+	if I tried to copy more than 10 lines at a time... Blender has
+	a "listener window", yeah, but it also has access to Python's
+	file I/O functions. =)</para>
+
+    </sect1>
+
+    <sect1>
+      <title>Requirements and Installation</title>
+
+      <para>My original intent was to make every NeverBlender script a
+	wholly self-contained package. However, this was not
+	possible - the code became rather ugly even in my standards. I
+	decided it was easy to split the code in separate modules and
+	utilize an object-oriented approach.</para>
+
+      <para>Basically, NeverBlender requires Blender 2.26 or later
+	(any Blender Foundation "open source" version). It may work on
+	earlier Python APIs. I have not tested it on anything but 2.26
+	and 2.27 at the time, and it works fine.</para>
+
+      <para>I develop NeverBlender on Windows version of Blender. This
+	means it will only rely on the things on Blender's own tiny
+	wrapped-up library. This is rather disappointing because I
+	sort of wanted to use <classname>Re</classname> class to handle
+	some parsing, but Windows Blender doesn't ship with that
+	class. Since most of the useful custom content tools seem to
+	be working only in Windows, I absolutely insist that the code
+	will work in Windows version of Blender.</para>
+
+      <para>The installation is quite simple: You need to copy the
+	<filename>lib</filename> directory, or its contents, wherever
+	Blender sees it. The directory is named
+	<filename>lib</filename> because Blender in Windows will also
+	look in <filename>.\lib\</filename> (that is, under directory
+	<filename>lib</filename> under the current working directory).
+      </para>
+
+      <para>You also need to copy <filename>nwnmdlexport.py</filename>
+	in any place you feel it's comfortable or any place you can
+	find it from. You need to open it to Blender a lot. Keep that
+	in mind.</para>
+
+    </sect1>
+    
+
+  </chapter>
+
+  <!-- ================================================================ -->
+  <chapter>
+    <title>Modelling in NeverBlender</title>
+
+    <sect1>
+      <title>Bugs and limitations</title>
+
+      <para>A word or two about current bugs in the MDL exporting
+	should be in order. The exporter is far from perfect at the
+	moment but works... with some tricks.</para>
+
+      <sect2>
+	<title>Objects must be uniquely named</title>
+
+	<para>The script does not, in any way, check that the items
+	  are in any way conflictless and the scene graph builder
+	  <emphasis>will</emphasis> get the parent/child relationships all
+	  wrong if you give conflicting names. I do not know how NWN
+	  reacts if the items in NWN have conflicting names...</para>
+
+	<para>There used to be a requirement that the Mesh and Object
+	  must have the same name, but it has since been removed. At
+	  least in theory...</para>
+      </sect2>
+
+      <sect2>
+	<title>Object tree is flat</title>
+
+	<para>At the moment the object tree is flat - that is, there
+	  has to be one Empty that has links to every object in the
+	  MDL, and if the items have any subobjects, they will be
+	  simply ignored. This may likely change in future.</para>
+
+	<para>Supermodels, however, are supported.</para>
+      </sect2>
+
+      <sect2>
+	<title>Scale and Rotation</title>
+
+	<para>At the moment, all rotations <emphasis>must</emphasis> be done
+	  in EditMode. The documentation for the trimesh "orientation"
+	  parameter was murky to say the least...</para>
+
+	<para>Only uniform scaling is supported in normal mode - this
+	  is an apparent limitation of the .MDL format. You may resize
+	  objects normally in EditMode. If the scaling is
+	  <emphasis>not</emphasis> uniform, an average of the x,y,z scalings
+	  will be used. (This is mostly to counter possible rounding
+	  errors.)</para>
+
+	<para>Items may be moved around normally in both EditMode and
+	  normal mode.</para>
+
+	<para>Reason why all this is so: Blender has two separate
+	  datablocks for each mesh: Object and Mesh. Mesh stores
+	  locations of each vertex. Object stores position, rotation
+	  and scaling.
+	</para>
+
+	<para>Object's location is directly interpreted as the Trimesh
+	  "position" parameter. Object's rotation could be used as the
+	  "orientation" parameter, but as mentioned, it is not very
+	  well documented.</para>
+
+	<para>Blender Objects support scaling in x,y,z directions. MDL
+	  objects only support uniform scaling factors. This may be an
+	  issue that is hard to overcome.</para>
+
+      </sect2>
+
+      <sect2>
+	<title>No animations!</title>
+
+	<para>Sorry! This is a big problem that I haven't yet figured
+	  out how to do. Actually, the whole idea of needing to
+	  implement something like that made me <emphasis>not</emphasis> to
+	  look in the general direction of the .mdl
+	  documentation. Uh... daunting task.</para>
+      </sect2>
+
+      <sect2>
+	<title>No triangulation of complex surfaces</title>
+
+	<para>Sorry, kid, it handles triangle and  and quad faces just fine,
+	  but to get more than that, select the face and hit
+	  <keycombo><keycap>Shift</keycap><keysym>F</keysym></keycombo> to
+	  pre-triangulate it.
+	</para>
+      </sect2>
+
+      <sect2>
+	<title>Other small problems</title>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>Very few of the properties MDLs support are actually
+	      supported. This is due to my Laziness.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>The code may not exactly be the best of the breed...</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>There's no importer. =/ This is doable but tricky. I
+	      will give it a shot later on!</para>
+	  </listitem>
+	</itemizedlist>
+
+      </sect2>
+
+    </sect1>
+
+    <sect1>
+      <title>Modelling in NeverBlender</title>
+
+      <sect2>
+	<title>Modelling the Meshes and Creating the Empty</title>
+
+	<para>Modelling in NeverBlender could not be easier. Basically,
+	  to create whatever you are creating, you create one or more
+	  <type>Mesh</type>es.</para>
+
+	<para>It should be noted tha only <type>Mesh</type>es are
+	  supported. And, as mentioned earlier, the
+	  <type>Mesh</type>es should consist of triangle and
+	  quad faces. Anything bigger than that must be broken down
+	  manually.  It doesn't really matter what the meshes are named,
+	  as long as their names do not have spaces (I think?) - also
+	  note that only the names of the Objects are used, not the
+	  names of the <type>Mesh</type>es
+	  (in other words, in EditButtons, the
+	  relevant part is OB:Something, not ME:Something).</para>
+
+	<para>It should be also noted that the smoothing and
+	  flat-shading of objects should work normally! You can set
+	  faces smooth or flat using the EditButtons in the EditMode,
+	  as usual.</para>
+
+	<para>Once you have made your <type>Mesh</type>es, you need to
+	  create an <type>Empty</type>. You should then give this
+	  <type>Empty</type> the name you want to
+	  give to this object in NWN - be it "merewidget" or
+	  "wplss_t_011". As mentioned, the <citetitle>Custom Content
+	    Guide</citetitle> is a wonderful work when considering the
+	  name of an object.</para>
+
+	<para>Next, you need to make this <type>Empty</type> of yours
+	  the parent of every <type>Mesh</type> you want to include in
+	  the object. Simply select 
+	  your <type>Mesh</type> with
+	  <mousebutton>right</mousebutton> mouse button,
+	  Then select the <type>Empty</type> with
+	  <keycombo>
+	    <keycap>Shift</keycap><mousebutton>right</mousebutton>
+	  </keycombo>, and hit
+	  <keycombo><keycap>Ctrl</keycap><keysym>P</keysym></keycombo>.
+	  Repeat for each item.
+	</para>
+
+	<para>Now, you should have an <type>Empty</type> that has
+	  <type>Mesh</type> objects as its children.</para>
+
+      </sect2>
+
+      <sect2>
+	<title>Creating <filename>nwnprops</filename></title>
+
+	<para>At this point, you need to create a new
+	  <type>Text</type> called <filename>nwnprops</filename>.
+	</para>
+
+	<para>This <type>Text</type> will hold all NWN-related
+	  properties of the objects. The format is rather simple. All
+	  empty lines and lines beginning with <literal>#</literal>
+	  are ignored. The format for all properties is this:
+	</para>
+
+	<informalexample>
+	  <para>
+	    <replaceable>objectname</replaceable>.<property>property</property>=<replaceable>value</replaceable>
+	  </para>
+	</informalexample>
+
+	<para>This consists of an object name, dot, name of an
+	  property of the object, equals sign, and the value.</para>
+
+	<para>Object properties naturally correspond to
+	  <type>Mesh</type>es with same object name. There are also
+	  some objects that affect the generated model file as a
+	  whole, instead of any individual object. These are all
+	  properties of "metaobject" <classname>SCENE</classname>.
+	</para>
+
+	<para>Here are all properties that are recognized at the
+	  moment. You are strongly recommended to at least provide the
+	  base object name. Alternates are separated with | symbols.</para>
+
+	<variablelist>
+	  <title>Possible NWN properties</title>
+
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>baseobjectname</property>=<replaceable>objectname</replaceable></term>
+	    <listitem><para>
+		The "base object name" of the scene. Its meaning is
+		twofold: First of all, it specifies the name of the
+		<type>Empty</type> that you have parented the
+		<type>Mesh</type>es to, and it is also used as the
+		name of the object itself, and also used as the file
+		name. If unspecified, well, I can't remember what
+		happens. Probably it uses the selected object and
+		coughs itself to death. Or maybe it starts a chain
+		reaction that destroys the universe. It has been a
+		long time since I tried.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>classification</property>=<replaceable>Character|Tile|Effects|Item</replaceable></term>
+	    <listitem><para>
+		The "classification" of the item. If not specified, it
+		will be "Item", which is probably what you want at the
+		moment.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>supermodel</property>=<replaceable>modelname</replaceable></term>
+	    <listitem><para>
+		The super model. The name of the model whence this
+		model will inherit its animations and
+		properties. Useful, in theory, for all those
+		creatures. I think. I have never tried this option.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>SCENE</classname>.<property>pwkobjectname</property>=<replaceable>objectname</replaceable></term>
+	    <listitem><para>
+		The object that shall be used to create the PWK. We
+		will tell more about this later.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+
+	  <varlistentry>
+	    <term><replaceable>objectname</replaceable>.<property>texture</property>=<replaceable>texturename</replaceable></term>
+	    <listitem><para>
+		The texture the object uses, without the
+		<filename>.dds</filename> or <filename>.tga</filename>
+		filename extensions. If specified, the exporter will
+		take the UV texture coordinates and export them
+		too. Otherwise the object will be single-colored
+		(there's no way to control the color at the moment,
+		though, you need to edit the file).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><replaceable>objectname</replaceable>.<property>tilefade</property>=<replaceable>None|Fade|HBlock|VBlock</replaceable></term>
+	    <listitem><para>
+		The tile fade property (whether or not the thing will
+		disappear when your vision is obstructed by the
+		object). None is the default. Fade is probably what
+		you want for tall objects. I do not know what the
+		other things do.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+
+      </sect2>
+
+      <sect2>
+	<title>The PWK file for the placeables</title>
+
+	<para>If you are creating a placeable object, it's often nice
+	  to create another mesh object that's at the ground level and
+	  specifies whether or not you can walk over that object. You
+	  can create this object easily (a plane, for example), then
+	  use the <property>pwkobjectname</property> property to point
+	  to this object. You should <emphasis>not</emphasis> parent
+	  this object to the <type>Empty</type> because you do not
+	  want this object to be actually visible!</para>
+
+	<para>I have no idea how this works at the file level. It
+	  appears to just work the way I described it. If all else
+	  fails, see if the normals point to right direction.</para>
+
+      </sect2>
+
+      <sect2>
+	<title>Actual usage</title>
+
+	<para>After you have made the object hierarchy and specified
+	  the properties, it's time to rock and roll!</para>
+
+	<para>It's best if you save at this point. You want to work on
+	  the object, save your changes, then load the script and
+	  export all the way you please, and quit without saving -
+	  I've found this method of work best, as the script will not
+	  be included in the work file then.</para>
+
+	<para>To export, you may want to make sure the
+	  <filename>lib</filename> files are in right place, then flip
+	  to the text editor and open the
+	  <filename>nwnmdlexport.py</filename> file.</para>
+
+	<para>To run the script, type 
+	  <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>.
+	</para>
+
+	<para>As the smoke dissipates, there should be messages
+	  regarding the success on the console (in Windows version,
+	  they appear in Blender's log window). The object will be
+	  saved in the <filename>baseobjectname.mdl</filename>
+	  file. If you used a PWK object, it will be written to
+	  <filename>baseobjectname.pwk</filename>.
+	</para>
+
+	<para>If it blows up, just remember, this is beta. Please
+	  refer to Blender's documentation, check if your Python path
+	  is right, and do the chicken voodoo dance if things just
+	  won't work. This is beta.</para>
+
+      </sect2>
+
+    </sect1>
+    
+  </chapter>
+
+
+
+  <!-- ================================================================ -->
+  <chapter>
+    <title>Present and Future Directions</title>
+
+    <sect1>
+      <title>What is going on with the thing?</title>
+
+      <para>The code is being split into modules and the modules are
+	being extended. I hope the code will actually look tolerable
+	one day. It will not be as cool as I wish it would look like,
+	though...</para>
+
+      <para>Object rotations clearly need work.</para>
+
+      <para>Direct support for analyzing Blender
+	<type>Material</type>s to formulate MDL values should be
+	doable.</para>
+
+      <para>Particle effects? Surely I'll make particle
+	effects.</para>
+
+      <para>Animation needs to be seen even preliminarily...</para>
+
+      <para>The Importer needs to be written too. I hope this will be
+	done one day. I will definitely at least estimate my chances
+	of how it will work and construct some sort of
+	outside-of-Blender prototype of mdl parser.
+      </para>
+
+      <para>More properties, and better.</para>
+
+    </sect1>
+
+    <sect1>
+      <title>Finding the Program and Contacting Author</title>
+
+      <para>My home page is at
+<ulink
+       url="http://www.iki.fi/wwwwolf/">http://www.iki.fi/wwwwolf/</ulink>.
+	You may also visit my
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/">NWN
+	  page</ulink>, and you are cordially invited to
+	<ulink url="http://www.iki.fi/wwwwolf/games/nwn/neverblender.html">NeverBlender's homepage.</ulink>
+      </para>
+
+      <para>I may be reached via E-mail at
+      <ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>.
+      </para>
+    </sect1>
+
+  </chapter>
+
+
+  <!-- ================================================================ -->
+  <colophon>
+    <title>Some ending words</title>
+
+    <para>Some people I'd like to thank:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>Bioware
+	  folks for the amazing game and their general caring,
+	  of course!
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Ton</firstname>
+	    <surname>Roosendaal</surname></personname>
+	  for the greatest modelling program in existence =)
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Eligio</firstname>
+	    <surname>Sacateca</surname></personname>
+	  for the <citetitle>Custom Content Guide</citetitle>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Anthony</firstname>
+	    <surname>D'Agostino</surname></personname>
+	   for the <ulink
+url="http://ourworld.compuserve.com/homepages/scorpius/blender_suites.htm">
+	    Blender Import-Export Suite</ulink> that demystified
+	    a couple of things about Blender API...
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Solias</firstname></personname>
+	  of Worlds of Neverwinter for the
+	  <ulink url="http://www.wnwn.net/mdl/">
+	    NWN model format documentation</ulink>
+	</para>
+      </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Wayland</firstname></personname>,
+	  for the gmax mdl script (even when I don't really hack the
+	  maxscript syntax...)
+	</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Also, I'd like to wave my "You were not really helping"
+      picket sign toward:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+	  <personname><firstname>Guido</firstname></personname>
+	  for the awful, frustrating, can't-find-a-damn-thing,
+	  my-eyes-truly-do-bleed format of Python docs...
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  ...and
+	  <personname><firstname>Ton</firstname></personname>
+	  for picking Python as the Blender scripting language.
+	  (This makes him a high-ranked nominee of Geniuses Can Make
+	  Mistakes Award.)
+	</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>(No, I don't hate these people. Just that they didn't
+      particularly help, that's all. =)</para>
+
+  </colophon>
+
+
+
+</book>
+
+<!--
+  Local variables:
+  mode:xml
+  End:
+-->
