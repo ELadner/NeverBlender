@@ -20,10 +20,9 @@ from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
 
-
 #################################################################
 
-def processobject(sobj, details):
+def processobject(sobj, parent, details):
 	"""Process the Object named sobj and return a Trimesh. If
 	details is true, also generates texture and such, otherwise
 	just location, scale and orientation."""
@@ -88,6 +87,19 @@ def processobject(sobj, details):
 	print "  * Done: %d vertices, %d faces, %d texverts" % trimesh.stat()
 	return trimesh
 
+# For processing object tree recursively.
+def processchildrenof(model):
+	global mfile, scnobjchilds
+	for sobj in scnobjchilds[model]:
+		trimesh = processobject(sobj, model, 1)
+		mfile.addObject(trimesh)
+		try:
+			for child in scnobjchilds[sobj]:
+				processchildrenof(child)
+		except KeyError:
+			pass
+
+
 #################################################################
 
 print "*** NeverBlender Blender->MDL export script"
@@ -97,8 +109,15 @@ print "*** by Urpo Lankinen, 2003"
 Props.parse()
 
 # Get the scene, and figure out which objects are whose children.
-scn = Scene.getCurrent()
-scnobjchilds = SceneHelpers.scenechildren(scn)
+geometry = Props.getgeometry()
+if(not geometry):
+	scn = Scene.getCurrent()
+else:
+	print "*** Getting geometry from %s" % geometry
+	scn = Scene.Get(geometry)
+	if(not scn):
+		print " ** Error: Can't find the geometry scene."
+	scnobjchilds = SceneHelpers.scenechildren(scn)
 
 # Get the base object name.
 model = Props.getbaseobjectname()
@@ -110,7 +129,6 @@ if not scnobjchilds.has_key(model):
 if len(scnobjchilds[model]) <= 0:
 	print " ** Error: %s has no sibling objects." % model
 	exit
-print "*** Meshes to be included in the object: ", scnobjchilds[model]
 
 # Let's open the file.
 mfile = ModelFile()
@@ -131,11 +149,9 @@ baseobjloc = baseobj.getLocation()
 base.setPosition(baseobjloc)
 
 mfile.addObject(base)
-
+	
 # Process each child of the baseobj...
-for sobj in scnobjchilds[model]:
-	trimesh = processobject(sobj, 1)
-	mfile.addObject(trimesh)
+processchildrenof(model)
 
 # Write the object to file.
 mfile.writeToFile()
@@ -154,8 +170,8 @@ if pwkname:
 		# Set the name and type
 		pwkfile.setModelName(model)
 		pwkfile.setFileFormat('pwk')
-
-		pwkmesh = processobject(pwkname, 0)
+		
+		pwkmesh = processobject(pwkname, 'NULL', 0)
 
 		pwkfile._objects = []
 		pwkfile.addObject(pwkmesh)

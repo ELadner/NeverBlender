@@ -85,6 +85,10 @@ def getsupermodel():
 def getpwk():
 	return getValue('SCENE','pwkobjectname')
 
+# Gets the animation to get the geometry from.
+def getgeometry():
+	return getValue('SCENE','geometry')
+
 # Object properties
 
 # Finds a texture name for the object from the nwnprops.

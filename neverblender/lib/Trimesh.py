@@ -105,7 +105,8 @@ class Trimesh:
 			print "  * WARNING: Object %s scale not uniform!" % \
 			      self._name
 			print "    x = %f, y = %f, z = %f" % tuple(scalelist)
-			self._scale = (s[0]+s[1]+s[2]) / 3
+			self._scale = \
+			      (scalelist[0]+scalelist[1]+scalelist[2]) / 3
 			print "    Using avg scale as uniform scale: %f." % \
 			      self._scale
 		else:

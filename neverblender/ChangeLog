@@ -1,4 +1,10 @@
 
+2003-09-23 21:50  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, lib/Trimesh.py, lib/Props.py:
+	Now handles item tree recursively. Also added was the support
+	for SCENE.geometry=...
+	
 2003-09-23 01:23  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py, lib/Trimesh.py:
