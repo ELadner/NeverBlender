@@ -100,50 +100,89 @@
     <sect1>
       <title>What NeverBlender can do?</title>
 
-      <para>At the moment, NeverBlender is able to export meshes from
-	Blender to Bioware ASCII MDL format.</para>
+      <sect2>
+	<title>General features</title>
 
-      <itemizedlist>
-	<listitem><para>
-	    One script file with a small library of reusable
-	    stuff. Quite simply, Open Script and Run It, that's it.
-	  </para>
-	</listitem>
-	<listitem><para>
-	    NWN-specific data can be conveniently stored alongside
-	    your <filename>.blend</filename> since the data is stored
-	    in a normal <type>Text</type>.
-	  </para>
-	</listitem>
-	<listitem><para>
-	    Many (but not that many =/ ) NWN-specific properties, such
-	    as tile fade, are supported.
-	  </para>
-	</listitem>
-	<listitem><para>
-	    Capable of exporing <type>Mesh</type>es, parented to a
-	    single <type>Empty</type>.
-	  </para>
-	</listitem>
-	<listitem><para>
-	    Supports texturing of the objects. You can normally
-	    texture the objects using Blender's own UV map editor!
-	  </para>
-	</listitem>
-	<listitem><para>
-	    Supports flat-shading and smooth shading of individual
-	    mesh faces.
-	  </para>
-	</listitem>
+	<itemizedlist>
+	  <listitem><para>
+	      The general strategy is to have a single script file
+	      with a small library of reusable stuff. Quite simply,
+	      Open Script and Run It, that's it.
+	    </para>
+	  </listitem>
+	  <listitem><para>
+	      NWN features with direct equivalents in Blender are
+	      directly supported (or planned). Examples include UV
+	      editor use for texture coordinates and Blender's
+	      animation support for animations (at the moment, only
+	      attempted in importer).
+	    </para>
+	  </listitem>
+	  <listitem><para>
+	      NWN-specific data can be conveniently stored alongside
+	      your <filename>.blend</filename> since the data is stored
+	      in a normal <type>Text</type>.
+	    </para>
+	  </listitem>
+	</itemizedlist>
 
-      </itemizedlist>
+      </sect2>
+
+      <sect2>
+	<title>Exporter</title>
+
+	<itemizedlist>
+	  <listitem><para>
+	      Exports to ASCII MDL files.
+	    </para></listitem>
+	  <listitem><para>
+	      Many (but not that many =/ ) NWN-specific properties, such
+	      as tile fade, are supported.
+	    </para>
+	  </listitem>
+	  <listitem><para>
+	      Capable of exporting <type>Mesh</type>es, parented to a
+	      single <type>Empty</type>.
+	    </para>
+	  </listitem>
+	  <listitem><para>
+	      Supports texturing of the objects. You can normally
+	      texture the objects using Blender's own UV map editor!
+	    </para>
+	  </listitem>
+	  <listitem><para>
+	      Supports flat-shading and smooth shading of individual
+	      mesh faces.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+
+      </sect2>
+
+      <sect2>
+	<title>Importer</title>
+
+	<para>Importer's feature list is yet to be written in
+	  full.</para>
+
+	<itemizedlist>
+	  <listitem><para>
+	      Imports ASCII MDL files.
+	    </para></listitem>
+	  <listitem><para>
+	      Supports animations to some extent.
+	    </para></listitem>
+
+	</itemizedlist>
+
+      </sect2>
 
     </sect1>
 
     <sect1>
       <title>The Usual Warning</title>
 
-      <para>It is quirky. You shouldn't use this script to do anything
+      <para>It is quirky. You shouldn't use the scripts to do anything
 	serious unless you're at least a little bit familiar with
 	Blender, the NWN .mdl ASCII format, and preferrably also Python
 	and especially Blender Python API.</para>
@@ -221,7 +260,7 @@
       <para>I first thought writing a script for Blender would be
 	difficult. Yet, after I got ahead, I learned a few things:
 	Firstly, the rumors of difficulty of getting anything done in
-	Blender's Pythin api are greatly exaggerated (the
+	Blender's Python api are greatly exaggerated (the
 	documentation stinks, that's all), and Python is not as nice
 	as the Python fanatics would like us Perl people to think. Not
 	as ugly syntax, but fundamentally it's the same ugly stuff.</para>
@@ -382,10 +421,6 @@
 	    <para>The code may not exactly be the best of the breed...</para>
 	  </listitem>
 
-	  <listitem>
-	    <para>There's no importer. =/ This is doable but tricky. I
-	      will give it a shot later on!</para>
-	  </listitem>
 	</itemizedlist>
 
       </sect2>
@@ -666,6 +701,13 @@
       <para>I may be reached via E-mail at
       <ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>.
       </para>
+
+      <para>The importer was written by
+	<personname><firstname>Yann</firstname>
+	    <surname>Vernier</surname></personname>
+	(<ulink url="mailto:yann@algonet.se">yann@algonet.se</ulink>).
+      </para>
+
     </sect1>
 
   </chapter>
@@ -728,6 +770,18 @@ url="http://ourworld.compuserve.com/homepages/scorpius/blender_suites.htm">
 	  maxscript syntax...)
 	</para>
       </listitem>
+
+      <listitem>
+	<para>
+	  <personname><firstname>Yann</firstname>
+	    <surname>Vernier</surname></personname>
+	  for slipping the importer under my door when I had a
+	  headache after thinking of how to write that one (well, not
+	  really, but the gesture was very syrprising anyway).
+	</para>
+      </listitem>
+
+
     </itemizedlist>
 
     <para>Also, I'd like to wave my "You were not really helping"
