@@ -285,19 +285,20 @@
 	decided it was easy to split the code in separate modules and
 	utilize an object-oriented approach.</para>
 
-      <para>Basically, NeverBlender requires Blender 2.26 or later
-	(any Blender Foundation "open source" version). It may work on
-	earlier Python APIs. I have not tested it on anything but 2.26
-	and 2.27 at the time, and it works fine.</para>
+      <para>Basically, NeverBlender requires Blender 2.28 or later
+	(or any release with the New and Improved Python API). It
+	may work on earlier Python APIs, but I wouldn't guarantee
+	that. At the moment, I'm developing on Blender 2.30.</para>
 
-      <para>I develop NeverBlender on Windows version of Blender. This
-	means it will only rely on the things on Blender's own tiny
-	wrapped-up library. This is rather disappointing because I
-	sort of wanted to use <classname>Re</classname> class to handle
-	some parsing, but Windows Blender doesn't ship with that
-	class. Since most of the useful custom content tools seem to
+      <para>I develop NeverBlender on Windows version of Blender.
+	You do, however, need Python 2.2.3 as well (Windows Python
+	v2.3 doesn't want to coexist with Blender); My scripts use a
+	couple of things not provided with the abridged Windows
+	Blender library, and the importer cooks the shit out of it.
+	Since most of the useful custom content tools seem to
 	be working only in Windows, I absolutely insist that the code
-	will work in Windows version of Blender.</para>
+	will work in Windows version of Blender, though. You don't
+	need any weird UNIX-dependant things.</para>
 
       <para>The installation is quite simple: You need to copy the
 	<filename>lib</filename> directory, or its contents, wherever
@@ -305,6 +306,7 @@
 	<filename>lib</filename> because Blender in Windows will also
 	look in <filename>.\lib\</filename> (that is, under directory
 	<filename>lib</filename> under the current working directory).
+	Archeological reasons, you know.
       </para>
 
       <para>You also need to copy <filename>nwnmdlexport.py</filename>
@@ -345,6 +347,8 @@
       <sect2>
 	<title>Object tree is flat</title>
 
+	<para>[Outdated, explain]</para>
+
 	<para>At the moment the object tree is flat - that is, there
 	  has to be one Empty that has links to every object in the
 	  MDL, and if the items have any subobjects, they will be
@@ -355,6 +359,8 @@
 
       <sect2>
 	<title>Scale and Rotation</title>
+
+	<para>[FIXME: Outdated but relevant, explain]</para>
 
 	<para>At the moment, all rotations <emphasis>must</emphasis> be done
 	  in EditMode. The documentation for the trimesh "orientation"
@@ -522,6 +528,14 @@
 	<variablelist>
 	  <title>Possible NWN properties</title>
 
+	  <para>
+	    <emphasis>Warning:</emphasis>
+	    The properties relevant to the animations are only here 
+	    in form of a sketch. They may or may not be exactly that
+	    in the final form. Either way, there is no code to support
+	    this.
+	  </para>
+
 	  <varlistentry>
 	    <term><classname>SCENE</classname>.<property>baseobjectname</property>=<replaceable>objectname</replaceable></term>
 	    <listitem><para>
@@ -535,24 +549,6 @@
 		coughs itself to death. Or maybe it starts a chain
 		reaction that destroys the universe. It has been a
 		long time since I tried.
-	      </para>
-	    </listitem>
-	  </varlistentry>
-
-	  <varlistentry>
-	    <term><classname>SCENE</classname>.<property>geometry</property>=<replaceable>animation</replaceable></term>
-	    <listitem><para>
-	        What <type>Scene</type> (animation) the object
-	        geometry is taken from.  This defaults to the
-	        currently active <type>Scene</type>.  Animation pretty
-	        much assumes you have same objects in every
-	        <type>Scene</type>, so you'd probably want to create
-	        one <type>Scene</type> first with no animations, and
-	        then create the animation <type>Scene</type>s with
-	        "Link Objects" or something like that. You can specify
-	        such "parent" <type>Scene</type> here, and add it to
-	        <property>ignoreanimations</property> list as
-	        described below.
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -590,8 +586,18 @@
 	  <varlistentry>
 	    <term><classname>SCENE</classname>.<property>ignoreanimations</property>=<replaceable>animation,...</replaceable></term>
 	    <listitem><para>
-	        Comma-separated list of <type>Scene</type>s that will not
+	        Comma-separated list of <type>Action</type>s that will not
 	        be rendered into MDL animations.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>FILES</classname>.<property>outputdirectory</property>=<replaceable>directory</replaceable></term>
+	    <listitem><para>
+		This is the directory the resulting NWN model files
+		etcetera will be written. If not specified,
+		everything will go to the current working directory.
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -748,18 +754,12 @@
 
       <para>Direct support for analyzing Blender
 	<type>Material</type>s to formulate MDL values should be
-	doable.</para>
+	doable. (Better.)</para>
 
       <para>Particle effects? Surely I'll make particle
 	effects.</para>
 
       <para>Animation needs to be seen even preliminarily...</para>
-
-      <para>The Importer needs to be written too. I hope this will be
-	done one day. I will definitely at least estimate my chances
-	of how it will work and construct some sort of
-	outside-of-Blender prototype of mdl parser.
-      </para>
 
       <para>More properties, and better.</para>
 
