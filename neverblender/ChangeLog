@@ -1,3 +1,9 @@
+2004-02-08 22:32  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, nwnmdlimport.py
+	Added the Blender 2.32 headers. Now the files can be symlinked
+	to ~/.blender/scripts and they show up in File - Import and
+	File - Export. Long live the Foundation!
 
 2003-12-02 21:30  Urpo Lankinen  <wwwwolf@iki.fi>
 

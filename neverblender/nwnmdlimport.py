@@ -1,3 +1,10 @@
+#!BPY
+""" Registration info for Blender menus
+Name:    'Bioware NWN MDL'
+Blender: 232
+Group:   'Import'
+Tip:     'Import a Neverwinter Nights model'
+"""
 #################################################################
 #
 # nwnmdlimport.py

@@ -1,3 +1,10 @@
+#!BPY
+""" Registration info for Blender menus
+Name:    'Bioware NWN ASCII MDL'
+Blender: 232
+Group:   'Export'
+Tip:     'Export in Neverwinter Nights format ASCII model'
+"""
 #################################################################
 #
 # nwnmdlexport.py

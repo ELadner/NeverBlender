@@ -309,10 +309,12 @@
 	Archeological reasons, you know.
       </para>
 
-      <para>You also need to copy <filename>nwnmdlexport.py</filename>
-	in any place you feel it's comfortable or any place you can
-	find it from. You need to open it to Blender a lot. Keep that
-	in mind.</para>
+      <para>The files <filename>nwnmdlexport.py</filename> and
+	<filename>nwnmdlimport.py</filename> can be just about
+	anywhere you choose. However, you should put them, or at least
+	a symbolic link to them, to
+	<filename>~/.blender/scripts/</filename> directory (or wherever
+	you keep your scripts - check your Blender settings).</para>
 
     </sect1>
     
@@ -772,6 +774,10 @@
 
     <sect1>
       <title>Actual usage</title>
+
+      <para>[Note: Needs to be updated to reflect the 2.32 usage. For
+	casual in-CVS code browsers: For now, if you've got the script
+	in the right folder, just do File - Export - Biowhatever.]</para>
 
       <para>After you have made the object hierarchy and specified
         the properties, it's time to rock and roll!</para>
