@@ -29,13 +29,16 @@ class ModelFile:
     #_objects = []
 
     def __init__(self, name="unnamedmodel", classification="Item",
-                 fileformat="mdl", supermodel=None, objects=[]):
+                 fileformat="mdl", supermodel=None, objects=[],
+                 animationscale=1.0, animations=[]):
         self._modelname = name
         self._supermodelname = supermodel
+        self._animationscale = animationscale
         self._filedependancy = "NULL"
         self._classification = classification
         self._fileformat = fileformat
         self._objects = objects
+        self._animations = animations
 
     def setModelName(self,modelname=None):
         if modelname:
@@ -47,9 +50,22 @@ class ModelFile:
     def getSuperModelName(self):
         return self._supermodelname
     def setClassification(self,classification):
-        self._classification = classification
+        if classification != 'Character' and \
+           classification != 'Tile' and \
+           classification != 'Effects' and \
+           classification != 'Item':
+            putlog(NBLog.WARNING, 
+                   "Unknown classification \"%s\", assuming \"Item\"."
+                   % classification, "File")
+            self._classification = 'Item'
+        else:
+            self._classification = classification
     def getClassification(self):
         return self._classification
+    def setAnimationScale(self,animationscale):
+        self._animationscale = animationscale
+    def getAnimationScale(self):
+        return self._animationscale
     def setFileFormat(self,format):
         self._fileformat = format
     def getFileFormat(self):
@@ -61,6 +77,9 @@ class ModelFile:
 
     def addObject(self,object):
         self._objects.append(object)
+
+    def addAnimation(self,animation):
+        self._animations.append(animation)
     
     def writeToFile(self):
         odir = Props.getoutputdirectory()
@@ -90,15 +109,19 @@ class ModelFile:
         of.write("newmodel %s\n"  % self.getModelName())
         # FIXME: Any way to get the current .blend file name? Would rule.
 
-        # Supermodel.
-        # FIXME: Not tested.
+        # Model parameters =====
+
+        # FIXME: Supermodelling in general is Not Tested. Reports appreciated.
         if self.getSuperModelName():
             of.write("setsupermodel %s %s\n" % (self.getModelName(),
                                                 self.getSuperModelName()))
-        # Model parameters.
         of.write("classification %s\n" % self.getClassification())
 
-        # Begin geometry.
+        if self.getClassification() == 'Character' or \
+           self.getClassification() == 'Effect':
+            of.write("setanimationscale %f\n" % self.getAnimationScale())
+
+        # Model's scene graph =====
         of.write("beginmodelgeom %s\n" % self.getModelName())
 
         putlog(NBLog.INFO,
@@ -114,11 +137,30 @@ class ModelFile:
                     of.write(objtxt)
                 else:
                     putlog(NBLog.CRITICAL, 
-                           "Internal error: Couldn't serialize an object???",
+                           "Internal error: Couldn't serialize an object",
                            "File")
                     of.write("# Excuse me, some interpretive problem...")
 
         of.write("endmodelgeom %s\n" % self.getModelName())
+
+        # Model's animations =====
+
+        putlog(NBLog.INFO,
+               "Total %d animations" % len(self._animations), "File")
+        if len(self._objects) == 0:
+            of.write("# No animations\n");
+        else:
+            for anim in self._animations:
+                animtxt = str(anim)
+                if animtxt != "None":
+                    of.write(animtxt)
+                else:
+                    putlog(NBLog.CRITICAL, 
+                           "Internal error: Couldn't serialize an animation",
+                           "File")
+                    of.write("# Excuse me, some interpretive problem...")
+
+        # ... which are undone as of yet.
 
         # End of model file.
         of.write("donemodel %s\n" % self.getModelName())

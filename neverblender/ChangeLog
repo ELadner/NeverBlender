@@ -1,3 +1,32 @@
+2004-07-22 24:29  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* lib/Animation.py:
+	Damn, this is probably some insignificant yet headache-inducing
+	part of the NWN model spec. It's a new library file anyway.
+
+	There's the class Animation, which contains the stuff for
+	the animation props. There eventually will be AnimationEvent
+	for game cues.
+	AnimationNode is, at the time, in there, but the functionality
+	should actually be the responsibility of Trimesh, Dummy etc.
+	so this stuff will probably need to be subclassed.
+
+	* nwnmdlexport.py:
+	There's extremely rudimentary and completely non-working
+	implementation of animation exporting out there.
+	Thoughtfully, I made it skip the phase when I committed
+	this to CVS, so I hope things aren't broken right now.
+	
+	* lib/ModelFile.py:
+	Added support for setanimationscale (and {get,set}AnimationScale
+	methods)
+	Added serialization of animation objects (in other words, you can
+	do mf.addAnimation(animobject) and it will be written to the
+	model file the same way object nodes are written).
+
+	* lib/ModelFile.py (ModelFile.setClassification): 
+	Added some sanity checking.
+
 2004-05-14 22:13  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py, lib/Trimesh.py

@@ -308,6 +308,10 @@
 	  <ulink url="http://www.cvshome.org/dev/codewindow.html">CVS
 	    home page</ulink>, Linux versions are
 	  usually pre-packaged with the distribution.
+	  And are there MacOSX users who can live without
+	  <ulink url="http://fink.sourceforge.net/">Fink</ulink>,
+	  which among other things, by the way, doth package CVS?
+	  (heck, even my sister needs Lincity...)
 	</para>
 
 	<para>The following illustrates how to get the code from CVS:</para>
@@ -539,6 +543,41 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
   <!-- ================================================================ -->
   <chapter>
     <title>Modelling in NeverBlender</title>
+
+    <warning>
+      <para>It is <emphasis>highly recommended</emphasis> to
+	<emphasis>not</emphasis> save your work after you have used
+	NeverBlender.</para>
+      <para>In other words, the following work cycle is highly
+	recommended: first save your work, then run
+	the exporter; if the result is unsatisfactory, use
+	<menuchoice>
+	  <shortcut>
+	    <keycombo><keycap>Ctrl</keycap><keysym>O</keysym></keycombo>
+	  </shortcut>
+	  <guimenu>File</guimenu>
+	  <guimenuitem>Reopen Last</guimenuitem>
+	</menuchoice>
+	to open the last saved version, work from there, again
+	save, and so on.
+      </para>
+
+      <para>The reason is that while NeverBlender tries to avoid
+	touching your data, it somehow <emphasis>might</emphasis>,
+	and there are (as noted elsewhere) no warranties
+	on software these days. And think about it - this is just
+	beta software right now, anyway! Who knows what it does to
+	your data...
+      </para>
+
+      <para>In fact, I guess the best possible way to use the exporter
+	is to quit right after running the exporter, and if there are
+	any needs to edit the thing later, restart Blender and use
+	the Reopen Last trick mentioned earlier (or use file name on
+	command line, or start Blender up by clicking file, or
+	something).</para>
+    </warning>
+
 
     <para>MDL format itself is somewhat limited compared to
       the full feature set of Blender - which shouldn't be a

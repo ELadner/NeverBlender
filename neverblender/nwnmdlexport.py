@@ -30,7 +30,8 @@ if access("/usr/local/lib/neverblender/lib", X_OK) == 1:
 
 # Now, let's get back to our regular every-day library requesting.
 import Blender
-from Blender import Scene, Object
+from Blender import Scene, Object, Armature
+from Blender.Armature import NLA
 
 import Props
 import SceneHelpers
@@ -39,8 +40,10 @@ from NBLog import openlogfile, closelogfile, putlog
 from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
+from Animation import Animation, AnimationNode
 
 from string import join
+from re import match
 
 #################################################################
 
@@ -235,6 +238,74 @@ if supermodel != None:
 # Process each child of the baseobj...
 mfile._objects = []
 processobject(model,"NULL",mfile)
+
+
+# Mess around with Animations
+# (Note: doc says GetActions returns a  "PyList", but in fact, it's a dict.
+# Blender has some funny nomenclature.)
+# (Also, it's not getAllChannelIpo(), it's getAllChannelIpos().)
+# The 2.33 Action API rules. Docs have typos though. =)
+mfile._animations = []
+
+actions = NLA.GetActions()
+
+#arms = Armature.Get()
+#for a in arms:
+#	putlog(NBLog.DEBUG,
+#	       "Armature %s bones %s, children %s"
+#	       % (a, str(a.getBones()), scnobjchilds[a.getName()]))
+
+#test = Object.Get('cone2')
+#p = test.getParent();
+#putlog(NBLog.DEBUG, "cone2 is parented to %s" % p.getName())
+
+#putlog(NBLog.DEBUG, "Actionlist: %s" % repr(actions))
+for a in actions:
+
+	# Let's skip this animation bullshit. (For those who just
+	# checked out the code and can't get the bloody thing to
+	# work!)
+	continue
+	
+	# FIXME: if action in props.whatever.don't-do-this: next
+	
+	putlog(NBLog.INFO, "Processing animation %s" % a)
+	action = actions[a]
+
+	ipos = action.getAllChannelIpos()
+	putlog(NBLog.DEBUG, "Bones animated: %s" % ipos.keys())
+
+	anim = Animation()
+	anim.setName(a)
+	anim.setModelName(model)
+
+	# Note: we're iterating Bones instead of Objects.
+	# Thus, the goddamn Objects have to have same name as
+	# their controlling Bones.
+	for bone in ipos:
+		anode = AnimationNode()
+		anode.setName(bone)
+
+		print "Getting %s\n" % bone
+		aob = Object.Get(bone)
+		aobtype = aob.getType()
+		if aobtype == 'Empty':
+			anode.setType('dummy')
+		elif aobtype == 'Mesh':
+			anode.setType('trimesh')
+		else:
+			putlog(NBLog.WARNING,
+			       "%s is unknown object type (%s), assuming dummy"
+			       % (aob, aobtype))
+			anode.setType('dummy')		
+
+		# foo
+
+		anim.addNode(anode)
+
+	anim.setLength(1.0)             # FIXME!
+
+	mfile.addAnimation(anim)
 
 # Write the object to file.
 mfile.writeToFile()
