@@ -370,6 +370,13 @@ U neverblender/ChangeLog
 
 	<sect3>
 	  <title>A <emphasis>way</emphasis> too easy installation method</title>
+	  <warning>
+	    <para>Sorry, this doesn't work. I got carried away. Looks
+	      like it works just fine in regular Python but not inside
+	      Blender. Goddamn it.</para>
+	    <para>Well, I <emphasis>told</emphasis> you it was
+	      too easy? =)</para>
+	  </warning>
 
 	  <para>This installation method is easiest because it doesn't
 	    need any weird environment variables or messing with
@@ -391,6 +398,20 @@ U neverblender/ChangeLog
 </screen>
 
 	  <para>...and the libraries should be installed!</para>
+
+	</sect3>
+
+	<sect3>
+	  <title>Fixed installation directory</title>
+	  
+	  <para>This feature is only partially supported the way it
+	    should, and it's only 0% elegant.</para>
+
+	  <para>You can stick NeverBlender in
+	    <filename>/usr/local/lib/neverblender</filename> or
+	    symlink it there. It should work.</para>
+
+	  <para><emphasis>Should.</emphasis></para>
 
 	</sect3>
 
