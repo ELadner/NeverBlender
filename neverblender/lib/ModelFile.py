@@ -85,3 +85,4 @@ class ModelFile:
 
         # End of model file.
         of.write("donemodel %s\n" % self.getModelName())
+        of.close()
