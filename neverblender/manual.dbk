@@ -1105,7 +1105,27 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
     
   </chapter>
 
+  <!-- ================================================================ -->
+  <chapter>
+    <title>Complementary scripts</title>
 
+    <para>Or, "Two great scripts that taste great together." What
+      other scripts are out there that could make scripting easy and
+      nice?</para>
+
+    <sect1>
+      <title>Knife</title>
+
+      <para>The <ulink url="http://www.selleri.org/Blender/">Knife
+	  script</ulink> or something similar might be useful when
+	doing tile slicing á la Tile Slicer. The trick would be then
+	to generate the meshes along which the tiles would be
+	sliced... this probably calls for some further scripting.
+      </para>
+    </sect1>
+
+
+  </chapter>
 
   <!-- ================================================================ -->
   <chapter>
