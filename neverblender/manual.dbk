@@ -901,6 +901,20 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><replaceable>objectname</replaceable>.<property>renamedto</property>=<replaceable>newname</replaceable></term>
+	    <listitem>
+	      <para>
+		So, you want to use Blender object names like
+		"HoeofDestruction_Head" instead of highly
+		uninformative "wplss_t_051". Sure. With this property,
+		you can. This property will rename the object in the
+		resulting file.		  
+		(Unimplemented!)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>keyingmode</property>=<replaceable>Constant|IpoKeys</replaceable></term>
 	    <listitem><para>
 	        Specifies the algorithm with which the keyframes are generated
@@ -922,6 +936,7 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
                 more conservative, it will usually be less accurate,
                 because the "slopes" of IPOs are not saved, which may
                 be a little bit less interesting...
+		(Unimplemented!)
                 </para>
 	    </listitem>
 	  </varlistentry>
@@ -931,6 +946,7 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
 	    <listitem><para>
                In "Constant" keying mode, defines the interval between
                keyframes in frames. Default is 5 frames.
+		(Unimplemented!)
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -942,6 +958,23 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
                frames/second. (It <emphasis>would</emphasis> default
                to whatever's set in RenderButtons, but it beats me on
                how to read that value from Python...)
+		(Unimplemented!)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>renamedto</property>=<replaceable>newname</replaceable></term>
+	    <listitem><para>
+
+	       Use this to rename an animation to whatever you want.
+	       this is handy if you want to use your preferred naming
+	       of animations and find NWN's ideas ludicruous. Like if
+	       you prefer "peek_left" instead of whatever it's really
+	       called internally by NWN (too lazy to check and I don't
+	       have modelling experience, so nyah.)
+
+		(Unimplemented!)
 	      </para>
 	    </listitem>
 	  </varlistentry>
