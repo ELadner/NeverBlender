@@ -12,6 +12,8 @@
 #
 #################################################################
 
+from NwnMath import euler2nwn
+
 class Trimesh:
 	# Can be set
 	#_name = "untitledtrimesh"
@@ -25,7 +27,7 @@ class Trimesh:
 
 	# Can be set.
 	#_position = [0.0, 0.0, 0.0]
-	#_orientation = [0.0, 0.0, 0.0]
+	#_orientation = [0.0, 0.0, 0.0]         # stored in euler format!
 	#_scale = 1.0
 	#_texture = ""
 	#_wirecolor = [0.6, 0.6, 0.6]
@@ -211,8 +213,8 @@ class Trimesh:
 		o = self._orientation
 		if o[0]==0.0 and o[1]==0.0 and o[2]==0.0:
 			return ""
-		return "  orientation %f %f %f 1.0\n" % \
-		       tuple(self._orientation)
+		return "  orientation %f %f %f %f\n" % \
+		       euler2nwn(self._orientation)
 	def _texture_as_string(self):
 		if self._texture:
 			return "  bitmap %s\n" % self._texture
