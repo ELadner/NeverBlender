@@ -89,6 +89,10 @@ def getoutputdirectory():
 		sel = Object.getSelected()
 		return sel[0].name
 
+# Gets the exporter log file.
+def getlogfile():
+	return getValue('FILES','log')
+
 # Returns the model classification.
 # Can be 'Character', 'Tile', 'Effects' or 'Item'.
 # Default: 'Item'.

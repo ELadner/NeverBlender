@@ -35,7 +35,7 @@ from Blender import Scene, Object
 import Props
 import SceneHelpers
 import NBLog
-from NBLog import putlog
+from NBLog import openlogfile, closelogfile, putlog
 from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
@@ -181,11 +181,17 @@ def processdownfrom(model,mfile):
 
 #################################################################
 
-putlog(NBLog.SPAM, "NeverBlender Blender->MDL export script")
-putlog(NBLog.SPAM, "*** by Urpo Lankinen, 2003")
-
 # Get properties from the 'nwnprops' text.
 Props.parse()
+
+# Get logging.
+logfile = Props.getlogfile()
+if logfile:
+	openlogfile(logfile)
+
+# Some banner stuff right here...
+putlog(NBLog.SPAM, "NeverBlender Blender->MDL export script")
+putlog(NBLog.SPAM, "by Urpo Lankinen, 2003")
 
 # Get the scene, and figure out which objects are whose children.
 geometry = Props.getgeometry()
@@ -212,6 +218,10 @@ if len(scnobjchilds[model]) <= 0:
 	putlog(NBLog.CRITICAL, 
 	       "the base object %s has no sibling objects." % model)
 	exit
+
+# Get the list of actions
+actionlist = SceneHelpers.actionlist()
+
 
 # Let's open the file.
 mfile = ModelFile()
@@ -258,3 +268,8 @@ if pwkname:
 	# Write out the PWK.
 	pwkfile.writeToFile()
 
+if logfile:
+	closelogfile()
+	putlog(NBLog.INFO, "Log file written to %s" % logfile)
+else:
+	print("Logfile: %s\n" % logfile)

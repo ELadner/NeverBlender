@@ -21,9 +21,29 @@ DEBUG = 4
 # Indexes of this list correspond to above constants...
 prefixes = ['   ', '[*]', '[!] WARNING:', '<!> CRITICAL ERROR:', '<?> DEBUG:']
 
+logfile = 0
+loggingtofile = 0
+
+def openlogfile(filename, module=""):
+    global logfile, loggingtofile
+    logfile = file(filename, "w")
+    loggingtofile = 1
+
+def closelogfile(module=""):
+    global logfile, loggingtofile
+    if not loggingtofile:
+        putlog(WARNING, "Trying to close a nonexistent", module)
+    logfile.close()
+    loggingtofile = 0
+
 def putlog(sev, message, module=""):
     "Output a console message with specified message class/severity."
     if not module:
         print prefixes[sev] + " " + message
+        if loggingtofile:
+            logfile.write(prefixes[sev] + " " + message + "\n")
     else:
         print prefixes[sev] + " [" + module + "] " + message
+        if loggingtofile:
+            logfile.write(prefixes[sev] + " [" + module + "] " +
+                          message + "\n")
