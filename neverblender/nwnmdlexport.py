@@ -20,9 +20,27 @@ from ModelFile import ModelFile
 from Dummy import Dummy
 from Trimesh import Trimesh
 
+from string import join
+
 #################################################################
 
-def processobject(sobj, parent, details):
+# The base object.
+def processdummy(model,parent):
+	d = Object.Get(model)
+	dt = d.getType()
+	print " ** Processing %s (%s)" % (model, dt)
+	if dt != 'Empty':
+		print " ** Internal error: Can't process this type here!"
+		return
+	dummy = Dummy()
+	if parent != "NULL":
+		dummy.setParent(parent)
+	dummy.setName(model)
+	dummyloc = d.getLocation()
+	dummy.setPosition(dummyloc)
+	return dummy
+
+def processtrimesh(sobj, parent, details):
 	"""Process the Object named sobj and return a Trimesh. If
 	details is true, also generates texture and such, otherwise
 	just location, scale and orientation."""
@@ -31,7 +49,7 @@ def processobject(sobj, parent, details):
 	obj = Object.Get(sobj)
 	print " ** Processing %s (%s)" % (sobj, obj.getType())
 	if obj.getType() != 'Mesh':
-		print " ** Can only deal with meshes!"
+		print " ** Internal error: can only deal with meshes!"
 		return
 
 	# get the Mesh block of the Object.
@@ -88,17 +106,49 @@ def processobject(sobj, parent, details):
 	return trimesh
 
 # For processing object tree recursively.
-def processchildrenof(model):
+def processobject(model,parent):
 	global mfile, scnobjchilds
-	for sobj in scnobjchilds[model]:
-		trimesh = processobject(sobj, model, 1)
-		mfile.addObject(trimesh)
-		try:
-			for child in scnobjchilds[sobj]:
-				processchildrenof(child)
-		except KeyError:
-			pass
 
+	# Process this object
+	print " **> Processing %s" % model
+
+	thismod = Object.Get(model)
+	mtype = thismod.getType()
+	if mtype == 'Empty':
+		dummy = processdummy(model, parent)
+		mfile.addObject(dummy)
+	elif mtype == 'Mesh':
+		# FIXME: Parent
+		trimesh = processtrimesh(model, parent, 1)
+		mfile.addObject(trimesh)
+	elif mtype == 'Armature':
+		# Special code to handle armature: We process the armature's
+		# children "by hand" to make them parent to the armature's
+		# parent instead of the armature.
+		try:
+			childs = scnobjchilds[model]
+			print " ** %s armature children: %s" % (model,
+						       join(childs, ", "))
+			for mchild in childs:
+				processobject(mchild,parent)
+			return
+		except KeyError:
+			return
+	else:
+		print " ** Can't handle object of type %s" % mtype
+	# Process the children
+	try:
+		children = scnobjchilds[model]
+	except KeyError:
+		return
+	processdownfrom(model)
+
+def processdownfrom(model):
+	childs = scnobjchilds[model]
+	print " ** %s children: %s" % (model, join(childs, ", "))
+
+	for mchild in childs:
+		processobject(mchild,model)
 
 #################################################################
 
@@ -137,21 +187,12 @@ mfile.setClassification(Props.getclassification())
 
 # Supermodel?
 supermodel = Props.getsupermodel()
-if supermodel != 0:
+if supermodel != None:
 	print "*** Super model: %s" % supermodel
 	mfile.setSuperModelName(supermodel)
-
-# The base object.
-base = Dummy()
-base.setName(model)
-baseobj = Object.Get(model)
-baseobjloc = baseobj.getLocation()
-base.setPosition(baseobjloc)
-
-mfile.addObject(base)
 	
 # Process each child of the baseobj...
-processchildrenof(model)
+processobject(model,"NULL")
 
 # Write the object to file.
 mfile.writeToFile()

@@ -15,6 +15,7 @@
 import Props
 import os.path
 from os.path import normpath, join
+from time import asctime
 
 class ModelFile:
     #_modelname = "unnamedmodel"
@@ -62,6 +63,7 @@ class ModelFile:
         # Begin of model file.
         of.write("# Model written by NeverBlender MDL Export Script\n")
         of.write("# File name: %s\n" % outfile)
+        of.write("# Built on: %s\n" % asctime())
         of.write("filedependancy NULL\n")
         of.write("newmodel %s\n"  % self.getModelName())
         # FIXME: Any way to get the current .blend file name? Would rule.

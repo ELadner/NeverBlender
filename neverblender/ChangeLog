@@ -1,3 +1,22 @@
+
+2003-11-11 23:50  Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlexport.py, lib/ModelFile.py
+	Largish overhaul of the recursive object tree handling.
+	Now, it's possible to parent meshes to armatures, and these
+	are handled correctly.
+	This is a *major* step towards animation support. Also, now the
+	recursive parent handling seems to work as it's advertised to.
+
+	Oh, and since I now understand how the hell the Blender's
+	Actions are supposed to work, I'll implement the animation
+	sequences that way anyway in the future... (The question
+	remains - where's the API?)
+
+	Also of note is the fact that I develop on Blender 2.30, and
+	the hideous Python issue was fixed by downgrading my
+	Windows python installation to 2.2.3.
+	
 2003-11-11 20:35  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* nwnmdlexport.py
