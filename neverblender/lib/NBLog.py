@@ -18,19 +18,12 @@ INFO = 1
 WARNING = 2
 CRITICAL = 3
 DEBUG = 4
+# Indexes of this list correspond to above constants...
+prefixes = ['   ', '[*]', '[!] WARNING:', '<!> CRITICAL ERROR:', '<?> DEBUG:']
 
-def putlog(sev, message):
+def putlog(sev, message, module=""):
     "Output a console message with specified message class/severity."
-    if sev == SPAM:
-        print "    " + message
-    elif sev == INFO:
-        print "[*] " + message
-    elif sev == WARNING:
-        print "[!] WARNING: " + message
-    elif sev == CRITICAL:
-        print "<!> CRITICAL ERROR: " + message
-    elif sev == DEBUG:
-        print "    " + message
+    if not module:
+        print prefixes[sev] + " " + message
     else:
-        print "    " + message
-
+        print prefixes[sev] + " [" + module + "] " + message
