@@ -12,7 +12,10 @@
 #
 #################################################################
 
-from NwnMath import euler2nwn
+import Blender
+from Blender import Mathutils
+from Blender.Mathutils import *
+
 from string import join
 import NBLog
 from NBLog import putlog
@@ -85,17 +88,11 @@ class Trimesh:
 	def setPosition(self, poslist):
 		assert len(poslist) == 3
 		self._position = poslist
-	def setOrientation(self, orilist):
-		assert len(orilist) == 3
-		if orilist[0] != 0.0 or orilist[1] != 0.0 or orilist[2] != 0.0:
-			putlog(NBLog.SPAM, 
-			       "Object %s is rotated." % self._name,
-			       "Trimesh")
-		else:
-			putlog(NBLog.SPAM, 
-			       "Object %s isn't rotated." % self._name,
-			       "Trimesh")
-		self._orientation = orilist
+	def setOrientation(self, orientation):
+		# Would be nice to check, but I'm a peabrain and can't
+		# figure out why this won't work.
+		#assert isinstance(orientation, Euler)
+		self._orientation = orientation
 
 	def setWireColor(self, color):
 		assert len(color) == 3
@@ -235,10 +232,12 @@ class Trimesh:
 		return o
 	def _orientation_as_string(self):
 		o = self._orientation
-		if o[0]==0.0 and o[1]==0.0 and o[2]==0.0:
+		q = o.toQuat()
+		
+		if o.x == 0.0 and o.y == 0.0 and o.z == 0.0:
 			return ""
 		return "  orientation %f %f %f %f\n" % \
-		       euler2nwn(self._orientation)
+		       (q.x, q.y, q.z, q.w)
 	def _texture_as_string(self):
 		if self._texture:
 			return "  bitmap %s\n" % self._texture
