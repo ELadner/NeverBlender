@@ -1,0 +1,84 @@
+
+The NeverBlender Tech Challenges Log
+====================================
+
+Since there's no blog for neverblender, and I damn well won't set up
+one, and it wouldn't be updated much anyway, here's a file where I'll
+record some specific challenges.
+
+(For CVS updaters: Do not change anything in the previous entries, just
+add stuff to the end. Please observe the date formats and such.)
+
+
+
+---------------------------------------------------------------------------
+Title: Unforgiving stuff in Actions
+Date: 2004-08-15
+Author: wwwwolf
+Topics: Exporter, Animations
+
+Well, a few weeks ago, I started really drilling down to the problem of
+exporting Animations. Blender 2.33 and later has new NLA / Action api
+that makes action exportation very feasible. It only has some small
+problems in it.
+
+My post to Elysiun: http://www.elysiun.com/forum/viewtopic.php?t=29077
+Quoted for posterity:
+
+    The idea is simple: I need to get orientation and position lists,
+    all along the Action timeline, on keyframes (either based on
+    constant intervals or possibly based on the keyframes on Action).
+
+    Anyway, I have this problem: I can figure out what Actions are
+    there in the scene. I can figure out what IPO channels are there
+    in an Action (getAllChannelIpos()).
+
+    But how do I find out what objects are animated in Actions, and
+    how?
+
+    I get a dictionary of Ipos keyed by Action channel names, which
+    may or may not correspond to Armature Bone names. I can get
+    IpoCurves out of the Ipo, but their names aren't related in anyway
+    to objects themselves.
+
+    I can build a list of Objects in the scene, and the only
+    information I can get from them is that they're linked to the
+    Armature! The objects are supposed to be linked to individual
+    Bones. How do I get which Bone the Object is linked to - or the
+    other way around? (Armature Bone only knows its children and
+    parent.)
+
+    I have this terribly stupid idea of doing this the big, stupid
+    inelegant way - linking the Action, stepping through it and
+    recording each and every object's location over the course of the
+    animation.
+
+Today, I found even more problems from this latter approach. How do I
+get which Armatures are animated in Actions? There's
+Action.setActive() (where's Action.unsetActive()???), which I suspect
+is to be used on Armatures. But - hah - I *can* get Armature's
+children from scnobjectchilds! There's some faint glimmer of hope
+here!
+
+Maybe that's the way???
+
+So, here's one approach to figuring out animation data in ugly pseudocode:
+
+    actionlist = list of actions
+    armlist = list of armatures
+    locdata, oridata = dictionary of (objectname: emptylist)
+
+    foreach action from actionlist:
+
+        length = action.getlength
+        othercooldata = action.getothercooldata
+
+        foreach armature from armlist:
+
+            action.setactive(armature)
+
+            foreach object from childrenof(armature):
+                step_through_animation(0, length, stride):
+                    oridata[object].push(object.getorientation)
+                    locdata[object].push(object.getlocation)
+
