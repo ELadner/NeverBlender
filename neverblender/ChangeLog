@@ -1,0 +1,16 @@
+
+Mon Jul 7 18:11:00 2003  Urpo Lankinen <wwwwolf@iki.fi>
+	
+	* nwnmdlexport.py, lib/Trimesh.py:
+	Added the support for wirecolor and specular, which are read from
+	Materials. Currently only the first material is used.
+	This feature is quite useless though.
+
+	* nwnmdlimport.py, lib/NwnMath.py:	
+	Took Yann's mathematics routines to convert between Blender
+	'euler' and NWN 'orientation', and moved them into lib/NwnMath.py
+	file.
+	Also tested the importer first time. Yeah, it's dog slow...
+	
+	
+	
