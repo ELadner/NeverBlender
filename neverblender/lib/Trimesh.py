@@ -13,6 +13,7 @@
 #################################################################
 
 from NwnMath import euler2nwn
+from string import join
 
 class Trimesh:
 	# Can be set
@@ -185,13 +186,21 @@ class Trimesh:
 	def addFace(self, f):
 		"""Takes a NMFace and puts its information to Trimesh."""
 		# reminder: f is of type NMFace (NMesh Face).
-		if len(f.v) == 3:
+		verts = len(f.v)
+		if verts < 2:
+			print ("  *! Found a face with one or " +
+			      "less vertices. I'd call that patently " +
+			      "ridiculous.")
+		if verts == 2:
+			print ("  *! Object has a face has 2 vertices." +
+			      " That's an odd one! It won't be added.")
+		elif verts == 3:
 			self._addTriangleFace(f)
-		elif len(f.v) == 4:
+		elif verts == 4:
 			self._addQuadFace(f)
 		else:
-			print "WARNING: Too many verts in face! Not added."
-			print "  You need to divide this face manually."
+			print ("  *! Can't add face with %d verts! " +
+			      "You need to divide this face manually.") % verts
 
 	def __str__(self):
 		o = ("node trimesh %s\n" % self._name) + \
@@ -227,14 +236,15 @@ class Trimesh:
 		return o
 	def _faces_as_string(self):
 		o = ("  faces %d\n" % len(self._faces))
-		o+= ''.join(map(lambda f: "    %d %d %d %d %d %d %d 1\n" % tuple(f),
+		o += join(map(
+			lambda f: "    %d %d %d %d %d %d %d 1\n" % tuple(f),
 			self._faces))
 		return o
 	def _texverts_as_string(self):
 		if self._texture:
 			o = ("  tverts %d\n" % len(self._texverts))
-			o+= str(tuple(map(lambda tv: "    %f %f 0\n" % tuple(tv),
-				self._texverts)))
+			o += join(map(lambda tv: "    %f %f 0\n" % tuple(tv),
+				     self._texverts))
 		else:
 			o = "  tverts 1\n    0 0 0\n"
 		return o
