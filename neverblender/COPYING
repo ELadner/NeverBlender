@@ -4,12 +4,22 @@ NeverBlender package is distributed under an extremely free license.
 Basically, the package is © 2003 The NeverBlender Contributors. It is
 copyrighted - not public domain.
 
-You are allowed to distribute, modify and use the source code /
-scripts in any way you want. However, the copyright notices must
-remain as they are. You may add notes describing which parts you have
-changed to copies you distribute, but this copyright notice (and the
-COPYING and AUTHORS files) must accompany the distribution, and all
-copyright notices on the files must remain as they are.
+The package as whole is copyrighted by the NeverBlender Contributors
+(as listed in the AUTHORS file) collectively.
+
+Individual developers hold copyright on the code they are written, and
+may redistribute the code themselves under whatever license they see
+fit. However, by submitting the code to the NeverBlender package and
+CVS, they agree the code to be distributed under the terms of the
+following rules.
+
+You (as an user or developer who downloads this package) are allowed
+to distribute, modify and use the source code / scripts in any way you
+want. However, the copyright notices must remain as they are. You may
+add notes describing which parts you have changed to copies you
+distribute, but this copyright notice (and the COPYING and AUTHORS
+files) must accompany the distribution, and all copyright notices on
+the files must remain as they are.
 
 There is no warranty whatsoever, expressed or implied. You are using
 this software at your own risk!
