@@ -14,6 +14,8 @@
 
 from NwnMath import euler2nwn
 from string import join
+import NBLog
+from NBLog import putlog
 
 class Trimesh:
 	# Can be set
@@ -86,9 +88,13 @@ class Trimesh:
 	def setOrientation(self, orilist):
 		assert len(orilist) == 3
 		if orilist[0] != 0.0 or orilist[1] != 0.0 or orilist[2] != 0.0:
-			print "  * Object %s is rotated." % self._name
+			putlog(NBLog.SPAM, 
+			       "Object %s is rotated." % self._name,
+			       "Trimesh")
 		else:
-			print "  * Object %s isn't rotated." % self._name
+			putlog(NBLog.SPAM, 
+			       "Object %s isn't rotated." % self._name,
+			       "Trimesh")
 		self._orientation = orilist
 
 	def setWireColor(self, color):
@@ -103,16 +109,19 @@ class Trimesh:
 		if scalelist[0] != scalelist[1] or \
 		  scalelist[1] != scalelist[2] or \
 		  scalelist[0] != scalelist[2]:
-			print "  * WARNING: Object %s scale not uniform!" % \
-			      self._name
-			print "    x = %f, y = %f, z = %f" % tuple(scalelist)
 			self._scale = \
 			      (scalelist[0]+scalelist[1]+scalelist[2]) / 3
-			print "    Using avg scale as uniform scale: %f." % \
-			      self._scale
+			putlog(NBLog.WARNING, 
+			       "Object %s scale not uniform! " +
+			       "x = %f, y = %f, z = %f "+
+			       "Using avg scale as uniform scale: %f" %
+			       (self._name,
+				scalelist[0], scalelist[1], scalelist[2],
+				self._scale), "Trimesh")
 		else:
-			print "  * Object %s has uniform scale %f." % \
-			      (self._name,self._scale)
+			putlog(NBLog.SPAM, 
+			       "Object %s has uniform scale %f." % 
+			       (self._name,self._scale), "Trimesh")
 			self._scale = scalelist[0]
 	def setTexture(self, texture):
 		self._texture = texture
@@ -188,19 +197,24 @@ class Trimesh:
 		# reminder: f is of type NMFace (NMesh Face).
 		verts = len(f.v)
 		if verts < 2:
-			print ("  *! Found a face with one or " +
-			      "less vertices. I'd call that patently " +
-			      "ridiculous.")
+			putlog(NBLog.WARNING, 
+			       "Found a face with one or " +
+			       "less vertices. I'd call that patently " +
+			       "ridiculous.", "Trimesh")
 		if verts == 2:
-			print ("  *! Object has a face has 2 vertices." +
-			      " That's an odd one! It won't be added.")
+			putlog(NBLog.WARNING, 
+			       "Object has a face has 2 vertices." +
+			       "That's an odd one! It won't be added.",
+			       "Trimesh")
 		elif verts == 3:
 			self._addTriangleFace(f)
 		elif verts == 4:
 			self._addQuadFace(f)
 		else:
-			print ("  *! Can't add face with %d verts! " +
-			      "You need to divide this face manually.") % verts
+			putlog(NBLog.WARNING, 
+			       "Can't add face with %d verts! " +
+			       "You need to divide this face manually."
+			       % verts, "Trimesh")
 
 	def __str__(self):
 		o = ("node trimesh %s\n" % self._name) + \

@@ -18,6 +18,8 @@ import os.path
 from os import fsync, remove
 from os.path import normpath, join, exists
 from time import asctime
+import NBLog
+from NBLog import putlog
 
 class ModelFile:
     #_modelname = "unnamedmodel"
@@ -70,12 +72,15 @@ class ModelFile:
             try:
                 remove(outfile)
             except:
-                print "*** Couldn't remove existing file %s." % outfile
-                print "*** Can only hope we'll clobber it properly now..."
+                putlog(NBLog.WARNING, 
+                       "Couldn't remove existing file %s." +
+                       "Can only hope we'll clobber it properly now..."
+                       % outfile, "File")
 
         of = file(outfile, "w")
-        print "*** Writing '%s' to file %s." % (self.getModelName(),
-                                                outfile)
+        putlog(NBLog.INFO, 
+               "Writing '%s' to file %s." % (self.getModelName(),
+                                             outfile), "File")
 
         # Begin of model file.
         of.write("# Model written by NeverBlender MDL Export Script\n")
@@ -96,9 +101,11 @@ class ModelFile:
         # Begin geometry.
         of.write("beginmodelgeom %s\n" % self.getModelName())
 
-        print "*** Total %d objects" % len(self._objects)
+        putlog(NBLog.INFO,
+               "Total %d objects" % len(self._objects), "File")
         if len(self._objects) == 0:
-            print "*** ...hrm, did I just say 0 objects?"
+            putlog(NBLog.WARNING, 
+                   "...hrm, did I just say 0 objects?", "File")
             of.write("# No objects?\n");
         else:
             for obj in self._objects:
@@ -106,7 +113,9 @@ class ModelFile:
                 if objtxt != "None":
                     of.write(objtxt)
                 else:
-                    print "*** Internal error: Couldn't serialize an object???"
+                    putlog(NBLog.CRITICAL, 
+                           "Internal error: Couldn't serialize an object???",
+                           "File")
                     of.write("# Excuse me, some interpretive problem...")
 
         of.write("endmodelgeom %s\n" % self.getModelName())

@@ -14,6 +14,8 @@
 
 import os
 from Blender import Text, Object
+import NBLog
+from NBLog import putlog
 
 ## Parsing nwnprops and utility funcs for getting the values.
 
@@ -24,10 +26,11 @@ nwnprops = {}
 def parse():
 	proptxt = Text.get('nwnprops')
 	if not proptxt:
-		print "*** Unable to find the configuration ('nwnprops'.) "+\
-		      "Using defaults..."
+		putlog(NBLog.WARNING,
+		       "Unable to find the configuration ('nwnprops'.) " +
+		       "Using defaults...", "Props")
 		return
-	print "*** Found configuration, parsing."
+		putlog(NBLog.SPAM, "Found configuration, parsing.", "Props")
 	lines = proptxt.asLines()
 	for l in lines:
 		# Ignore comment lines and empty lines.
@@ -40,8 +43,9 @@ def parse():
 			objectsep=l.index('.')
 			valuesep=l.index('=', objectsep)
 		except ValueError:
-			print "*** Ignoring following conf entry (invalid format):"
-			print l
+			putlog(NBLog.WARNING,
+			       "Ignoring following conf entry " +
+			       "(invalid format): " + l, "Props")
 			continue
 		object = l[0:objectsep]
 		property = l[objectsep+1:valuesep]
