@@ -1,3 +1,12 @@
+2003-10-14  Weyfour WWWWolf  <wwwwolf@iki.fi>
+
+	* lib/ModelFile.py (ModelFile.writeToFile): 
+	Moved filedependancy before the model definition start (as it
+	appears to be in some Bioware models) and changed "endmodel" line
+	to "donemodel". Now the models can be previewed
+	in MdlViewer *and* NWN-J3D! =) (Or that's what my 2-second testing
+	shows. Without even running this program. I just edited an
+	existing model and NWN-J3D suddenly started to work. =)
 
 2003-09-23 21:50  Urpo Lankinen  <wwwwolf@iki.fi>
 

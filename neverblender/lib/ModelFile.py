@@ -56,8 +56,8 @@ class ModelFile:
         # Begin of model file.
         of.write("# Model written by NeverBlender MDL Export Script\n")
         of.write("# File name: %s\n" % outfile)
-        of.write("newmodel %s\n"  % self.getModelName())
         of.write("filedependancy NULL\n")
+        of.write("newmodel %s\n"  % self.getModelName())
         # FIXME: Any way to get the current .blend file name? Would rule.
 
         # Supermodel.
@@ -76,4 +76,4 @@ class ModelFile:
         of.write("endmodelgeom %s\n" % self.getModelName())
 
         # End of model file.
-        of.write("endmodel %s\n" % self.getModelName())
+        of.write("donemodel %s\n" % self.getModelName())
