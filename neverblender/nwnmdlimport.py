@@ -1,6 +1,6 @@
 #!BPY
 """ Registration info for Blender menus
-Name:    'Bioware NWN MDL'
+Name:    'Bioware NWN, ASCII (.mdl)...'
 Blender: 232
 Group:   'Import'
 Tip:     'Import a Neverwinter Nights model'
@@ -35,7 +35,7 @@ from Blender import Draw, BGL
 from types import FileType
 from NwnMath import rad2decadeg, nwn2euler
 
-filename='plc_a08.mdl.ascii'
+filename='/home/wwwwolf/src/projects/games/neverblender/Dire_Cat.mdl' # 'plc_a08.mdl'
 fileinput=0
 impstatus=0
 
@@ -160,17 +160,19 @@ def loadgeomnode(file, words, pdata):
     if words[1]=='NULL':
       data['nwnprops'].write('SCENE.baseobjectname=%s\n'%data['object'].name)
     else:
-      p=Object.get(words[1])
+      p=Object.Get(words[1])
       p.makeParent([data['object']])
   def position(file, words, data):
     data['object'].setLocation(map(float, words[1:4]))
   def orientation(file, words, data):
     data['object'].setEuler(nwn2euler(map(float, words[1:5])))
   def bitmap(file, words, data):
-    image=Image.get(words[1]+'.tga')
-    if image==None:
+    imagefname=words[1]+'.tga'
+    try:
+      image=Image.Get(imagefname)
+    except NameError:
       try:
-	image=Image.Load(words[1]+'.tga')
+	image=Image.Load(imagefname)
       except IOError:
         pass
     data['nwnprops'].write('%s.texture=%s\n'%(data['object'].name, words[1]))
@@ -243,16 +245,18 @@ def loadgeometry(file, words, data):
 
 def loadanimnode(file, words, data):
   def getipo(object):
-    ipo=Ipo.get(object.name)
-    if ipo==None:
+    try:
+      ipo=Ipo.Get(object.name)
+    except NameError:
       ipo=Ipo.New('Object', object.name)
-      object.link(ipo)
+      object.setIpo(ipo)
     return ipo
   def getcurves(ipo, list):
     retlist=[]
     for curvename in list:
-      curve=ipo.get(curvename)
-      if curve==None:
+      try:
+        curve=ipo.Get(curvename)
+      except AttributeError:
         curve=ipo.addCurve(curvename)
         curve.setInterpolation('Linear')
       retlist.append(curve)
@@ -277,7 +281,7 @@ def loadanimnode(file, words, data):
     if len(positions):
       ipo=getipo(data['node'])
       loc=getcurves(ipo, ['LocX', 'LocY', 'LocZ'])
-      if len(loc[0])==0:
+      if len(loc[0].bezierPoints)==0:
         origloc=data['node'].loc
         for i in range(3):
           loc[i].addBezier((1.0, origloc[i]))
@@ -292,7 +296,7 @@ def loadanimnode(file, words, data):
     if len(orientations):
       ipo=getipo(data['node'])
       rot=getcurves(ipo, ['RotX', 'RotY', 'RotZ'])
-      if len(rot[0])==0:
+      if len(rot[0].bezierPoints)==0:
         origrot=map(rad2decadeg, data['node'].getEuler())
         for i in range(3):
           rot[i].addBezier((1.0, origrot[i]))
@@ -305,8 +309,11 @@ def loadanimnode(file, words, data):
         # This flag tells that we do NOT want radian->degree conversion.
         # Skipping it breaks the curves since we're adding new points to
         # existing curves.
-        curve.update(1)
-  data['node']=Object.get(words[2])
+        # 2005-05-15 by w4: this used to be curve.update(1), but looks
+        # like the new Blender API no longer wants any arguments to update().
+        # This MAY break the whole thing. I couldn't find docs for update()...
+        curve.update()
+  data['node']=Object.Get(words[2])
   animnodedict={'positionkey': positionkey, 'orientationkey': orientationkey,
           'endnode': linereaderbreak}
   linereader(file, animnodedict, data, False)

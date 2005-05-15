@@ -454,59 +454,58 @@ U neverblender/ChangeLog
 	  <para>
 	    A more flexible and far more comfortable way is to add the
 	    <filename>lib</filename> to your
-	    <envar>PYTHONPATH</envar>. This is definitely recommended,
-	    especially if you run Blender's Windows version with
-	    Python 2.2 separately installed, or the Linux version in
-	    all cases.
+	    <envar>PYTHONPATH</envar>. This is definitely recommended.
+	    <envar>PYTHONPATH</envar> tells what directories to look
+	    Python libraries from.
 	  </para>
 
 	  <para>
-	    As for finding where Blender/Python looks libraries from, you can
-	    either open a new Text in Blender, or open up a stand-alone Python
-	    interpreter (python in Linux, IDLE in Windows) and type
+	    As for finding where Blender/Python looks libraries from,
+	    you can use Blender's own built-in script for this
+	    task. You should start up Blender, go to Script Window,
+	    then choose 
+	    <menuchoice>
+	      <guimenu>Scripts</guimenu>
+	      <guisubmenu>System</guisubmenu>
+	      <guimenuitem>System information...</guimenuitem>
+	    </menuchoice>,
+	    then switch to Text editor and see the
+	    <classname>Text</classname> called
+	    <filename>system-info.txt</filename>. Scroll up and you
+	    should be able to see which directories are in your
+	    <envar>PYTHONPATH</envar>.
+	  </para>
+
+	  <para>Now, Python has had a rather weird handling of 
+	    <envar>PYTHONPATH</envar> over time. Some versions of
+	    Python seem to want that if you specify your own path, you
+	    also have to specify the previous contents there or they
+	    won't be found. The version I have right now at hand
+	    (2.3.5) seems to think that <envar>PYTHONPATH</envar> is,
+	    logically enough, <emphasis>added</emphasis> to "system" path, so
+	    you don't need to specify special contents.</para>
+
+	  <sect4>
+	    <title>General principles</title>
+
+	    <para>
+	      In Windows98SE, this kind of spell is needed to be put in
+	      <filename>c:\autoexec.bat</filename>:
 
 <informalexample>
 <programlisting>
-import sys
-print sys.path
+SET PYTHONPATH=c:\Python;...;d:\NeverBlender\lib
 </programlisting>
 </informalexample>
 
-	    to see the directories normally on your Python library
-	    path. (Interpreters should give immediate response, Blender needs
-	    <keycombo><keycap>Alt</keycap><keysym>P</keysym></keycombo>
-	    to run the Text. Results appear on the output window
-	    in Windows, or standard output in Linux.)
-	  </para>
+	      where NeverBlender is in <filename>d:\NeverBlender</filename>.
+	      (I don't know how to set the variable in Win2K or WinXP, probably
+	      something similar but entirely different...)
+	    </para>
 
-	  <para>
-	    To tell Python specifically where to look the files from,
-	    you can check out the environment variable
-	    <envar>PYTHONPATH</envar>. You can
-	    either copy the contents of NeverBlender
-	    <filename>lib</filename> to any of the
-	    library directories of Python (not recommended), or add the
-	    NeverBlender directory to <envar>PYTHONPATH</envar>.
-	  </para>
-
-	  <para>
-	    In Windows98SE, I have this kind of declaration in
-	    <filename>c:\autoexec.bat</filename>:
-
-<informalexample>
-<programlisting>
-SET PYTHONPATH=c:\Python;c:\Python\DLLs;c:\Python\lib;d:\NeverBlender\lib
-</programlisting>
-</informalexample>
-
-	    where NeverBlender is in <filename>d:\NeverBlender</filename>.
-	    (I don't know how to set the variable in Win2K or WinXP, probably
-	    something similar but entirely different...)
-	  </para>
-
-	  <para>
-	    In Linux, when using bash shell, following works in
-	    <filename>~/.bash_profile</filename>:
+	    <para>
+	      In Linux, when using <command>bash</command> shell, following works in
+	      <filename>~/.bash_profile</filename>:
 
 <informalexample>
 <programlisting>
@@ -514,12 +513,50 @@ export PYTHONPATH=/usr/lib/python2.3:...:/opt/neverblender/lib
 </programlisting>
 </informalexample>
 
-	    where NeverBlender is in <filename>/opt/neverblender</filename>.
-	  </para>
+	      where NeverBlender is in <filename>/opt/neverblender</filename>.
+	    </para>
+
+	  </sect4>
+
+	  <sect4>
+	    <title>What to try</title>
+
+	    <para>In general, you probably want to try first setting
+	      the <envar>PYTHONPATH</envar> to just the directory
+	      where you installed it to, for example,
+
+<informalexample>
+<programlisting>
+SET PYTHONPATH=d:\NeverBlender\lib
+</programlisting>
+</informalexample>
+
+	      in Windows or
+
+<informalexample>
+<programlisting>
+export PYTHONPATH=/opt/neverblender/lib
+</programlisting>
+</informalexample>
+
+	      in Linux.
+	    </para>
+
+	    <para>Then start up Blender and do the path-show script trick
+	      mentioned earlier. You should see a lot of Python system
+	      directories and your directory added to the whole
+	      lot. If you <emphasis>only</emphasis> see your added
+	      directory, remove the setting, add all paths that you
+	      see when you run the system info script, and on top of
+	      that your own directory.</para>
+
+	  </sect4>
 
 	</sect3>
 
       </sect2>
+
+
 
       <sect2>
 	<title>The program files</title>

@@ -1,3 +1,20 @@
+
+2005-05-15 14:04 Urpo Lankinen  <wwwwolf@iki.fi>
+
+	* nwnmdlimport.py: 
+	This thing was largely updated to work with the "new" (ahem)
+	Blender API, since people really really ask a lot about this.
+	Note that the geometry importing seems to work; I have no idea
+	how well the animation importing works! It may even be
+	broken (see getorientationkey() for stuff).
+
+	* setup-test.py:
+	Deleted, because Blender already has system information tool that
+	prints out stuff about the Python setup as well.
+
+	* manual.dbk:
+	Added documentation on PYTHONPATH.
+
 2005-02-15 14:00  Urpo Lankinen  <wwwwolf@iki.fi>
 
 	* setup-test.py
