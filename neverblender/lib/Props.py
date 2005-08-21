@@ -123,3 +123,7 @@ def getobjecttilefade(objname):
 	tilefadetypes={'None': 0, 'Fade': 1, 'HBlock': 2, 'VBlock': 3}
 	v = getValue(objname,'tilefade','None')
 	return tilefadetypes[v]
+
+def getanimbonemap(aniname):
+	v = eval(getValue('ANIM:'+animname,'bonemap'))
+	return v

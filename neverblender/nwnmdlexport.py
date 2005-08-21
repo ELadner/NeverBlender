@@ -252,10 +252,10 @@ mfile._animations = []
 actions = NLA.GetActions()
 
 arms = Armature.Get()
-for a in arms:
-	putlog(NBLog.DEBUG,
-	       "Armature %s bones %s, children %s"
-	       % (a, str(a.getBones()), scnobjchilds[a.getName()]))
+#for a in arms:
+#	putlog(NBLog.DEBUG,
+#	       "Armature %s bones %s, children %s"
+#	       % (a, str(a.getBones()), scnobjchilds[a.getName()]))
 
 #test = Object.Get('cone2')
 #p = test.getParent();
@@ -268,6 +268,8 @@ for a in actions:
 	# checked out the code and can't get the bloody thing to
 	# work!)
 	continue
+	
+	bonemap = Props.getanimbonemap(a)
 	
 	# FIXME: if action in props.whatever.don't-do-this: next
 	

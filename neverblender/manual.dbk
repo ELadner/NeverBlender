@@ -999,6 +999,33 @@ export PYTHONPATH=/opt/neverblender/lib
 	    </listitem>
 	  </varlistentry>
 
+		<varlistentry>
+		<term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>bonemap</property>=<replaceable>{'ipochannel':'object', ...}</replaceable></term>
+		<listitem>
+			<para>Blender thinks that animation actions are object-independent.
+			As such, there's no link from animation to actual bone nor there's link
+			from bone to object, so establishing relationships with these is really
+			difficult. It's probably flexible for really complex animations with
+			actions, but overkill for animating a single game creature!
+			Also, the action channels have some really strange naming scheme
+			and they cannot (as far as I know) be renamed.</para>
+			<para>Thus, this item here. Look up your action. Check channel names.
+			write down which channel corresponds to which object. Stick it to
+			this property.</para>
+			<para>For example, I have this test file at hand
+			which, Heaven only knows (I didn't do it, seriously!) has
+			objects called cone1, cone2, cone3, Armature named conearm
+			with Bones named cone1, cone2 and cone3. So what names
+			did Blender, in its infinite wisdom, give to the bones?
+			Why, "cone.1", "cone.2" and "cone.3"! Maybe they were named that way earlier.
+			Who knows, I can't remember, I can't rename them either. No way to change
+			them! So, let's just stick this in props:
+			ANIM:walk.bonemap={'cone.1':'cone1','cone.2':'cone2','cone.3':'cone3'}
+			[FIXME: Markup?]
+			</para>
+		</listitem>
+		</varlistentry>
+
 	  <varlistentry>
 	    <term><classname>ANIM:</classname><replaceable>animname</replaceable>.<property>keyingmode</property>=<replaceable>Constant|IpoKeys</replaceable></term>
 	    <listitem><para>
