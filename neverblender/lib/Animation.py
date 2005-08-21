@@ -27,15 +27,22 @@ class Animation:
         self._length = 1.0
         self._transtime = 1.0
         self._animnodes = []
+        self._animevents = []
         
     def __str__(self):
         o = ("newanim %s %s\n" % (self._name, self._modelname)) + \
                 ("  length %f\n" % self._length) + \
                 ("  transtime %f\n" % self._transtime) + \
                 self._nodes_as_string() + \
+                self._events_as_string() + \
                 ("doneanim %s %s\n" % (self._name, self._modelname))
         return o
+        
     def _nodes_as_string(self):
+        # TODO
+        return ""
+    def _events_as_string(self):
+        # TODO
         return ""
 
     def setName(self,name):
@@ -49,6 +56,16 @@ class Animation:
 
     def addNode(self,node):
         self._animnodes.append(node)
+    def addEvent(self,event):
+        self._animevents.append(event)
+
+# http://www.wnwn.net/mdl/animation_node.html
+
+# orikeylist and poslist:
+# {orientationkey,positionkey}
+#   time x y z {r,}
+#   ...
+# endlist  
 
 
 class AnimationNode:
@@ -57,6 +74,7 @@ class AnimationNode:
     # _parent = ""
     # _position = [0.0, 0.0, 0.0]
     # _orientation = [0.0, 0.0, 0.0]
+    # _wirecolor = ????
     # _scale = 1.0
     
     # _orientationlist = []
@@ -69,6 +87,7 @@ class AnimationNode:
         self._position = [0.0, 0.0, 0.0]
         self._orientation = [0.0, 0.0, 0.0]
         self._scale = 1.0
+        # needs wirecolor
 
         # Private data.
         self._orientationlist = []
@@ -128,3 +147,15 @@ class AnimationNode:
             o += "      %f %f %f %f\n" % item
         o += "    endlist\n"
         return o
+
+class AnimationEvent:
+    def __init__(self, object=None):
+        self._cue = ""
+        self._seconds = 0.0
+    def __str__(self):
+        o = ("  event %f %s\n" % (self._cue, self._seconds))
+        return o
+    def setCue(self,cue):
+        self._cue = cue
+    def setSeconds(self,seconds):
+        self._seconds = seconds

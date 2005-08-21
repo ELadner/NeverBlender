@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+                      "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<book lang="en">
+
+	<!-- ================================================================ -->
+	<bookinfo>
+
+		<title>NeverBlender Technical Manual</title>
+
+		<abstract>
+		<para>This document describes the technical details of
+		NeverBlender package, a package intended to make Blender
+		modeller and the
+		<trademark>Neverwinter Nights</trademark> computer game
+		cooperate.</para>
+		</abstract>
+
+		<author>
+		<surname>Lankinen</surname><firstname>Urpo</firstname>
+			<authorblurb>
+				<para>E-mail:
+				<ulink url="mailto:wwwwolf@iki.fi">wwwwolf@iki.fi</ulink>
+				</para>
+				<para>WWW:
+				<ulink url="http://www.iki.fi/">http://www.iki.fi/wwwwolf/</ulink>
+				</para>
+			</authorblurb>
+		</author>
+
+		<pubdate>$Date$</pubdate>
+		<releaseinfo>$Revision$</releaseinfo>
+
+		<copyright><year>2005</year><holder>Urpo Lankinen</holder></copyright>
+
+		<legalnotice>
+			<para>NeverBlender package is distributed under an extremely
+			free license.</para>
+
+			<para>Basically, the package is © 2003 The NeverBlender
+			Contributors. It is copyrighted - not public domain.</para>
+
+			<para>You are allowed to distribute, modify and use the source
+			code / scripts in any way you want. However, the copyright
+			notices must remain as they are. You may add notes describing
+			which parts you have changed to copies you distribute, but this
+			copyright notice (and the COPYING and AUTHORS files) must
+			accompany the distribution, and all copyright notices on the
+			files must remain as they are.</para>
+
+			<para>There is no warranty whatsoever, expressed or implied. You are using
+			this software at your own risk!</para>
+
+			<para>This documentation is supplied under the same terms,
+			except that electronic or printed versions of the
+			documentation need not to be accompanied by the COPYING and
+			AUTHORS files, in case the file is distributed separate from
+			the whole distribution. This whole copyright notice must be
+			present, however.</para>
+
+			<para><trademark>Neverwinter Nights</trademark>
+			© 2002 Bioware and Infogrames (Atari). All rights reserved.
+			<trademark>Neverwinter Nights</trademark>, 
+			<trademark class="registered">Dungeons &amp; Dragons</trademark> and
+			<trademark class="registered">Forgotten Realms</trademark>
+			are trademarks of Wizards of the Coast.</para>
+		</legalnotice>
+
+	</bookinfo>
+
+	<!-- ================================================================ -->
+	<chapter>
+	<title>Blah blah</title>
+
+	<sect1>
+	<title>Something?</title>
+
+		<para>Bleaf.</para>
+		
+		<para>Things that should be discussed in this manual:
+		
+		NWN model format in brief.
+		How Blender objects relate to NWN objects.
+		
+		What exporter actually does.
+		How the Blender objects are stuffed in Python objects and how
+		they in turn are turned into NWN objects.
+		</para>
+
+	</sect1>
+	</chapter>
+</book>
+
+<!--
+  Local variables:
+  mode:xml
+  End:
+-->

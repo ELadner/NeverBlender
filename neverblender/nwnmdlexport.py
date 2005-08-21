@@ -28,6 +28,8 @@ from os import access, X_OK
 if access("/usr/local/lib/neverblender/lib", X_OK) == 1:
 	path.append("/usr/local/lib/neverblender/lib")
 
+print "Warning: Python brain damage: No way to figure out current file (cannot fix)" + "\n"
+
 # Now, let's get back to our regular every-day library requesting.
 import Blender
 from Blender import Scene, Object, Armature
@@ -249,11 +251,11 @@ mfile._animations = []
 
 actions = NLA.GetActions()
 
-#arms = Armature.Get()
-#for a in arms:
-#	putlog(NBLog.DEBUG,
-#	       "Armature %s bones %s, children %s"
-#	       % (a, str(a.getBones()), scnobjchilds[a.getName()]))
+arms = Armature.Get()
+for a in arms:
+	putlog(NBLog.DEBUG,
+	       "Armature %s bones %s, children %s"
+	       % (a, str(a.getBones()), scnobjchilds[a.getName()]))
 
 #test = Object.Get('cone2')
 #p = test.getParent();
@@ -273,7 +275,8 @@ for a in actions:
 	action = actions[a]
 
 	ipos = action.getAllChannelIpos()
-	putlog(NBLog.DEBUG, "Bones animated: %s" % ipos.keys())
+	putlog(NBLog.DEBUG, "BoneIpos: %s" % ipos.keys())
+	# NOTE: Channel names != bone names. Fuck.
 
 	anim = Animation()
 	anim.setName(a)
@@ -281,13 +284,29 @@ for a in actions:
 
 	# Note: we're iterating Bones instead of Objects.
 	# Thus, the goddamn Objects have to have same name as
-	# their controlling Bones.
-	for bone in ipos:
+	# their controlling Bones. (NOTE: this comment has no bearing
+	# whatsoever to the reality. Reality is MUCH WORSE.)
+	for boneipo in ipos:
 		anode = AnimationNode()
-		anode.setName(bone)
+		
+		# The Theory: Now we're fucking with the Ipo channel here.
+		# We figure out what object the channel corresponds to.
+		# (that seems to be the REALLY DAMN DIFFICULT part right now.)
+		# Then, we just eval the ipo on keyframes OR at set intervals
+		# (depending on what mode we're working on)
+		# and stick those in the Animation's OrientationList and
+		# PositionList. Which is even easier because orientations
+		# are stored in Blender in quaternions already in this case.
+		# And now: How the FUCK do we figure out what object the
+		# damn ipo moves?
+		
+		anode.setName(boneipo) # WRONG! DEAD WRONG!
 
 		print "Getting %s\n" % bone
 		aob = Object.Get(bone)
+		# That dies because the fucking animation channel names
+		# do NOT correspond with the fucking bone names and there's
+		# NO fucking way to find 'em out. (brought to you by Amuse the Greppers, inc)
 		aobtype = aob.getType()
 		if aobtype == 'Empty':
 			anode.setType('dummy')
@@ -299,11 +318,14 @@ for a in actions:
 			       % (aob, aobtype))
 			anode.setType('dummy')		
 
-		# foo
+		# Insert code that actually does something with the
+		# channel Ipos here.
 
 		anim.addNode(anode)
 
-	anim.setLength(1.0)             # FIXME!
+	# Set the animation length. Obviously, this is a bogus value
+	# for now.
+	anim.setLength(1.0)
 
 	mfile.addAnimation(anim)
 
