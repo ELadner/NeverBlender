@@ -47,3 +47,10 @@ def putlog(sev, message, module=""):
         if loggingtofile:
             logfile.write(prefixes[sev] + " [" + module + "] " +
                           message + "\n")
+
+import Blender
+import Blender.Draw
+def Report(sev, message, module=""):
+	"Output a console message AND produce a message popup."
+	putlog(sev, message, module)
+	Blender.Draw.PupMenu(message)
