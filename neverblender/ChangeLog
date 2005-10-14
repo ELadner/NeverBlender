@@ -1,3 +1,19 @@
+2005-10-15 14:40 Joshua Gooding <josh@gooding-online.com>
+	* lib/ModelFile.py, lib/Model.py:
+	Factored ModelFile into two different classes.  Model now handles
+	the actual conversion to MDL format, while ModelFile is a wrapper
+	around Model that allows it to actually save this data to a file.
+	Also moved things in a more Python-centric direction by using
+	property descriptors where appropriate.  ModelFile has old-style
+	accessors alongside the properties for backward compatibility.
+
+	* lib/Script.py:
+	The beginnings of nwnscript support.
+
+	* lib/Geometry.py:
+	Beginnings of a new Geometry class to be the superclass of things
+	like Dummy and Trimesh.  Not yet actually used.
+
 2005-10-11 15:53 Joshua Gooding <josh@gooding-online.com>
 	* nwnmdlexport.py, nwnmdlexporthook.py:
 	Moved (and improved) the NeverBlender-lib-finding-code from

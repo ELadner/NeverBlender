@@ -15,6 +15,7 @@ Tip:     'Export in Neverwinter Nights format ASCII model'
 # Distribute, modify and use however you please as long as you
 # retain this copyright notice and comply to the terms set forth in the
 # file COPYING. No warranty expressed or implied.
+# $Id$
 #
 #################################################################
 
@@ -28,6 +29,10 @@ import Blender
 import os.path
 import sys
 from os import access, X_OK
+# If you put neverblender somewhere else, add it to the candidates
+# list.  This script searches the candidates for 'neverblender/lib' in
+# order, so the order of the list matters if and only if you have
+# multiple instances of neverblender/lib.
 candidates = [Blender.Get('scriptsdir'), Blender.Get('uscriptsdir'), '/usr/local/lib', 'c:/msys/local/lib', '.']
 for d in candidates:
     if d:

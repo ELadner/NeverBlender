@@ -1,0 +1,3 @@
+NeverBlender may be installed by placing the nwnmdlexporthook.py and nwnmdlimport.py files in your Blender scripts directory and then editing nwnmdlexporthook.py if neccesary to tell it where you put neverblender.
+
+$Id$

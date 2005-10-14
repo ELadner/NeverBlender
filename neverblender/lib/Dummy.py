@@ -13,29 +13,29 @@
 #################################################################
 
 class Dummy:
-	_name = "untitleddummy"
-	_parent = "NULL"
-	_position = [0.0, 0.0, 0.0]
-	_orientation = [0.0, 0.0, 0.0, 0.0]
+	Name = "untitleddummy"
+	Parent = "NULL"
+	Position = [0.0, 0.0, 0.0]
+	Orientation = [0.0, 0.0, 0.0, 0.0]
 
 	# The arsenal is bloody narrow due to the fact that I
 	# just discovered this advanced programming language
 	# doesn't have this "method overloading" stuff.
 	def setName(self, name):
-		self._name = name
+		self.Name = name
 	def setParent(self, parent):
-		self._parent = parent
+		self.Parent = parent
 	
 	def setPosition(self, loclist):
-		self._position = loclist
+		self.Position = loclist
 	def setOrientation(self, poslist):
-		self._position = poslist
+		self.Orientation = poslist
 	
 	def __str__(self):
-		o = "node dummy %s\n" % self._name + \
-			"  parent %s\n" % self._parent + \
-			"  position %f %f %f\n" % tuple(self._position) + \
-			"  orientation %f %f %f %f\n" % tuple(self._orientation) + \
+		o = "node dummy %s\n" % self.Name + \
+			"  parent %s\n" % self.Parent + \
+			"  position %f %f %f\n" % tuple(self.Position) + \
+			"  orientation %f %f %f %f\n" % tuple(self.Orientation) + \
 			"endnode\n"
 		return o
 
