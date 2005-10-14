@@ -1,9 +1,27 @@
+#################################################################
+#
+# Geometry.py
+# Handle conversion of various Blender geometry into MDL format.
+#
+# part of the NeverBlender project
+# (c) The NeverBlender Contributors 2003
+# Distribute, modify and use however you please as long as you
+# retain this copyright notice and comply to the terms set forth in the
+# file COPYING. No warranty expressed or implied.
+# $Id$
+#
+#################################################################
+
 import Blender
 import Blender.Scene
 
 BuildChildrenDictionary()
 
 def GetTree(root, parent="NULL"):
+	"""Return a list of all Geometry objects (instantiated from the
+	correct subclass including and descending from the given root
+	object."""
+
 	tree = [GetGeometry(root, parent)]
 	i = 0
 	while (i < len(tree)):
@@ -11,11 +29,13 @@ def GetTree(root, parent="NULL"):
 
 GeometryHandlers = dict()
 def RegisterGeometry(kind, handler):
-	"Register a subclass of Geometry."
+	"Register a subclass of Geometry for handling of the specified 'kind' of Blender object."
+	
 	GeometryHandlers[kind] = handler
 
 def GetGeometry(obj, parent="NULL"):
-	"Get geometry handler of the appropriate type."
+	"Instantiate the appropriate Geometry subclass for the given Blender object."
+	
 	return GeometryHandlers[obj.getType()](obj, parent)
 
 class Geometry:
@@ -47,10 +67,10 @@ class Geometry:
 				  'Position': self.FormatPosition(),
 				  'Orientation': self.FormatOrientation()}
 		return """\
-		parent %(Parent)
-		position %(Position)
-		orientation %(Orientation)
-		""" % fields
+parent %(Parent)
+position %(Position)
+orientation %(Orientation)
+""" % fields
 
 	def FormatPosition(self):
 		return "%f %f %f" % self.BlenderObject.getLocation()

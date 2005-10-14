@@ -1,3 +1,8 @@
+2005-10-15 15:05 Joshua Gooding <josh@gooding-online.com>
+	* lib/ModelFile.py, lib/Model.py, lib/Script.py, lib/Geometry.py
+	Of course, as soon as I commit I realize I should add some
+	additional comments to all these files.
+	
 2005-10-15 14:40 Joshua Gooding <josh@gooding-online.com>
 	* lib/ModelFile.py, lib/Model.py:
 	Factored ModelFile into two different classes.  Model now handles

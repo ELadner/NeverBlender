@@ -55,6 +55,11 @@ class Model(object):
 		return self._classification
 	Classification = property(getClassification, setClassification)
 
+	"""
+	Objects and animations should be serializable objects.  Objects
+	will be placed in the 'geometry' section, while animations will be
+	placed after the 'geometry' section.
+	"""
 	def addObject(self,object):
 		self._objects.append(object)
 	def addObjects(self, objects):
@@ -64,9 +69,22 @@ class Model(object):
 		self._animations.append(animation)
 
 	def addOption(self, option):
+		"""
+		Options are just text to be placed at the beginning of the
+		model body.  Interpolation of Model properties is done on
+		options for your convenience.
+		"""
 		self.Options.append(option)
 	
 	def __str__(self):
+		"""
+		Here is where we actually serialize the model.  Most of this
+		code is setting up properties on the Model object for
+		interpolation with the 'template' defined at the top of this
+		file.  Fairly few changes should ever be made to this method
+		itself.  Most changes in formatting, etc should be made to the
+		template.
+		"""
 
 		props = dict(map(lambda x: (x, getattr(self, x)),
 						 ['Name', 'Classification', 'Options']))

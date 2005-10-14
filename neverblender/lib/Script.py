@@ -73,6 +73,7 @@ else:
 	selected = selected[0]
 	model.Name = selected.getName()
 
+# TODO: make this use the new Geometry module
 model.addObjects(Dummy(selected).getTree())
 
 model.writeToFile():

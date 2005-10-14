@@ -34,6 +34,14 @@ class ModelFile(Model):
 		self.OutputDirectory = None
 
 	def writeToFile(self):
+		"""
+		The actual work of exporting Blender data to MDL data is done
+		in the Model superclass.  Here we just deal with getting the
+		string given to us by Model into a file.  This really should
+		know virtually nothing about the MDL format and absolutely
+		nothing about Blender.
+		"""
+		
 		odir = self.OutputDirectory or Props.getoutputdirectory()
 		ofile = self.Name + '.' + self.FileFormat
 		outfile = normpath(join(odir,ofile))
@@ -72,7 +80,9 @@ filedependancy %s
 
 	# Here's a bunch of accessors to provide backward compatibility
 	# New code should just use the properties directly - we can use
-	# descriptors if we want to control access
+	# descriptors if we want to control access.  Eventually I'd like
+	# to see these dissapear entirely, but for now I'll be kind and
+	# leave them here.
 	def setModelName(self,modelname=None):
 		if modelname:
 			self.Name = modelname
