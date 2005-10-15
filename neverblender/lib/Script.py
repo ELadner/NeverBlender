@@ -58,8 +58,8 @@ except:
 # objects to be accessed from the script.  This sets up for a basic
 # export script that exports a single Model, possibly with a walkmesh.
 from ModelFile import ModelFile
+import Geometry
 from Trimesh import Trimesh
-from Dummy import Dummy
 model = ModelFile()
 exec '\n'.join(script.asLines()) in {'Model': model}
 
@@ -73,8 +73,7 @@ else:
 	selected = selected[0]
 	model.Name = selected.getName()
 
-# TODO: make this use the new Geometry module
-model.addObjects(Dummy(selected).getTree())
+model.setRoot(selected)
 
 model.writeToFile():
 
@@ -84,7 +83,9 @@ if model.Walkmesh:
 	if pwkobj.getType() != 'Mesh':
 		NBLog.Report(NBLog.CRITICAL, "PWK must be a Mesh!")
 		exit
-	pwkmesh = Trimesh(model.Walkmesh, "NULL", 0)
-	ModelFile(name=model.Name, fileformat="pwk", objects=[pwkmesh]).writeToFile()
+	pwkmesh = Trimesh(model.Walkmesh, "NULL")
+	pwkfile = ModelFile(name=model.Name, fileformat="pwk", objects=[pwkmesh])
+	pwkfile.OutputDirectory = model.OutputDirectory
+	pwkfile.writeToFile()
 	
-NBLog.Report(NBLog.INFO, "Export of .mdl completed")
+NBLog.Report(NBLog.INFO, "Model export completed")

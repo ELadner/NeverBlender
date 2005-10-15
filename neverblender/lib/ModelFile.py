@@ -24,7 +24,7 @@ from Model import Model
 
 class ModelFile(Model):
 
-	def __init__(self, name="unnamedmodel", classification="Item",
+	def __init__(self, name=None, classification="Item",
 				 fileformat="mdl", *pargs, **kargs):
 
 		super(ModelFile, self).__init__(name, classification, *pargs, **kargs)

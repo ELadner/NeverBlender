@@ -1,3 +1,26 @@
+2005-10-15 20:12 Joshua Gooding <josh@gooding-online.com>
+	* lib/Geometry.py:
+	Minor changes to the Geometry registration system.  In particular,
+	unrecognized geometry types are now treated as dummies.
+
+	* lib/TrimeshGeometry.py:
+	Brand new file!  This implements a version of Trimesh that is a
+	subclass of Geometry.  Hopefully once this is stable it will
+	replace Trimesh.py.
+
+	* lib/Model.py:
+	Added (and commented out) a few lines of code to provide a
+	convenient way of adding an whole tree of geometry once the
+	Geometry model is finished.
+
+	* lib/ModelFile.py:
+	Used variable-argument stuff to make it so ModelFile doesn't have
+	to know about every single argument Model's __init__ takes.
+
+	* lib/Script.py:
+	Modified to be compatible with slight changes in Geometry
+	interface.  Not that any of this actually works yet.
+	
 2005-10-15 15:05 Joshua Gooding <josh@gooding-online.com>
 	* lib/ModelFile.py, lib/Model.py, lib/Script.py, lib/Geometry.py
 	Of course, as soon as I commit I realize I should add some

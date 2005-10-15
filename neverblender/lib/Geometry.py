@@ -15,6 +15,8 @@
 import Blender
 import Blender.Scene
 
+from Trimesh import Trimesh
+
 BuildChildrenDictionary()
 
 def GetTree(root, parent="NULL"):
@@ -29,20 +31,25 @@ def GetTree(root, parent="NULL"):
 
 GeometryHandlers = dict()
 def RegisterGeometry(kind, handler):
-	"Register a subclass of Geometry for handling of the specified 'kind' of Blender object."
+	"Register a subclass of Geometry for handling the specified 'kind' of Blender object."
 	
 	GeometryHandlers[kind] = handler
 
 def GetGeometry(obj, parent="NULL"):
-	"Instantiate the appropriate Geometry subclass for the given Blender object."
-	
-	return GeometryHandlers[obj.getType()](obj, parent)
+	"""
+	Instantiate the appropriate Geometry subclass for the given
+	Blender object.  If no appropriate subclass is registered then we
+	use Geometry itself by default.
+	"""
+	# Should this do some sort of type-checking?
+	return GeometryHandlers.get(obj.getType(), Geometry)(obj, parent)
 
-class Geometry:
+class Geometry(object):
+	Type = 'dummy'
+	
 	def __init__(self, obj, parent="NULL"):
 		self.BlenderObject = obj
 		self.Parent = parent
-		self.Type = 'dummy'
 
 	def GetChildren(self):
 		name = self.BlenderObject.getName()
@@ -57,20 +64,15 @@ class Geometry:
 
 	def __str__(self):
 		"Serialize the object's geometry"
-		return "node %(Type) %(Name)\n" % self.__dict__ \
-			   + self.Export() \
+		return "node %(Type)s %(Name)s\n" % self.__dict__ \
+			   + self.Details() \
 			   + "endnode"
 
-	def Export(self):
-		"Export basic properties that all geometry should have."
-		fields = {'Parent': self.Parent,
-				  'Position': self.FormatPosition(),
-				  'Orientation': self.FormatOrientation()}
-		return """\
-parent %(Parent)
-position %(Position)
-orientation %(Orientation)
-""" % fields
+	def Details(self):
+		"Serialize basic properties that all geometry should have."
+		return ("parent %s\n" % self.Parent	+
+				"position %s\n" % self.FormatPosition() +
+				"orientation %s\n" % self.FormatOrientation())
 
 	def FormatPosition(self):
 		return "%f %f %f" % self.BlenderObject.getLocation()
@@ -81,3 +83,4 @@ orientation %(Orientation)
 
 RegisterGeometry('Empty', Geometry)
 RegisterGeometry('Armature', Geometry) # for now
+RegisterGeometry('Mesh', Trimesh) # for now
