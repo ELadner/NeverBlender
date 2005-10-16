@@ -1,3 +1,23 @@
+2005-10-16 06:05 Joshua Gooding <josh@gooding-online.com>
+	* lib/Geometry.py:
+	Fixed a few bugs having to do with things being in the wrong place
+	or being where they don't belong at all.  It now imports without
+	any errors.
+
+	* lib/Model.py:
+	Uncommented the stuff having to do with the Geometry model since
+	it works now :)
+
+	* lib/Trimesh.py.old, lib/Trimesh.py, lib/TrimeshGeometry.py:
+	Moved the original Trimesh.py to Trimesh.py.old since it's now
+	mostly depreciated but I don't feel comfortable deleting it just
+	yet.  Replaced it by moving TrimeshGeometry to Trimesh.
+
+	* lib/nwnmdlexport.py:
+	Changed it to use the new Trimesh class.  Once we're certain this
+	all works we can remove the code for the old Trimesh class - for
+	now I just commented it out.
+
 2005-10-15 20:12 Joshua Gooding <josh@gooding-online.com>
 	* lib/Geometry.py:
 	Minor changes to the Geometry registration system.  In particular,

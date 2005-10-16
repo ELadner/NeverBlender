@@ -14,7 +14,7 @@
 
 import NBLog
 from NBLog import putlog
-# import Geometry # TODO: uncomment once Geometry is working
+import Geometry
 
 template = """
 newmodel %(Name)s
@@ -65,10 +65,9 @@ class Model(object):
 		self._objects.append(object)
 	def addObjects(self, objects):
 		self._objects += objects
-#	def setRoot(self, root):
-#		"Set the Model's _objects to the tree of geometry descending from the given root."
-#		self._objects = Geometry.GetTree(root)
-# TODO: uncomment once Geometry is working
+	def setRoot(self, root):
+		"Set the Model's _objects to the tree of geometry descending from the given root."
+		self._objects = Geometry.GetTree(root)
 
 	def addAnimation(self,animation):
 		self._animations.append(animation)

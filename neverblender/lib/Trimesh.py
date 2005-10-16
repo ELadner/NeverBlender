@@ -12,122 +12,142 @@
 #
 #################################################################
 
-import Blender
-from Blender import Mathutils
-from Blender.Mathutils import *
-
-from string import join
 import NBLog
 from NBLog import putlog
+from Geometry import Geometry, RegisterGeometry
+#from Blender.NMesh import NMesh
 
-class Trimesh:
-	# Can be set
-	#_name = "untitledtrimesh"
-	#_parent = "NULL"
+class Trimesh(Geometry):
+
+	# TODO: tilefade
+
+	# TODO: Figure out what to do with these.  Probably should come
+	# from the first material on the mesh, assuming it has one.
+	# Furthermore, do we set these in __init__, let them be set
+	# elsewhere, or give them property descriptors that retrieve them
+	# directly from the object?
+	Wirecolor = (0.6, 0.6, 0.6)
+	Ambient = (1.0, 1.0, 1.0)
+	Diffuse = (1.0, 1.0, 1.0)
+	Specular = (1.0, 1.0, 1.0)
+	Shininess = 0.25
+
+	Scale = 1.0
+
+	Texture = None
 	
-	# Cannot be set at the moment!
-	# (Could be, but what are the corresponding material props??)
-	#_ambient = [1.0, 1.0, 1.0]
-	#_diffuse = [1.0, 1.0, 1.0]
-	#_shininess = 0.25
-
-	# Can be set.
-	#_position = [0.0, 0.0, 0.0]
-	#_orientation = [0.0, 0.0, 0.0]         # stored in euler format!
-	#_scale = 1.0
-	#_texture = ""
-	#_wirecolor = [0.6, 0.6, 0.6]
-	#_specular = [0.05, 0.05, 0.05]
-	#_tilefade = 0
-	# Private data.
-	#_verts = []
-	#_faces = []
-	#_texverts = []
-
-	def __init__(self, object=None):
-		if object==None:
-			self._name = "untitledtrimesh"
-			self._parent = "NULL"
-			self._position = [0.0, 0.0, 0.0]
-			self._orientation = [0.0, 0.0, 0.0]
-			self._scale = 1.0
+	def __init__(self, obj=None, parent="NULL"):
+		super(Trimesh, self).__init__(obj, parent)
+		self.Type = 'trimesh'
+		if obj:
+			assert obj.getType() == 'Mesh'
+			self.setScale(obj.size)
+			
+			objmats = obj.getMaterials()
+			if len(objmats)>=1:
+				putlog(NBLog.SPAM,
+					   "Object has material(s).")
+				# We only take the first material, for now.
+				# (We'll do something more elegant later on...we hope)
+				m = objmats[0]
+				self.Wirecolor = m.rgbCol
+				self.Specular = m.specCol
+				
+			self.SetMesh(obj.getData())
+			
 		else:
-			# Beginnings of construction from Blender Object
-			self._name = object.name
-			if object.parent!=None:
-				self._parent = object.parent.name
-			else:
-				self._parent = "NULL"
-			self._position = object.pos
-			self._orientation = object.rot
-			# This one does averaging..
-			self.setScale(object.size)
-	
-		# These can be set in Material...
-		self._wirecolor = [0.6, 0.6, 0.6]
-		self._specular = [0.05, 0.05, 0.05]
-		# ...but these cannot.
-		self._ambient = [1.0, 1.0, 1.0]
-		self._diffuse = [1.0, 1.0, 1.0]
-		self._shininess = 0.25
+			putlog(NBLog.WARNING, "Eh?  A trimesh that doesn't exist?", "Trimesh")
+			# What do we want to do in this case?  The reason I
+			# include it at all is it could be useful if we ever
+			# decide to integrate the importer and exporter.  Also the
+			# older nwnmdlexport code seems to want to do this and
+			# then set the mesh later.
 
-		# Can be set.
-		self._texture = ""
-		self._tilefade = 0
-		# Private data.
-		self._verts = []
-		self._faces = []
-		self._texverts = []
+	def Details(self):
+		return (super(Trimesh, self).Details() +
+				"  scale %f\n" % self.Scale +
+				self.FormatMaterial() +
+				self.FormatTexture() +
+				self.FormatVertices() +
+				self.FormatFaces() +
+				self.FormatTexverts())
 
-	# Basic stuff.
-	def setName(self, name):
-		self._name = name
-	def setParent(self, parent):
-		self._parent = parent
+	def FormatMaterial(self):
+		return ("  wirecolor %f %f %f\n" % self.Wirecolor +
+				"  ambient %f %f %f\n" % self.Ambient +
+				"  diffuse %f %f %f\n" % self.Diffuse +
+				"  specular %f %f %f\n" % self.Specular +
+				"  shininess %f\n" % self.Shininess)
 
-	def setPosition(self, poslist):
-		assert len(poslist) == 3
-		self._position = poslist
-	def setOrientation(self, orientation):
-		# Would be nice to check, but I'm a peabrain and can't
-		# figure out why this won't work.
-		#assert isinstance(orientation, Euler)
-		self._orientation = orientation
+	def FormatTexture(self):
+		if self.Texture:
+			return "  bitmap %s\n" % self.Texture
+		else:
+			return "  # No texture\n"
 
-	def setWireColor(self, color):
-		assert len(color) == 3
-		self._wirecolor = color
-	def setSpecularColor(self, color):
-		assert len(color) == 3
-		self._specular = color
+	def FormatVertices(self):
+		verts = map(tuple, self._verts)
+		return ("  verts %d\n" % len(verts) +
+				''.join(map(lambda v: "    %f %f %f\n" % v,
+							verts))
+				)
+	def FormatFaces(self):
+		faces = map(tuple, self._faces)
+		return ("  faces %d\n" % len(faces) +
+				''.join(map(lambda f: "    %d %d %d %d %d %d %d 1\n" % f,
+							faces))
+				)
+	def FormatTexverts(self):
+		if self.Texture:
+			texverts = map(tuple, self._texverts)
+			return ("  tverts %d\n" % len(texverts) +
+					''.join(map(lambda tv: "    %f %f 0\n" % tv,
+								texverts))
+					)
+		else:
+			return "  tverts 1\n    0 0 0\n"
+
+	# A lot of the code below this point is taken almost verbatim from
+	# Urpo's original Trimesh code.  Some of it should be fixed up to
+	# be more Pythonish in style, but this kind of wrangling is an
+	# inherently messy process and it works fine as is, so maybe it's
+	# best left alone.  Perhaps we want to move it into some helper
+	# module where we hide away our dirty little secrets?
 
 	def setScale(self, scalelist):
 		assert len(scalelist) == 3
 		if scalelist[0] != scalelist[1] or \
 		  scalelist[1] != scalelist[2] or \
 		  scalelist[0] != scalelist[2]:
-			self._scale = \
+			self.Scale = \
 			      (scalelist[0]+scalelist[1]+scalelist[2]) / 3
 			putlog(NBLog.WARNING, 
 			       "Object %s scale not uniform! " +
 			       "x = %f, y = %f, z = %f "+
 			       "Using avg scale as uniform scale: %f" %
-			       (self._name,
-				scalelist[0], scalelist[1], scalelist[2],
-				self._scale), "Trimesh")
+			       (self.Name, scalelist[0], scalelist[1], scalelist[2],
+					self.Scale), "Trimesh")
 		else:
 			putlog(NBLog.SPAM, 
 			       "Object %s has uniform scale %f." % 
-			       (self._name,self._scale), "Trimesh")
-			self._scale = scalelist[0]
-	def setTexture(self, texture):
-		self._texture = texture
-	def setTileFade(self, tilefade):
-		self._tilefade= tilefade
+			       (self.Name,self.Scale), "Trimesh")
+			self.Scale = scalelist[0]
 
+	def SetMesh(self, mesh):
+		"""
+		Here we actually extract and process the mesh data, massaging
+		it into an intermediate form before actually dumping it into
+		MDL.
+		"""
+		#assert isinstance(mesh, NMesh) # A mesh that isn't a mesh?  Let's hope not.
+		# Meh for some reason can't properly use the name NMesh
+		self._mesh = mesh
 
-	def setVerts(self, vertlist):
-		self._verts = vertlist
+		self._verts = self._mesh.verts
+		self._faces = []
+		for face in (self._mesh.faces):
+			self._addFace(face) # Hurrah for delegation!
+		
 	def _addFaceData(self, vert1, vert2, vert3, uv1, uv2, uv3, smooth):
 		# This is probably unnecessary, but we're very paranoid.
 		if smooth:
@@ -139,7 +159,8 @@ class Trimesh:
 		currface = map(self._verts.index, (vert1,vert2,vert3))
 		currface.extend([smooth, uv1, uv2, uv3])
 		self._faces.append(currface)
-	def addTexVert(self, uv):
+
+	def _addTexVert(self, uv):
 		"""Adds a texture vertex to the _texverts if not there already.
 		returns index to the added item (or item already on list)."""
 		try:
@@ -155,12 +176,12 @@ class Trimesh:
 		# Face corner vertices and UV coordinates.
 		# These are all tuples.
 		v1, v2, v3 = f.v
-		if self._texture:
+		if self.Texture:
 			u1, u2, u3 = f.uv
 			
 		# Store UV coordinates to the list.
 		# We get their indexes from tvertlist.
-		if self._texture:
+		if self.Texture:
 			(u1i, u2i, u3i) = (self.addTexVert(u1),
 				self.addTexVert(u2),
 				self.addTexVert(u3))
@@ -177,7 +198,7 @@ class Trimesh:
 		# two triangles, (v1,v2,v3) and (v3, v4, v1), with uv
 		# coordinates handled with care.
 		v1, v2, v3, v4 = f.v
-		if self._texture:
+		if self.Texture:
 			u1, u2, u3, u4 = f.uv
 			u1i, u2i, u3i, u4i = (self.addTexVert(u1),
 				self.addTexVert(u2),
@@ -189,84 +210,19 @@ class Trimesh:
 		self._addFaceData(v3, v4, v1, u3i, u4i, u1i, f.smooth)
 	
 
-	def addFace(self, f):
+	def _addFace(self, f):
 		"""Takes a NMFace and puts its information to Trimesh."""
 		# reminder: f is of type NMFace (NMesh Face).
 		verts = len(f.v)
-		if verts < 2:
-			putlog(NBLog.WARNING, 
-			       "Found a face with one or " +
-			       "less vertices. I'd call that patently " +
-			       "ridiculous.", "Trimesh")
-		if verts == 2:
-			putlog(NBLog.WARNING, 
-			       "Object has a face has 2 vertices." +
-			       "That's an odd one! It won't be added.",
-			       "Trimesh")
-		elif verts == 3:
+		if verts == 3:
 			self._addTriangleFace(f)
 		elif verts == 4:
 			self._addQuadFace(f)
 		else:
 			putlog(NBLog.WARNING, 
-			       "Can't add face with %d verts! " +
-			       "You need to divide this face manually."
-			       % verts, "Trimesh")
+			       "Wierd!  This face has %d verts!  " % verts +
+				   "I'm going to pretend I didn't see that, but you might want to fix it.",
+				   "Trimesh")
 
-	def __str__(self):
-		o = ("node trimesh %s\n" % self._name) + \
-			("  parent %s\n" % self._parent) + \
-			("  wirecolor %f %f %f\n" % tuple(self._wirecolor)) + \
-			("  ambient %f %f %f\n" % tuple(self._ambient)) + \
-			("  diffuse %f %f %f\n" % tuple(self._diffuse)) + \
-			("  specular %f %f %f\n" % tuple(self._specular)) + \
-			("  shininess %f\n" % self._shininess) + \
-			("  position %f %f %f\n" % tuple(self._position)) + \
-			self._orientation_as_string() + \
-			("  scale %f\n" % self._scale) + \
-			self._texture_as_string() + \
-			self._verts_as_string() + \
-			self._faces_as_string() + \
-			self._texverts_as_string() + \
-			"endnode\n"
-		return o
-	def _orientation_as_string(self):
-		o = self._orientation
-		q = o.toQuat()
-		
-		if o.x == 0.0 and o.y == 0.0 and o.z == 0.0:
-			return ""
-		return "  orientation %f %f %f %f\n" % \
-		       (q.x, q.y, q.z, q.w)
-	def _texture_as_string(self):
-		if self._texture:
-			return "  bitmap %s\n" % self._texture
-		return "  # No texture\n"
-	def _verts_as_string(self):
-		o = ("  verts %d\n" % len(self._verts))
-		o+= ''.join(map(lambda v: "    %f %f %f\n" % tuple(v),
-			self._verts))
-		return o
-	def _faces_as_string(self):
-		o = ("  faces %d\n" % len(self._faces))
-		o += join(map(
-			lambda f: "    %d %d %d %d %d %d %d 1\n" % tuple(f),
-			self._faces))
-		return o
-	def _texverts_as_string(self):
-		if self._texture:
-			o = ("  tverts %d\n" % len(self._texverts))
-			o += join(map(lambda tv: "    %f %f 0\n" % tuple(tv),
-				     self._texverts))
-		else:
-			o = "  tverts 1\n    0 0 0\n"
-		return o
-	
-	def stat(self):
-		"""Returns a 3-element tuple that has count of data in
-		the trimesh: count of vertices, faces and texverts,
-		respectively."""
-		stat = ( len(self._verts), \
-			 len(self._faces), \
-			 len(self._texverts) )
-		return stat
+
+RegisterGeometry('Mesh', Trimesh)

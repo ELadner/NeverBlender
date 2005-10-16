@@ -15,10 +15,6 @@
 import Blender
 import Blender.Scene
 
-from Trimesh import Trimesh
-
-BuildChildrenDictionary()
-
 def GetTree(root, parent="NULL"):
 	"""Return a list of all Geometry objects (instantiated from the
 	correct subclass including and descending from the given root
@@ -45,11 +41,12 @@ def GetGeometry(obj, parent="NULL"):
 	return GeometryHandlers.get(obj.getType(), Geometry)(obj, parent)
 
 class Geometry(object):
-	Type = 'dummy'
 	
 	def __init__(self, obj, parent="NULL"):
 		self.BlenderObject = obj
+		self.Name = obj.getName()
 		self.Parent = parent
+		self.Type = 'dummy'
 
 	def GetChildren(self):
 		name = self.BlenderObject.getName()
@@ -83,4 +80,3 @@ class Geometry(object):
 
 RegisterGeometry('Empty', Geometry)
 RegisterGeometry('Armature', Geometry) # for now
-RegisterGeometry('Mesh', Trimesh) # for now

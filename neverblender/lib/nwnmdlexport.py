@@ -31,6 +31,9 @@ from re import match
 
 #################################################################
 
+# Eventually all these "process" procedures and, in fact, just about
+# this entire module, will dissapear.
+
 # The base object.
 def processdummy(model,parent):
 	d = Object.Get(model)
@@ -48,10 +51,14 @@ def processdummy(model,parent):
 	dummy.setPosition(dummyloc)
 	return dummy
 
+
 def processtrimesh(sobj, parent, details):
 	"""Process the Object named sobj and return a Trimesh. If
 	details is true, also generates texture and such, otherwise
-	just location, scale and orientation."""
+	just location, scale and orientation.
+
+	DEPRECIATED - this should not be used - especially not with the new Trimesh
+	"""
 
 	# Get the Object block of the current object.
 	obj = Object.Get(sobj)
@@ -132,8 +139,9 @@ def processobject(model,parent,mfile):
 		mfile.addObject(dummy)
 	elif mtype == 'Mesh':
 		# FIXME: Parent
-		trimesh = processtrimesh(model, parent, 1)
-		mfile.addObject(trimesh)
+		# new Trimesh class doesn't require processtrimesh
+		#trimesh = processtrimesh(model, parent, 1)
+		mfile.addObject(Trimesh(Object.Get(model), parent))
 	elif mtype == 'Armature':
 		# Special code to handle armature: We process the armature's
 		# children "by hand" to make them parent to the armature's
@@ -333,10 +341,13 @@ if pwkname:
 	pwkfile.setModelName(model)
 	pwkfile.setFileFormat('pwk')
 
-	pwkmesh = processtrimesh(pwkname, "NULL", 0)
+##	pwkmesh = processtrimesh(pwkname, "NULL", 0)
+##	pwkfile._objects = []
+##	pwkfile.addObject(pwkmesh)
 
 	pwkfile._objects = []
-	pwkfile.addObject(pwkmesh)
+	pwkfile.addObject(Trimesh(pwkname, "NULL"))
+	# Question: Is the 'details' flag needed?  It doesn't really seem to do anything of consequence.
 
 	# Write out the PWK.
 	pwkfile.writeToFile()
