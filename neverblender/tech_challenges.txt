@@ -82,3 +82,16 @@ So, here's one approach to figuring out animation data in ugly pseudocode:
                     oridata[object].push(object.getorientation)
                     locdata[object].push(object.getlocation)
 
+
+---------------------------------------------------------------------------
+Title: Trimesh Properties Like Texture and TileFade
+Date: 2005-10-16
+Author: abanti
+Topics: Exporter, Scripts, Props
+
+Something that's been really bothering me is the question of how to
+deal nicely with settable trimesh-specific properties like Texture and
+TileFade.  At the moment we just have Props.py stuff it all into a big
+dictionary to be retrieved by the trimesh later.  But this seems
+rather messy and with the new nwnscript system replacing nwnprops I'd
+like to find some better way to do it.  Any ideas?
