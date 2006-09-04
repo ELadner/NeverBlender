@@ -1,3 +1,14 @@
+2006-09-02 06:05 Philippe C <phc.c@wanadoo.fr>
+	* nwnmdlimport.py:
+	-Fixed the issue with the setting of the python path, now
+	it is automatic.
+	-Fixed a bug on the texture load: add the full path to the texture file name.
+	-Add a warning message when a texture is not found and replace the 
+	missing texture by the "null.tga" . The user as to create a null.tga 
+	file into the directory of the .mdl model in order to avoid to stop 
+	the import or put the original texture into the .mdl directory.
+	-Fixed the bug ""AttributeError Unknown Object specified"
+		
 2005-10-16 06:05 Joshua Gooding <josh@gooding-online.com>
 	* lib/Geometry.py:
 	Fixed a few bugs having to do with things being in the wrong place
