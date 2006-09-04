@@ -29,13 +29,20 @@ Tip:     'Import a Neverwinter Nights model'
 # Animations should perhaps be reordered to work right; close2open of
 # the chest, for instance, goes from open to closed to open...
 
+import Blender
 from Blender import Scene, Object, NMesh, Image, Text, Ipo, Window
 from Blender import Draw, BGL
 # Hurm. This appears to be broken in 2.28a/Windows. Damn. - W4
 from types import FileType
+import os.path
+import sys
+
+# set the blender script path for the lib used by this script 
+sys.path.append(os.path.join(Blender.Get('scriptsdir'), 'lib'))
 from NwnMath import rad2decadeg, nwn2euler
 
-filename='/home/wwwwolf/src/projects/games/neverblender/Dire_Cat.mdl' # 'plc_a08.mdl'
+
+filename='C:\\Documents and Settings\\philippe\\Mes documents\\mdl to blender\\mdl\\a_fa_skirt.mdl' # 'plc_a08.mdl'
 fileinput=0
 impstatus=0
 
@@ -167,16 +174,28 @@ def loadgeomnode(file, words, pdata):
   def orientation(file, words, data):
     data['object'].setEuler(nwn2euler(map(float, words[1:5])))
   def bitmap(file, words, data):
-    imagefname=words[1]+'.tga'
+    global filename
+    imagefname=os.path.dirname(filename) + '\\' + words[1]+'.tga'
     try:
       image=Image.Get(imagefname)
     except NameError:
       try:
 	image=Image.Load(imagefname)
       except IOError:
+        print '**************ERROR********************'
+        print 'file : ' + filename
+        print 'texture : ' + words[1]+'.tga unknown in directory : '
+        print os.path.dirname(filename)
+        print 'check if the bitmap exists with an other extension => translate in tga format'
+        print 'or move it in the directory of the .mdl model'
+        print 'null.tga could be used instead of the current one'
+        print '**************ERROR********************'
+        imagefname=os.path.dirname(filename) + '\\null.tga'
+        image=Image.Load(imagefname)
         pass
     data['nwnprops'].write('%s.texture=%s\n'%(data['object'].name, words[1]))
     data['texture']=image
+
   def verts(file, words, data):
     vertexcount=int(words[1])
     while vertexcount>0:
@@ -254,13 +273,13 @@ def loadanimnode(file, words, data):
   def getcurves(ipo, list):
     retlist=[]
     for curvename in list:
-      try:
-        curve=ipo.Get(curvename)
-      except AttributeError:
+      curve=ipo.getCurve(curvename)
+      if curve == None:
         curve=ipo.addCurve(curvename)
         curve.setInterpolation('Linear')
       retlist.append(curve)
     return retlist
+
   def getfloatlines(file, words):
     retlist=[]
     # Another inconsistency between Torlack's and BioWare's model files

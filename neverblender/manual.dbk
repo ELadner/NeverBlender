@@ -171,7 +171,11 @@
 	  <listitem><para>
 	      Supports animations to some extent.
 	    </para></listitem>
-
+	  <listitem><para>
+	      Check the error messages on texture into the console windows of blender and fixed the issue.
+	      In case of unknown texture you can add a texture named "null.tga" into the directory of the .mdl file.
+	      By this way the import can continue and you can create the texture in Blender later on.
+	    </para></listitem>
 	</itemizedlist>
 
       </sect2>
